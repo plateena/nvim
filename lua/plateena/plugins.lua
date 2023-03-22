@@ -12,6 +12,7 @@ return require('packer').startup(function(use)
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
+    "tpope/vim-fugitive",
 }
 
 if pack.ensure_packer then
