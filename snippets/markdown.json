@@ -1,0 +1,9 @@
+{
+    "todo": {
+        "prefix": ["todo"],
+        "body": [
+            "- [ ] @TODO: <${VIM:system('get-my-name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> ${1: what to be done}"
+        ],
+        "description": "Mark todo comment"
+    }
+}

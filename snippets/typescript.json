@@ -1,0 +1,26 @@
+{
+    "describe": {
+        "prefix": ["desc"],
+        "body": [
+            "describe(\"${1:test suite}\", () => {",
+            "\tit(\"${2:test}\", async () => {",
+            "\t\t$0",
+            "\t});",
+            "});"
+        ],
+        "description": "Describe test"
+    },
+    "it": {
+        "prefix": ["it"],
+        "body": ["it(\"${1:test}\", async () => {", "\t$0", "});"],
+        "description": "it test"
+    },
+    "cl": {
+        "prefix": ["cl"],
+        "body": [
+            "$LINE_COMMENT @TODO: <${VIM:system('git config --get user.email | xargs echo -n')}> delete this debug line",
+            "console.log(${0})"
+        ],
+        "description": "it test"
+    }
+}

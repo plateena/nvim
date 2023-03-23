@@ -1,0 +1,9 @@
+{
+    "map": {
+        "prefix": ["map"],
+        "body": [
+            "${1} = { ${2:\"<Cmd>${3}<Cr>\"}, \"${4}\"}"
+        ],
+        "description": "Create new mapping"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "todo": {
+        "prefix": ["todo"],
+        "body": [
+            "$LINE_COMMENT @TODO: <${VIM:system('git config --get user.name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> ${0: what to be done}"
+        ],
+        "description": "Mark todo comment"
+    }
+}
