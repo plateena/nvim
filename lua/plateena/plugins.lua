@@ -51,6 +51,12 @@ return require('packer').startup(function(use)
 
         -- git
         "tpope/vim-fugitive",
+        {
+            'lewis6991/gitsigns.nvim',
+            config = function()
+                require('plateena.plugin.gitsigns')
+            end
+        },
 
         {
             "folke/which-key.nvim",
@@ -58,6 +64,11 @@ return require('packer').startup(function(use)
                 require("plateena.plugin.which-key")
             end
         },
+        {"gbprod/phpactor.nvim",
+        config = function ()
+            require("plateena.plugin.phpactor")
+        end
+    },
 
         -- dependences icons
         'nvim-tree/nvim-web-devicons',
@@ -87,6 +98,32 @@ return require('packer').startup(function(use)
                 require("plateena.plugin.nvim-cmp")
             end
         },
+
+        -- editing
+        {
+            "kylechui/nvim-surround",
+            config = function()
+                require("nvim-surround").setup()
+            end
+        },
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        {
+            'numToStr/Comment.nvim',
+            config = function()
+                require('Comment').setup({
+                    pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+                })
+            end
+        },
+        "lambdalisue/suda.vim",
+
+        -- test
+        {
+            "klen/nvim-test",
+            config = function()
+                require('nvim-test').setup({})
+            end
+        }
     }
 
     if pack.ensure_packer then
