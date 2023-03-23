@@ -8,19 +8,28 @@ return require('packer').startup(function(use)
         "savq/melange-nvim",
         "Shatur/neovim-ayu",
 
+        -- search and navigation
         {
             'nvim-telescope/telescope.nvim',
             tag = '0.1.1',
             -- or                            , branch = '0.1.x',
             requires = { { 'nvim-lua/plenary.nvim' } }
         },
+
+        -- layout
+        'nvim-lualine/lualine.nvim',
+
+        -- lsp
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "neovim/nvim-lspconfig",
+
+        -- git
         "tpope/vim-fugitive",
 
         "folke/which-key.nvim",
 
+        -- dependences icons 
         'nvim-tree/nvim-web-devicons',
         'onsails/lspkind.nvim',
 
@@ -38,7 +47,7 @@ return require('packer').startup(function(use)
                 "rafamadriz/friendly-snippets",
             },
             config = function()
-                vim.cmd("let g:vsnip_snippet_dir='" .. vim.fn.stdpath("config") .. "/snippets'")
+                vim.cmd("let g:vsnip_snippet_dir='" .. vim.fn.stdpath("config") .. "lua/plateena/snippets'")
             end
         },
         'jcha0713/cmp-tw2css',
