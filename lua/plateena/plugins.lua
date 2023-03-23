@@ -7,9 +7,11 @@ return require('packer').startup(function(use)
         -- colorscheme
         "savq/melange-nvim",
         "Shatur/neovim-ayu",
-        { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' },
+        { 'nvim-treesitter/nvim-treesitter',          run = ':TSUpdate' },
 
         -- search and navigation
+        { 'nvim-telescope/telescope-ui-select.nvim' },
+        { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
         {
             'nvim-telescope/telescope.nvim',
             tag = '0.1.1',
@@ -52,6 +54,12 @@ return require('packer').startup(function(use)
                     show_current_context_start = true,
                 }
             end
+        },
+        {
+            "anuvyklack/pretty-fold.nvim",
+            config = function()
+                require("pretty-fold").setup()
+            end,
         },
 
         -- lsp
@@ -98,7 +106,7 @@ return require('packer').startup(function(use)
                 "rafamadriz/friendly-snippets",
             },
             config = function()
-                vim.cmd("let g:vsnip_snippet_dir='" .. vim.fn.stdpath("config") .. "lua/plateena/snippets'")
+                require("plateena.plugin.vsnip")
             end
         },
         'jcha0713/cmp-tw2css',
@@ -134,7 +142,24 @@ return require('packer').startup(function(use)
             config = function()
                 require('nvim-test').setup({})
             end
-        }
+        },
+
+
+        "tpope/vim-dispatch",
+        {
+            "nyngwang/NeoZoom.lua",
+            config = function()
+                require("plateena.plugin.neozoom")
+            end,
+        },
+        {
+            "akinsho/toggleterm.nvim",
+            tag = "*",
+            config = function()
+                require("plateena.plugin.toggleterm")
+            end
+        },
+
     }
 
     if pack.ensure_packer then
