@@ -14,7 +14,10 @@ return require('packer').startup(function(use)
             'nvim-telescope/telescope.nvim',
             tag = '0.1.1',
             -- or                            , branch = '0.1.x',
-            requires = { { 'nvim-lua/plenary.nvim' } }
+            requires = { { 'nvim-lua/plenary.nvim' } },
+            config = function()
+                require("plateena.plugin.telescope")
+            end
         },
 
         -- layout
@@ -34,6 +37,12 @@ return require('packer').startup(function(use)
             -- some optional icons
             requires = { 'nvim-tree/nvim-web-devicons', opt = true },
         },
+        {
+            'nvim-tree/nvim-tree.lua',
+            config = function()
+                require("plateena.plugin.nvim-tree")
+            end
+        },
 
         -- lsp
         "williamboman/mason.nvim",
@@ -43,7 +52,12 @@ return require('packer').startup(function(use)
         -- git
         "tpope/vim-fugitive",
 
-        "folke/which-key.nvim",
+        {
+            "folke/which-key.nvim",
+            config = function()
+                require("plateena.plugin.which-key")
+            end
+        },
 
         -- dependences icons
         'nvim-tree/nvim-web-devicons',
@@ -54,7 +68,6 @@ return require('packer').startup(function(use)
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-cmdline',
-        'hrsh7th/nvim-cmp',
         'hrsh7th/cmp-vsnip',
         {
             'hrsh7th/vim-vsnip',
@@ -68,6 +81,12 @@ return require('packer').startup(function(use)
         },
         'jcha0713/cmp-tw2css',
         'delphinus/cmp-ctags',
+        {
+            'hrsh7th/nvim-cmp',
+            config = function()
+                require("plateena.plugin.nvim-cmp")
+            end
+        },
     }
 
     if pack.ensure_packer then
