@@ -1,4 +1,4 @@
-map = vim.api.nvim_set_keymap
+local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 local expr = { noremap = true, silent = true, expr = true }
 
@@ -22,7 +22,7 @@ map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
 
 -- Doble ESC or <C-s> to go to normal mode in terminal
-map("t", "<C-s>", "<C-\\><C-n>", opts)
+map("t", "<C-t>", "<C-\\><C-n>", opts)
 map("t", "<Esc><Esc>", "<C-\\><C-n>", opts)
 
 -- Resize windows with Shift+<arrow>
@@ -33,7 +33,7 @@ map("n", "<S-Right>", ":vertical resize +2<CR>", opts)
 
 -- Move line up and down with J/K
 map("x", "J", ":move '>+1<CR>gv-gv", opts)
--- map("x", "K", ":move '<-2<CR>gv-gv")
+map("x", "K", ":move '<-2<CR>gv-gv", opts)
 
 -- Don't yank when visual select paste
 map("v", "p", '"_dP', opts)
@@ -42,13 +42,14 @@ map("v", "p", '"_dP', opts)
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", expr)
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", expr)
 
-map('n', '<Leader>w', ':write<CR>',{})
-map('n', '<Leader>bd', ':bd<CR>',{})
-map('n', '<Leader>bda', ':bufdo bd<CR>',{})
-map('i', 'jk', '<Esc>',{})
-map('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>',{})
+map('i', 'jk', '<Esc>', {})
 
-map('n', 'YY', '"+p',{})
-map('n', 'XX', '"+y',{})
+map('n', 'YY', '"+p', {})
+map('n', 'XX', '"+y', {})
+
+vim.keymap.set('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>', { desc = "Resouce vim config file"})
+vim.keymap.set('n', '<Leader>w', ':write<CR>', { desc = "Write" })
+vim.keymap.set('n', '<Leader>bd', ':bd<CR>', { desc = "Buffer delete" })
+vim.keymap.set('n', '<Leader>bD', ':bufdo bd<CR>', { desc = "Delete all buffer" })
 
 -- vim: ts=2 sw=2 et

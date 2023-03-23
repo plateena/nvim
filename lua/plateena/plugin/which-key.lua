@@ -103,6 +103,14 @@ local mappings = {
     f = {
         name = "Telescope",
     },
+    g = {
+        name = "Git",
+        s = {"<cmd>Git<Cr>", "Git status"},
+        l = {"<cmd>Git log<Cr>", "Git log"},
+        v = {"<cmd>Gvdiffsplit<Cr>", "Git diff split"},
+        ["p2"] = {"<cmd>diffput /2<Cr>", "Diffput 2"},
+        ["p3"] = {"<cmd>diffput /3<Cr>", "Diffput 3"},
+    },
     o = {
         name = "Options",
         f = {
