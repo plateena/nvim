@@ -91,18 +91,8 @@ local opts = {
 }
 
 local mappings = {
-        ["["] = {
-        d = { "<cmd>lua vim.diagnostic.goto_prev()", "Lsp diagnostic previous issue" },
-    },
-        ["]"] = {
-        d = { "<cmd>lua vim.diagnostic.goto_next()", "Lsp diagnostic next issue" },
-    },
-        ["n"] = {
-        "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-        "Buffers",
-    },
-        ["q"] = { "<cmd>q!<CR>", "Quit" },
-        ["<Cr>"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+    ["q"] = { "<cmd>q!<CR>", "Quit" },
+    ["<Cr>"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
     v = {
         name = "Vsnip",
         o = { "<cmd>VsnipOpenEdit<cr>", "Vsnip open edit" },
@@ -112,22 +102,6 @@ local mappings = {
     },
     f = {
         name = "Telescope",
-        f = { "<Cmd>Telescope find_files<Cr>", "Find file" },
-        F = { "<Cmd>Telescope live_grep<Cr>", "Live grep" },
-        s = { "<Cmd>Telescope grep_string<Cr>", "Search string in working directory" },
-        g = { "<Cmd>Telescope git_files<Cr>", "Git file" },
-        m = { "<Cmd>Telescope marks<Cr>", "Mark" },
-        R = { "<Cmd>Telescope registers<Cr>", "Register" },
-        r = { "<Cmd>Telescope resume<Cr>", "Resume" },
-        h = { "<Cmd>Telescope oldfiles<Cr>", "Oldfiles" },
-        c = { "<Cmd>Telescope command_history<Cr>", "Command" },
-        S = { "<Cmd>Telescope search_history<Cr>", "Search" },
-        k = { "<Cmd>Telescope keymaps<Cr>", "Command" },
-        t = { "<Cmd>Telescope tags<Cr>", "Tags" },
-        j = { "<Cmd>Telescope jumplist<Cr>", "Tags" },
-        l = {
-            name = "LSP",
-        }
     },
     o = {
         name = "Options",

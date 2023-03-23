@@ -19,6 +19,20 @@ return require('packer').startup(function(use)
     "tpope/vim-fugitive",
 
     "folke/which-key.nvim",
+
+    'nvim-tree/nvim-web-devicons',
+    'onsails/lspkind.nvim',
+
+    -- autocomplete
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/vim-vsnip',
+    'jcha0713/cmp-tw2css',
+    'delphinus/cmp-ctags',
 }
 
 if pack.ensure_packer then
