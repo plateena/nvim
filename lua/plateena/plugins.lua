@@ -43,6 +43,16 @@ return require('packer').startup(function(use)
                 require("plateena.plugin.nvim-tree")
             end
         },
+        {
+            "lukas-reineke/indent-blankline.nvim",
+            config = function()
+                require("indent_blankline").setup {
+                    space_char_blankline = " ",
+                    show_current_context = true,
+                    show_current_context_start = true,
+                }
+            end
+        },
 
         -- lsp
         "williamboman/mason.nvim",
@@ -64,11 +74,12 @@ return require('packer').startup(function(use)
                 require("plateena.plugin.which-key")
             end
         },
-        {"gbprod/phpactor.nvim",
-        config = function ()
-            require("plateena.plugin.phpactor")
-        end
-    },
+        {
+            "gbprod/phpactor.nvim",
+            config = function()
+                require("plateena.plugin.phpactor")
+            end
+        },
 
         -- dependences icons
         'nvim-tree/nvim-web-devicons',

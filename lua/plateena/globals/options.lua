@@ -2,11 +2,13 @@ local opt = vim.opt
 local g = vim.g
 local o = vim.o
 
+vim.opt.list = true
+vim.opt.listchars:append "space:⋅"
+vim.opt.listchars:append "eol:↴"
+
 opt.autoindent = true
 opt.smartindent = true
 opt.wildmode="longest:list,full"
-opt.list = true
-opt.listchars:append "eol:↴"
 opt.conceallevel=1
 opt.concealcursor=""
 opt.foldmethod="expr"
