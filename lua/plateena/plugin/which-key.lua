@@ -90,36 +90,25 @@ local opts = {
     nowait = true,  -- use `nowait` when creating keymaps
 }
 
--- Global mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<space>ef', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<space>eq', vim.diagnostic.setloclist)
-
 local mappings = {
-    ["["] = {
+        ["["] = {
         d = { "<cmd>lua vim.diagnostic.goto_prev()", "Lsp diagnostic previous issue" },
     },
-    ["]"] = {
+        ["]"] = {
         d = { "<cmd>lua vim.diagnostic.goto_next()", "Lsp diagnostic next issue" },
     },
-    ["n"] = {
+        ["n"] = {
         "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
         "Buffers",
     },
-    ["q"] = { "<cmd>q!<CR>", "Quit" },
-    ["<Cr>"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+        ["q"] = { "<cmd>q!<CR>", "Quit" },
+        ["<Cr>"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
     v = {
         name = "Vsnip",
         o = { "<cmd>VsnipOpenEdit<cr>", "Vsnip open edit" },
     },
     l = {
         name = "LSP - language server protocol",
-        a = { "<Cmd>lua vim.lsp.buf.code_action()<Cr>", "Code action" },
-        f = { "<Cmd>lua vim.lsp.buf.format()<Cr>", "Format the document" },
-        q = { "<Cmd>lua vim.diagnostic.setloclist()<Cr>", "List diagnostic issue in quiclist" },
-        w = { "<Cmd>lua vim.diagnostic.open_float()<Cr>", "List diagnostic issue in float window" },
     },
     f = {
         name = "Telescope",
