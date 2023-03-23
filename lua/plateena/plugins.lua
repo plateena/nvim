@@ -7,6 +7,7 @@ return require('packer').startup(function(use)
         -- colorscheme
         "savq/melange-nvim",
         "Shatur/neovim-ayu",
+        { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' },
 
         -- search and navigation
         {
@@ -17,7 +18,22 @@ return require('packer').startup(function(use)
         },
 
         -- layout
-        'nvim-lualine/lualine.nvim',
+        --         {
+        --             'nvim-lualine/lualine.nvim',
+        --             requires = {
+        --                 'SmiteshP/nvim-navic',
+        --             }
+        --         },
+        {
+            'glepnir/galaxyline.nvim',
+            branch = 'main',
+            -- your statusline
+            config = function()
+                require('plateena.plugin.galaxyline')
+            end,
+            -- some optional icons
+            requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+        },
 
         -- lsp
         "williamboman/mason.nvim",
@@ -29,7 +45,7 @@ return require('packer').startup(function(use)
 
         "folke/which-key.nvim",
 
-        -- dependences icons 
+        -- dependences icons
         'nvim-tree/nvim-web-devicons',
         'onsails/lspkind.nvim',
 
