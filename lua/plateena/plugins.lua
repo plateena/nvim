@@ -163,6 +163,6 @@ return require('packer').startup(function(use)
     }
 
     if pack.ensure_packer then
-        require('packer').sync()
+        -- require('packer').sync()
     end
 end)
