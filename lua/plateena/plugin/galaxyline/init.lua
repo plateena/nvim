@@ -1,6 +1,7 @@
 local gl = require('galaxyline')
+local gls = gl.section
+local glt = gl.short_line_list
 local condition = require('galaxyline.condition')
-
 local component_separators = { left = '', right = '' }
 local section_separators = { left = '', right = '' }
 
@@ -58,7 +59,7 @@ local function mode_color(m)
 end
 
 -- disable for these file types
-gl.short_line_list = { 'startify', 'nerdtree', 'term', 'fugitive', 'NvimTree' }
+gl.short_line_list = { 'startify', 'nerdtree', 'term', 'NvimTree' }
 
 local i = 0
 
@@ -67,8 +68,9 @@ gl.section.left[i] = {
     ViModeIcon = {
         separator = '  ',
         separator_highlight = { colors.black, colors.bg_light },
-        highlight = { colors.white, colors.black },
-        provider = function() return "   " end,
+        highlight = { colors.red, colors.black, 'bold' },
+        -- provider = function() return "   " end,
+        provider = function() return "  \u{e7c5} " end,
     }
 }
 
@@ -134,11 +136,86 @@ gl.section.left[i] = {
         provider = 'DiffRemove',
         condition = condition.hide_in_width,
         highlight = { colors.red, colors.bg },
+        separator = component_separators.left,
+        separator_highlight = { colors.red, colors.bg },
     }
 }
 
+i = i + 1
+gl.section.left[i] = {
+    DiagnosticError = {
+        provider = 'DiagnosticError',
+        icon = '  ',
+        highlight = { colors.red, colors.bg }
+    }
+}
+
+i = i + 1
+gl.section.left[i] = {
+    Space = {
+        provider = function() return ' ' end,
+        highlight = { colors.section_bg, colors.bg }
+    }
+}
+
+i = i + 1
+gl.section.left[i] = {
+    DiagnosticWarn = {
+        provider = 'DiagnosticWarn',
+        icon = '  ',
+        highlight = { colors.yellow, colors.bg }
+    }
+}
+
+i = i + 1
+gl.section.left[i] = {
+    Space = {
+        provider = function() return ' ' end,
+        highlight = { colors.section_bg, colors.bg }
+    }
+}
+
+i = i + 1
+gl.section.left[i] = {
+    DiagnosticInfo = {
+        provider = 'DiagnosticInfo',
+        icon = '  ',
+        highlight = { colors.blue, colors.section_bg },
+        separator = ' ',
+        separator_highlight = { colors.section_bg, colors.bg }
+    }
+}
+-- end left section
+
+
+-- start right section
 
 i = 0
+i = i + 1
+gl.section.right[i] = {
+    ShowLspClient = {
+        provider = 'GetLspClient',
+        condition = function()
+            local tbl = { ['dashboard'] = true,[''] = true }
+            if tbl[vim.bo.filetype] then
+                return false
+            end
+            return true
+        end,
+        icon = '  LSP: ',
+        highlight = { colors.cyan, colors.bg, 'bold' }
+    }
+}
+
+i = i + 1
+gl.section.right[i] = {
+    Space = {
+        provider = function ()
+           return  ' ' 
+        end
+    }
+}
+
 i = i + 1
 gl.section.right[i] = {
     FileType = {
@@ -147,6 +224,8 @@ gl.section.right[i] = {
             local buf = require('galaxyline.provider_buffer')
             return string.lower(buf.get_buffer_filetype())
         end,
+        separator = component_separators.right .. ' ',
+        separator_highlight = { colors.cyan, colors.bg, 'bold'  }
     }
 }
 
@@ -158,6 +237,15 @@ gl.section.right[i] = {
         condition = condition.check_git_workspace,
         highlight = { colors.teal, colors.bg },
         provider = 'GitBranch',
+    }
+}
+
+i = i + 1
+gl.section.right[i] = {
+    CurrentPosition = {
+        provider = 'LineColumn',
+        separator = '  ' .. component_separators.right,
+        separator_highlight = { colors.green, colors.bg },
     }
 }
 
@@ -204,4 +292,14 @@ gl.section.right[i] = {
             return ' ' .. mode .. ' '
         end,
     }
+}
+
+-- end of right section
+
+-- short_line
+
+i = 0;
+i = i + 1
+gl.section.short_line_left[i] = {
+    GitBranch = {}
 }
