@@ -29,7 +29,7 @@ o.mouse="i"             -- Enable mouse on insert mode
 
 -- line number
 o.number = true         -- Show numbers on the left
-o.relativenumber = false -- Its better if you use motions like 10j or 5yk
+o.relativenumber = true -- Its better if you use motions like 10j or 5yk
 
 o.shiftwidth = 0        -- Number of spaces to use for each step of (auto)indent
 o.showmatch  = true     -- Highlights the matching parenthesis

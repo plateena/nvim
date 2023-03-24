@@ -41,6 +41,9 @@ table.insert(vimgrep_arguments, "!**/.git/*")
 -- IMPORTANT!: this is only a showcase of how you can set default options!
 telescope.setup {
     defaults = {
+        prompt_prefix = ' \u{e644} ',
+        selection_caret = " ❯ ",
+        entry_prefix = "   ",
         -- don't preview binary
         buffer_previewer_maker = new_maker,
         -- `hidden = true` is not supported in text grep commands.

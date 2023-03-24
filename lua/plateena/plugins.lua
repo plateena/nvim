@@ -37,7 +37,9 @@ return require('packer').startup(function(use)
                 require('plateena.plugin.galaxyline')
             end,
             -- some optional icons
-            requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+            requires = {
+                { 'nvim-tree/nvim-web-devicons', opt = true },
+            },
         },
         {
             'nvim-tree/nvim-tree.lua',
