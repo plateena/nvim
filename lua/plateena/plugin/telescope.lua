@@ -28,6 +28,10 @@ local new_maker = function(filepath, bufnr, opts)
     }):sync()
 end
 
+if not table.unpack then
+    table.unpack = unpack
+end
+
 -- Clone the default Telescope configuration
 local vimgrep_arguments =
 { table.unpack(telescopeConfig.values.vimgrep_arguments) }
@@ -41,9 +45,11 @@ table.insert(vimgrep_arguments, "!**/.git/*")
 -- IMPORTANT!: this is only a showcase of how you can set default options!
 telescope.setup {
     defaults = {
+        -- display in the telescope window
         prompt_prefix = ' \u{e644} ',
         selection_caret = " ❯ ",
         entry_prefix = "   ",
+
         -- don't preview binary
         buffer_previewer_maker = new_maker,
         -- `hidden = true` is not supported in text grep commands.
@@ -58,6 +64,8 @@ telescope.setup {
         find_files = {
             find_command = {
                 "fd",
+                "-t",
+                "f",
                 "--hidden",
                 "--exclude",
                 ".git",
