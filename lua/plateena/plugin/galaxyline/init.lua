@@ -243,8 +243,9 @@ gl.section.right[i] = {
 i = i + 1
 gl.section.right[i] = {
     CurrentPosition = {
+        icon = ' \u{f07b7} ',
         provider = 'LineColumn',
-        separator = '  ' .. component_separators.right,
+        separator = ' ' .. component_separators.right,
         separator_highlight = { colors.green, colors.bg },
     }
 }
@@ -301,5 +302,11 @@ gl.section.right[i] = {
 i = 0;
 i = i + 1
 gl.section.short_line_left[i] = {
-    GitBranch = {}
+    GitBranch = {
+        icon = ' ',
+        separator = '  ',
+        condition = condition.check_git_workspace,
+        highlight = { colors.teal, colors.bg },
+        provider = 'GitBranch',
+    }
 }

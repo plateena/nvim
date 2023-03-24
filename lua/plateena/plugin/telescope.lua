@@ -30,7 +30,7 @@ end
 
 -- Clone the default Telescope configuration
 local vimgrep_arguments =
-{ unpack(telescopeConfig.values.vimgrep_arguments) }
+{ table.unpack(telescopeConfig.values.vimgrep_arguments) }
 
 -- I want to search in hidden/dot files.
 table.insert(vimgrep_arguments, "--hidden")
@@ -127,6 +127,6 @@ vim.keymap.set('n', '<leader>fr', '<Cmd>Telescope resume<Cr>', { desc = "Resume"
 vim.keymap.set('n', '<leader>fh', '<Cmd>Telescope oldfiles<Cr>', { desc = "Oldfiles" })
 vim.keymap.set('n', '<leader>fc', '<Cmd>Telescope command_history<Cr>', { desc = "Command" })
 vim.keymap.set('n', '<leader>fS', '<Cmd>Telescope search_history<Cr>', { desc = "Search" })
-vim.keymap.set('n', '<leader>fk', '<Cmd>Telescope keymaps<Cr>', { desc = "Command" })
+vim.keymap.set('n', '<leader>fk', '<Cmd>Telescope keymaps<Cr>', { desc = "Keymaps" })
 vim.keymap.set('n', '<leader>ft', '<Cmd>Telescope tags<Cr>', { desc = "Tags" })
 vim.keymap.set('n', '<leader>fj', '<Cmd>Telescope jumplist<Cr>', { desc = "Tags" })
