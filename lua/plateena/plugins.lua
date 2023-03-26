@@ -135,7 +135,20 @@ return require("packer").startup(function(use)
 		{
 			"kylechui/nvim-surround",
 			config = function()
-				require("nvim-surround").setup()
+				require("nvim-surround").setup({
+					keymaps = {
+						insert = "<C-g>s",
+						insert_line = "<C-g>S",
+						normal = "sy",
+						normal_cur = "ssy",
+						normal_line = "Sy",
+						normal_cur_line = "SSy",
+						visual = "S",
+						visual_line = "gS",
+						delete = "sd",
+						change = "sc",
+					},
+				})
 			end,
 		},
 		"JoosepAlviste/nvim-ts-context-commentstring",
