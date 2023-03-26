@@ -8,6 +8,11 @@ return require("packer").startup(function(use)
 		"savq/melange-nvim",
 		"Shatur/neovim-ayu",
 		{ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
+		{
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			after = "nvim-treesitter",
+			requires = "nvim-treesitter/nvim-treesitter",
+		},
 
 		-- search and navigation
 		{ "nvim-telescope/telescope-ui-select.nvim" },
