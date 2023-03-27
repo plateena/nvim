@@ -1,4 +1,4 @@
-vim.cmd("let g:vsnip_snippet_dir='" .. vim.fn.stdpath("config") .. "lua/plateena/snippets'")
+vim.cmd("let g:vsnip_snippet_dir='" .. vim.fn.stdpath("config") .. "/lua/plateena/snippets'")
 
 local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
