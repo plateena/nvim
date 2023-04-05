@@ -67,7 +67,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, setOpts("Lsp type definition"))
         vim.keymap.set('n', '<space>lrn', vim.lsp.buf.rename, setOpts("Lsp rename"))
         vim.keymap.set('n', '<space>la', vim.lsp.buf.code_action, setOpts("Lsp code action"))
-        vim.keymap.set('n', 'lre', vim.lsp.buf.references, setOpts("Lsp reference"))
+        vim.keymap.set('n', '<space>lre', vim.lsp.buf.references, setOpts("Lsp reference"))
         vim.keymap.set('n', '<space>lf', function()
             vim.lsp.buf.format { async = true }
         end, setOpts("Lsp format"))

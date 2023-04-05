@@ -13,7 +13,7 @@ function _G.set_terminal_keymaps()
     vim.keymap.set('t', '<C-t>', [[<C-\><C-n>:ToggleTerm<Cr>]], { buffer = 0, desc = "Toggle terminal" })
 end
 
-vim.keymap.set('n', '<C-t>', ":ToggleTerm<CR>", { desc = "Toogle terminal" })
+vim.keymap.set('n', '<C-t>', ":ToggleTerm direction=float<CR>", { desc = "Toogle terminal" })
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
