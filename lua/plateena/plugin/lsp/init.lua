@@ -7,4 +7,6 @@ require("plateena.plugin.lsp.php")
 require("plateena.plugin.lsp.javascript")
 require("plateena.plugin.lsp.json")
 require("plateena.plugin.lsp.html")
+require("plateena.plugin.lsp.css")
+require("plateena.plugin.lsp.tailwind")
 
