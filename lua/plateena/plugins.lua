@@ -27,6 +27,8 @@ return require("packer").startup(function(use)
 			end,
 		},
 
+        { "mattn/emmet-vim" },
+
 		-- layout
 		--         {
 		--             'nvim-lualine/lualine.nvim',
