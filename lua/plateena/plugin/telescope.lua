@@ -1,3 +1,6 @@
+local actions = require("telescope.actions")
+local trouble = require("trouble.providers.telescope")
+
 local telescope = require("telescope")
 -- require("telescope").load_extension("noice")
 
@@ -138,3 +141,4 @@ vim.keymap.set('n', '<leader>fS', '<Cmd>Telescope search_history<Cr>', { desc = 
 vim.keymap.set('n', '<leader>fk', '<Cmd>Telescope keymaps<Cr>', { desc = "Keymaps" })
 vim.keymap.set('n', '<leader>ft', '<Cmd>Telescope tags<Cr>', { desc = "Tags" })
 vim.keymap.set('n', '<leader>fj', '<Cmd>Telescope jumplist<Cr>', { desc = "Tags" })
+vim.keymap.set('n', '<leader>fl', '<Cmd>Telescope current_buffer_fuzzy_find<Cr>', { desc = "Search word in current buffer" })

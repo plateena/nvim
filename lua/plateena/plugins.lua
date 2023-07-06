@@ -5,8 +5,12 @@ return require("packer").startup(function(use)
 		"wbthomason/packer.nvim",
 
 		-- colorscheme
+        "morhetz/gruvbox",
+        "tomasr/molokai",
+        'dracula/vim',
 		"savq/melange-nvim",
 		"Shatur/neovim-ayu",
+        { "EdenEast/nightfox.nvim" },
 		{ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
@@ -27,7 +31,17 @@ return require("packer").startup(function(use)
 			end,
 		},
 
+        { 'preservim/tagbar' },
         { "mattn/emmet-vim" },
+
+        {"folke/trouble.nvim",
+            dependencies = { "nvim-tree/nvim-web-devicons" },
+			config = function()
+				require("plateena.plugin.lsp.trouble")
+			end,
+        },
+
+        'ap/vim-css-color',
 
 		-- layout
 		--         {
