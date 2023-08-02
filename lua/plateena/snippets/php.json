@@ -1,6 +1,8 @@
 {
     "dd": {
-        "prefix": ["dd"],
+        "prefix": [
+            "dd"
+        ],
         "body": [
             "$LINE_COMMENT @TODO: <${VIM:system('git config --get user.name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> remove this debug code",
             "dd(${0});"
@@ -8,15 +10,46 @@
         "description": "Print dd command"
     },
     "dump": {
-        "prefix": ["dump"],
+        "prefix": [
+            "dump"
+        ],
         "body": [
             "$LINE_COMMENT @TODO: <${VIM:system('git config --get user.name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> remove this debug code",
             "dump(${0});"
         ],
         "description": "Print dump"
     },
+    "debug": {
+        "prefix": [
+            "debug"
+        ],
+        "body": [
+            "$LINE_COMMENT @DEBUG: <${VIM:system('git config --get user.name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> remove this debug code"
+        ],
+        "description": "Print debug"
+    },
+    "test": {
+        "prefix": [
+            "test"
+        ],
+        "body": [
+            "$LINE_COMMENT @TEST: <${VIM:system('git config --get user.name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> remove this debug code"
+        ],
+        "description": "Print test"
+    },
+    "error": {
+        "prefix": [
+            "error"
+        ],
+        "body": [
+            "$LINE_COMMENT @ERROR: <${VIM:system('git config --get user.name | xargs echo -n')}: $CURRENT_DATE-$CURRENT_MONTH-$CURRENT_YEAR> remove this debug code"
+        ],
+        "description": "Print error"
+    },
     "/**": {
-        "prefix": ["/**"],
+        "prefix": [
+            "/**"
+        ],
         "body": [
             "/**",
             "*",

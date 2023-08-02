@@ -1,66 +1,101 @@
 local pack = require("plateena.utils.packer-loaded")
 
 return require("packer").startup(function(use)
+
+-- colorscheme
+
+-- search and navigation
+-- or                            , branch = '0.1.x',
+-- your configuration comes here
+-- or leave it empty to use the default settings
+-- refer to the configuration section below
+
+-- layout
+--         {
+--             'nvim-lualine/lualine.nvim',
+--             requires = {
+--                 'SmiteshP/nvim-navic',
+--             }
+--         },
+-- your statusline
+-- some optional icons
+
+-- lsp
+
+-- git
+
+-- dependences icons
+
+-- autocomplete
+
+-- editing
+
+-- test
+-- {
+--     "klen/nvim-test",
+--     config = function()
+--         require('plateena.plugin.nvim-test')
+--     end
+-- },
+-- require('packer').sync()
 	use({
 		"wbthomason/packer.nvim",
-
-		-- colorscheme
-        "morhetz/gruvbox",
-        "tomasr/molokai",
-        'dracula/vim',
+		"morhetz/gruvbox",
+		"tomasr/molokai",
+		"dracula/vim",
 		"savq/melange-nvim",
 		"Shatur/neovim-ayu",
-        { "EdenEast/nightfox.nvim" },
-		{ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
+		{ "EdenEast/nightfox.nvim" },
+		{
+			"nvim-treesitter/nvim-treesitter",
+			run = ":TSUpdate",
+		},
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			after = "nvim-treesitter",
 			requires = "nvim-treesitter/nvim-treesitter",
 		},
-
-		-- search and navigation
 		{ "nvim-telescope/telescope-ui-select.nvim" },
-		{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+		{
+			"nvim-telescope/telescope-fzf-native.nvim",
+			run = "make",
+		},
 		{
 			"nvim-telescope/telescope.nvim",
 			tag = "0.1.1",
-			-- or                            , branch = '0.1.x',
 			requires = { { "nvim-lua/plenary.nvim" } },
 			config = function()
 				require("plateena.plugin.telescope")
 			end,
 		},
-
-        { 'preservim/tagbar' },
-        { "mattn/emmet-vim" },
-
-        {"folke/trouble.nvim",
-            dependencies = { "nvim-tree/nvim-web-devicons" },
+		{ "preservim/tagbar" },
+		{ "mattn/emmet-vim" },
+		{
+			"folke/trouble.nvim",
+			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
 				require("plateena.plugin.lsp.trouble")
 			end,
-        },
-
-        'ap/vim-css-color',
-
-		-- layout
-		--         {
-		--             'nvim-lualine/lualine.nvim',
-		--             requires = {
-		--                 'SmiteshP/nvim-navic',
-		--             }
-		--         },
+		},
+		{
+			"folke/todo-comments.nvim",
+			dependencies = { "nvim-lua/plenary.nvim" },
+			opts = {},
+			config = function()
+				require("plateena.plugin.todo-comments")
+			end,
+		},
+		"ap/vim-css-color",
 		{
 			"glepnir/galaxyline.nvim",
 			branch = "main",
-			-- your statusline
 			config = function()
 				require("plateena.plugin.galaxyline")
 			end,
-			-- some optional icons
-			requires = {
-				{ "nvim-tree/nvim-web-devicons", opt = true },
-			},
+			requires = { {
+				"nvim-tree/nvim-web-devicons",
+				opt = true,
+			} },
 		},
 		{
 			"nvim-tree/nvim-tree.lua",
@@ -84,8 +119,6 @@ return require("packer").startup(function(use)
 				require("pretty-fold").setup({})
 			end,
 		},
-
-		-- lsp
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
 		"neovim/nvim-lspconfig",
@@ -95,8 +128,6 @@ return require("packer").startup(function(use)
 				require("plateena.plugin.lsp.null_ls")
 			end,
 		},
-
-		-- git
 		"tpope/vim-fugitive",
 		{
 			"lewis6991/gitsigns.nvim",
@@ -104,7 +135,6 @@ return require("packer").startup(function(use)
 				require("plateena.plugin.gitsigns")
 			end,
 		},
-
 		{
 			"folke/which-key.nvim",
 			config = function()
@@ -117,12 +147,8 @@ return require("packer").startup(function(use)
 				require("plateena.plugin.phpactor")
 			end,
 		},
-
-		-- dependences icons
 		"nvim-tree/nvim-web-devicons",
 		"onsails/lspkind.nvim",
-
-		-- autocomplete
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
@@ -146,8 +172,6 @@ return require("packer").startup(function(use)
 				require("plateena.plugin.nvim-cmp")
 			end,
 		},
-
-		-- editing
 		{
 			"kylechui/nvim-surround",
 			config = function()
@@ -172,20 +196,13 @@ return require("packer").startup(function(use)
 			"numToStr/Comment.nvim",
 			config = function()
 				require("Comment").setup({
-					pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+					pre_hook = require(
+						"ts_context_commentstring.integrations.comment_nvim"
+					).create_pre_hook(),
 				})
 			end,
 		},
 		"lambdalisue/suda.vim",
-
-		-- test
-		-- {
-		--     "klen/nvim-test",
-		--     config = function()
-		--         require('plateena.plugin.nvim-test')
-		--     end
-		-- },
-
 		"tpope/vim-dispatch",
 		{
 			"nyngwang/NeoZoom.lua",
@@ -202,7 +219,5 @@ return require("packer").startup(function(use)
 		},
 	})
 
-	if pack.ensure_packer then
-		-- require('packer').sync()
-	end
+	if pack.ensure_packer then  end
 end)
