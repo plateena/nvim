@@ -12,7 +12,7 @@ opt.wildmode="longest:list,full"
 opt.conceallevel=1
 opt.concealcursor=""
 opt.foldmethod="expr"
-opt.scrolloff = 12
+opt.scrolloff = 4
 
 o.colorcolumn = '80'
 o.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
