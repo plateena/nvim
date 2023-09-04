@@ -121,11 +121,16 @@ return require("packer").startup(function(use)
 		},
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
-		"neovim/nvim-lspconfig",
+        {
+            "neovim/nvim-lspconfig",
+            config = function() 
+                require("plateena.plugin.lsp")
+            end,
+        },
 		{
 			"jose-elias-alvarez/null-ls.nvim",
 			config = function()
-				require("plateena.plugin.lsp.null_ls")
+				-- require("plateena.plugin.lsp.null_ls")
 			end,
 		},
 		"tpope/vim-fugitive",
