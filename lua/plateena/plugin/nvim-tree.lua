@@ -58,13 +58,13 @@ require("nvim-tree").setup({
         number = true,
         relativenumber = true,
         signcolumn = "yes",
-        mappings = {
-            list = {
+        -- mappings = {
+        --     list = {
                 -- { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
                 -- { key = "h", cb = tree_cb "close_node" },
                 -- { key = "v", cb = tree_cb "vsplit" },
-            },
-        },
+        --     },
+        -- },
     },
     filters = {
         dotfiles = false,
