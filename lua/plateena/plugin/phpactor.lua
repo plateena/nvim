@@ -7,7 +7,7 @@ require("phpactor").setup({
     install = {
         path = vim.fn.stdpath("data") .. "/lsp_servers/",
         branch = "master",
-        bin = vim.fn.stdpath("data") .. "/lsp_servers/phpactor/bin/phpactor",
+        bin = "phpactor",
         php_bin = "php",
         composer_bin = "composer",
         git_bin = "git",

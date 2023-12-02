@@ -6,6 +6,10 @@ local telescope = require("telescope")
 
 telescope.load_extension("fzf")
 telescope.load_extension("ui-select")
+telescope.load_extension("live_grep_args")
+
+local lga_actions = require("telescope-live-grep-args.actions")
+
 local telescopeConfig = require("telescope.config")
 local previewers = require("telescope.previewers")
 local Job = require("plenary.job")
@@ -84,6 +88,20 @@ telescope.setup {
         buffers = { sort_lastused = true },
     },
     extensions = {
+        live_grep_args = {
+            auto_quoting = true, -- enable/disable auto-quoting
+            -- define mappings, e.g.
+            mappings = {   -- extend mappings
+                i = {
+                    ["<C-k>"] = lga_actions.quote_prompt(),
+                    ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                },
+            },
+            -- ... also accepts theme settings, for example:
+            -- theme = "dropdown", -- use dropdown theme
+            -- theme = { }, -- use own theme spec
+            -- layout_config = { mirror=true }, -- mirror preview pane
+        },
         fzf = {
             fuzzy = true,
             override_generic_sorter = true,
@@ -129,7 +147,9 @@ telescope.setup {
 
 vim.keymap.set('n', '<leader>n', '<Cmd>Telescope buffers<Cr>', { desc = "Find buffers" })
 vim.keymap.set('n', '<leader>ff', '<Cmd>Telescope find_files<Cr>', { desc = "Find file" })
-vim.keymap.set('n', '<leader>fF', '<Cmd>Telescope live_grep<Cr>', { desc = "Live grep" })
+-- vim.keymap.set('n', '<leader>fF', '<Cmd>Telescope live_grep<Cr>', { desc = "Live grep" })
+vim.keymap.set('n', '<leader>fF', '<Cmd>lua require("telescope").extensions.live_grep_args.live_grep_args()<Cr>',
+    { desc = "Live grep" })
 vim.keymap.set('n', '<leader>fs', '<Cmd>Telescope grep_string<Cr>', { desc = "Search string in working directory" })
 vim.keymap.set('n', '<leader>fg', '<Cmd>Telescope git_files<Cr>', { desc = "Git file" })
 vim.keymap.set('n', '<leader>fm', '<Cmd>Telescope marks<Cr>', { desc = "Mark" })
@@ -141,4 +161,5 @@ vim.keymap.set('n', '<leader>fS', '<Cmd>Telescope search_history<Cr>', { desc = 
 vim.keymap.set('n', '<leader>fk', '<Cmd>Telescope keymaps<Cr>', { desc = "Keymaps" })
 vim.keymap.set('n', '<leader>ft', '<Cmd>Telescope tags<Cr>', { desc = "Tags" })
 vim.keymap.set('n', '<leader>fj', '<Cmd>Telescope jumplist<Cr>', { desc = "Tags" })
-vim.keymap.set('n', '<leader>fl', '<Cmd>Telescope current_buffer_fuzzy_find<Cr>', { desc = "Search word in current buffer" })
+vim.keymap.set('n', '<leader>fl', '<Cmd>Telescope current_buffer_fuzzy_find<Cr>',
+    { desc = "Search word in current buffer" })
