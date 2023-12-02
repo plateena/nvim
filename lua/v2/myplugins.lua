@@ -23,6 +23,8 @@ packer.startup(function(use)
         "neovim/nvim-lspconfig", -- Language Server Protocol configurations
     }
 
+    use { "jose-elias-alvarez/null-ls.nvim" }
+
     -- UI and File Management
     use_with_dependencies("nvim-telescope/telescope.nvim", {
         "nvim-lua/plenary.nvim",

@@ -1,6 +1,6 @@
 -- Import necessary modules
 local lspconfig = require('lspconfig')
-local cmp_lsp_capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local cmp_lsp_capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Diagnostics Handling
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -17,19 +17,19 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 local border_style = "single"
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     vim.lsp.handlers.hover, {
-        border = border_style
+        border = border_style  -- Use the specified border style
     }
 )
 
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
     vim.lsp.handlers.signature_help, {
-        border = border_style
+        border = border_style  -- Use the specified border style
     }
 )
 
 -- Diagnostics Float Window Configuration
 vim.diagnostic.config {
-    float = { border = border_style }
+    float = { border = border_style }  -- Use the specified border style
 }
 
 -- Custom Diagnostic Signs
@@ -40,17 +40,17 @@ for type, icon in pairs(signs) do
 end
 
 -- Global Mappings
-vim.api.nvim_set_keymap('n', '<leader>lo', vim.diagnostic.open_float, { noremap = true, silent = true, desc = "Diagnostic open float" })
-vim.api.nvim_set_keymap('n', '<leader>d', vim.diagnostic.goto_prev, { noremap = true, silent = true, desc = "Diagnostic previous issue" })
-vim.api.nvim_set_keymap('n', '<leader>D', vim.diagnostic.goto_next, { noremap = true, silent = true, desc = "Diagnostic next issue" })
-vim.api.nvim_set_keymap('n', '<leader>lq', vim.diagnostic.setloclist, { noremap = true, silent = true, desc = "Diagnostic quickfix" })
+vim.keymap.set('n', '<leader>lo', vim.diagnostic.open_float, { desc = "Diagnostic open float" })
+vim.keymap.set('n', '<leader>d', vim.diagnostic.goto_prev, { desc = "Diagnostic previous issue" })
+vim.keymap.set('n', '<leader>D', vim.diagnostic.goto_next, { desc = "Diagnostic next issue" })
+vim.keymap.set('n', '<leader>lq', vim.diagnostic.setloclist, { desc = "Diagnostic quickfix" })
 
 -- LSP Attach Autocommand
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
         -- Buffer-local mappings
-        local function setOpts(desc)
+        local function set_opts(desc)
             return {
                 desc = desc,
                 buffer = ev.buf,
@@ -58,27 +58,31 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end
 
         -- Buffer-local Mappings
-        vim.api.nvim_set_keymap('n', 'gD', vim.lsp.buf.declaration, setOpts("Lsp declaration"))
-        vim.api.nvim_set_keymap('n', 'gd', vim.lsp.buf.definition, setOpts("Lsp definition"))
-        vim.api.nvim_set_keymap('n', 'K', vim.lsp.buf.hover, setOpts("Lsp Hover"))
-        vim.api.nvim_set_keymap('n', 'gi', vim.lsp.buf.implementation, setOpts("Lsp implementation"))
-        vim.api.nvim_set_keymap('n', '<C-k>', vim.lsp.buf.signature_help, setOpts("Lsp signature help"))
-        vim.api.nvim_set_keymap('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, setOpts("Lsp add workspace folder"))
-        vim.api.nvim_set_keymap('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, setOpts("Lsp remove workspace folder"))
-        vim.api.nvim_set_keymap('n', '<leader>wl', function()
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, set_opts("Lsp declaration"))
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, set_opts("Lsp definition"))
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, set_opts("Lsp Hover"))
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, set_opts("Lsp implementation"))
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, set_opts("Lsp signature help"))
+        vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, set_opts("Lsp add workspace folder"))
+        vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, set_opts("Lsp remove workspace folder"))
+        vim.keymap.set('n', '<leader>wl', function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, setOpts("Lsp list workspace folder"))
-        vim.api.nvim_set_keymap('n', '<leader>D', vim.lsp.buf.type_definition, setOpts("Lsp type definition"))
-        vim.api.nvim_set_keymap('n', '<leader>lrn', vim.lsp.buf.rename, setOpts("Lsp rename"))
-        vim.api.nvim_set_keymap('n', '<leader>la', vim.lsp.buf.code_action, setOpts("Lsp code action"))
-        vim.api.nvim_set_keymap('n', '<leader>lre', vim.lsp.buf.references, setOpts("Lsp reference"))
-        vim.api.nvim_set_keymap('n', '<leader>lf', function()
+        end, set_opts("Lsp list workspace folder"))
+        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, set_opts("Lsp type definition"))
+        vim.keymap.set('n', '<leader>lrn', vim.lsp.buf.rename, set_opts("Lsp rename"))
+        vim.keymap.set('n', '<leader>la', vim.lsp.buf.code_action, set_opts("Lsp code action"))
+        vim.keymap.set('n', '<leader>lre', vim.lsp.buf.references, set_opts("Lsp reference"))
+        vim.keymap.set('n', '<leader>lf', function()
             vim.lsp.buf.format { async = true }
-        end, setOpts("Lsp format"))
+        end, set_opts("Lsp format"))
     end,
 })
 
 -- Additional Language Server Configuration (e.g., lua language server)
 lspconfig.lua_ls.setup({
     capabilities = cmp_lsp_capabilities,
+    on_attach = function(client, bufnr)
+        -- Your custom on_attach function, if needed
+        print("LSP server attached for Lua")
+    end,
 })

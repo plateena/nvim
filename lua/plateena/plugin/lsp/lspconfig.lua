@@ -75,7 +75,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-require("plateena.plugin.lsp.null_ls")
+-- require("plateena.plugin.lsp.null_ls")
 require("plateena.plugin.lsp.mason")
 require("plateena.plugin.lsp.lua")
 require("plateena.plugin.lsp.emmet_ls")
