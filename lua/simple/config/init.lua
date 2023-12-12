@@ -1,0 +1,5 @@
+-- require(VG.root_dir..'.config.nvim-treesitter')
+-- require(VG.root_dir..'.config.lualine')
+-- require(VG.root_dir..'.config.nvim-tree')
+-- require(VG.root_dir..'.config.telescope')
+-- require(VG.root_dir..'.config.nvim-cmp')
