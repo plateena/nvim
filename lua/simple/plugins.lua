@@ -86,7 +86,12 @@ require("lazy").setup({
             require(VG.config_dir .. 'nvim-tree')
         end
     },
-    "lukas-reineke/indent-blankline.nvim",
+    { 
+        "lukas-reineke/indent-blankline.nvim",
+        config = function()
+            require(VG.config_dir .. 'indent-blankline')
+        end
+    },
     "tpope/vim-fugitive",
     "delphinus/cmp-ctags",
 
