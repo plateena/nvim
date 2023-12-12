@@ -35,7 +35,6 @@ require("lazy").setup({
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
-    "hrsh7th/cmp-vsnip",
     {
         "hrsh7th/vim-vsnip",
         dependencies = {
@@ -43,14 +42,15 @@ require("lazy").setup({
             "rafamadriz/friendly-snippets",
         },
         config = function()
-            -- require("simple.plugin.vsnip")
-        end,
+            require(VG.config_dir .. 'vsnip')
+        end
     },
     "jcha0713/cmp-tw2css",
     "delphinus/cmp-ctags",
-    { 
+    {
         'hrsh7th/nvim-cmp',
-        config = function() 
+        dependencies = { 'onsails/lspkind.nvim' },
+        config = function()
             require(VG.config_dir .. 'nvim-cmp')
         end
     },
@@ -65,7 +65,7 @@ require("lazy").setup({
     {
         'nvim-lualine/lualine.nvim',
         config = function()
-            require(VG.root_dir.. '.config.lualine')
+            require(VG.root_dir .. '.config.lualine')
         end
     },
     'nvim-tree/nvim-web-devicons',
@@ -73,20 +73,20 @@ require("lazy").setup({
     {
         "nvim-telescope/telescope.nvim",
         tag = "0.1.4",
-        dependencies = { { "nvim-lua/plenary.nvim"} },
-        config = function() 
+        dependencies = { { "nvim-lua/plenary.nvim" } },
+        config = function()
             require(VG.config_dir .. 'telescope')
         end
     },
     { "preservim/tagbar" },
     { "mattn/emmet-vim" },
     {
-        "nvim-tree/nvim-tree.lua", 
+        "nvim-tree/nvim-tree.lua",
         config = function()
             require(VG.config_dir .. 'nvim-tree')
         end
     },
-    { 
+    {
         "lukas-reineke/indent-blankline.nvim",
         config = function()
             require(VG.config_dir .. 'indent-blankline')
@@ -116,7 +116,7 @@ require("lazy").setup({
     'MunifTanjim/prettier.nvim',
     {
         "folke/which-key.nvim",
-        config = function() 
+        config = function()
             require(VG.root_dir .. '.config.which-key')
         end
     },

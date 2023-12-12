@@ -16,17 +16,20 @@ telescope.setup {
 --             },
 --         },
     },
-    -- pickers = {
-        -- find_files = {
-            -- find_command = {
-            --     'fd', '-t', 'f', '--hidden', '--exclude', '.git',
-            --     '--exclude', 'node_modules', '--no-ignore',
-            --     '--ignore-file', '.teleignore', '--strip-cwd-prefix',
-            -- },
---             sort_lastused = true,
-        -- },
---         buffers = { sort_lastused = true },
-    -- },
+    pickers = {
+        find_files = {
+            find_command = {
+                'fd', '-t', 'f', '--hidden', '--exclude', '.git',
+                '--exclude', 'node_modules', '--no-ignore',
+                '--ignore-file', '.teleignore', '--strip-cwd-prefix',
+            },
+            sort_lastused = true,
+        },
+        buffers = {
+            sort_lastused = true,
+            ignore_current_buffer = true
+        },
+    },
 --     extensions = {
 --         fzf = {
 --             fuzzy = true,
