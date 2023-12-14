@@ -65,7 +65,7 @@ require("lazy").setup({
     {
         'nvim-lualine/lualine.nvim',
         config = function()
-            require(VG.root_dir .. '.config.lualine')
+            require(VG.root_dir .. 'config.lualine')
         end
     },
     'nvim-tree/nvim-web-devicons',
@@ -117,7 +117,7 @@ require("lazy").setup({
     {
         "folke/which-key.nvim",
         config = function()
-            require(VG.root_dir .. '.config.which-key')
+            require(VG.root_dir .. 'config.which-key')
         end
     },
 

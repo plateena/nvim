@@ -10,6 +10,6 @@ local config_folder = vim.fn.fnamemodify(current_path, ":t")
 VG = {}
 
 VG.root_dir = config_folder .. '.'
-VG.config_dir = VG.root_dir .. '.config.'
+VG.config_dir = VG.root_dir .. 'config.'
 
 require(config_folder .. '/plugins')
