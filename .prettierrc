@@ -1,0 +1,9 @@
+{
+    "plugins": [
+        "@prettier/plugin-php"
+    ],
+    "tabWidth": 4,
+    "printWidth": 120,
+    "phpVersion": "8.0",
+    "braceStyle": "per-cs"
+}

@@ -1,0 +1,20 @@
+-- local group = vim.api.nvim_create_augroup('CheckPhpStyle', { clear = true })
+-- vim.api.nvim_create_autocmd({ "BufWrite", "BufEnter" }, {
+--     pattern = { "*.php" },
+--     callback = function(ev)
+--         local path = vim.fn.getcwd() .. "/"
+--         local file_found = assert(io.open(path .. ".prettierrc", "rb"))
+--         local txt = file_found:read("*all")
+--         local obj = vim.json.decode(txt)
+--         vim.print(obj.tabWidth)
+--         file_found:close()
+--         -- local rs = vim.api.nvim_exec("!prettier -w " .. ev.file, true)
+--         -- -- print the command result
+--         -- vim.print(rs)
+--         -- rs = vim.api.nvim_exec("!phpcbf " .. ev.file, true)
+--         -- -- print the command result
+--         -- vim.print(rs)
+--         -- vim.api.nvim_exec("e!", true)
+--     end,
+--     group = group
+-- })
