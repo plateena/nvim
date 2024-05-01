@@ -13,3 +13,9 @@ VG.root_dir = config_folder .. '.'
 VG.config_dir = VG.root_dir .. 'config.'
 
 require(config_folder .. '/plugins')
+
+function PrintAllVimGValues()
+    for key, value in pairs(vim.g) do
+        print(key, value)
+    end
+end

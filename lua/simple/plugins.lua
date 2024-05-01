@@ -121,4 +121,40 @@ require("lazy").setup({
         end
     },
 
+    -- {
+    --     "github/copilot.vim",
+    --     config = function()
+    --         require(VG.root_dir ..'config.copilot')
+    --     end
+    -- },
+
+    {
+        -- "zbirenbaum/copilot.lua",
+        -- cmd = "Copilot",
+        -- event = "InsertEnter",
+        -- config = function()
+        --     require("copilot").setup({
+        --         suggestion = { enabled = false },
+        --         panel = { enabled = true, auto_refresh = true },
+        --         filetypes = {
+        --             ["*"] = false,
+        --             javascript = true,
+        --             typescript = true,
+        --             php = true,
+        --             lua = true
+        --         },
+        --     })
+        -- end,
+    },
+
+    {
+        "mhinz/vim-startify"
+    },
+
+    -- {
+    --     "zbirenbaum/copilot-cmp",
+    --     config = function()
+    --         require("copilot_cmp").setup()
+    --     end
+    -- },
 })

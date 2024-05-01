@@ -29,6 +29,7 @@ require("lspkind").init({
         Event = "",
         Operator = "",
         TypeParameter = "",
+        Copilot = "",
     },
 })
 
@@ -63,6 +64,9 @@ end
 -- Configure cmp for auto-completion
 local cmp = require 'cmp'
 cmp.setup({
+    completion = {
+        -- autocomplete = true,
+    },
     window = {
         completion = {
             border = border("FloatBorder"),                                      -- Custom border for completion window
@@ -125,6 +129,7 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
+        -- { name = 'copilot' },
         { name = 'vsnip' },
         { name = 'nvim_lsp' },
         { name = "path" },
@@ -133,7 +138,10 @@ cmp.setup({
         { name = "rg" },
     }, {
         { name = 'buffer' },
-    })
+    }),
+    experimental = {
+        ghost_text = false
+    }
 })
 
 
