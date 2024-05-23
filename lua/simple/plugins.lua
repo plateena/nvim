@@ -116,6 +116,11 @@ require("lazy").setup({
     'MunifTanjim/prettier.nvim',
     {
         "folke/which-key.nvim",
+        event = "VeryLazy",
+        init = function ()
+            vim.opt.timeout = true
+            vim.opt.timeoutlen = 500
+        end, 
         config = function()
             require(VG.root_dir .. 'config.which-key')
         end

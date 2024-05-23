@@ -1,7 +1,7 @@
 
 -- Function to set the colorscheme and adjust some highlight groups
 local function setColorscheme(color)
-  color = color or 'gruvbox'
+  color = color or 'tokyonight-storm'
 
   local colorscheme_exists = vim.fn.exists('&background')
   if colorscheme_exists == 0 then

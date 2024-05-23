@@ -93,6 +93,9 @@ local mappings = {
         ["p2"] = { "<cmd>diffput /2<Cr>", "Diffput 2" },
         ["p3"] = { "<cmd>diffput /3<Cr>", "Diffput 3" },
     },
+    m = {
+        name = "Formatting"
+    },
     o = { name = "Options" },
 }
 

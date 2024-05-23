@@ -5,6 +5,7 @@ local o = vim.o
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 vim.opt.listchars:append "eol:↴"
+-- vim.opt.clipboard:append('unnamedplus')
 
 opt.autoindent = true
 opt.smartindent = true
@@ -20,6 +21,7 @@ o.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)
 o.encoding = "utf-8"    -- Just in case
 o.hidden = true         -- Allow multple buffers
 o.history = 5000
+
 
 o.hlsearch = false       -- Highlight search results
 o.incsearch = true
