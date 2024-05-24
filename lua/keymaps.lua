@@ -21,7 +21,7 @@ map("n", "N", "Nzzzv", opts)
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
 
--- Doble ESC or <C-s> to go to normal mode in terminal
+-- Toggle ESC or <C-s> to go to normal mode in terminal
 map("t", "<C-t>", "<C-\\><C-n>", opts)
 map("t", "<Esc><Esc>", "<C-\\><C-n>", opts)
 
@@ -47,7 +47,7 @@ map('i', 'jk', '<Esc>', {})
 map('n', 'YY', '"+p', {})
 map('n', 'XX', '"+y', {})
 
-vim.keymap.set('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>', { desc = "Resouce vim config file"})
+vim.keymap.set('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>', { desc = "Resource vim config file"})
 vim.keymap.set('n', '<Leader>w', ':write<CR>', { desc = "Write" })
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { desc = "Write" })
 vim.keymap.set('n', '<Leader>bd', ':bd<CR>', { desc = "Buffer delete" })

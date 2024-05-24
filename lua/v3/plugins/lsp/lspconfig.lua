@@ -10,7 +10,6 @@ return {
         local lspconfig = require("lspconfig")
         local mason_lspconfig = require("mason-lspconfig")
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
-        local keymap = vim.keymap
 
         local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -43,8 +42,8 @@ return {
         vim.diagnostic.config({
             float = { border = _border },
         })
-
-        local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+        -- 
+        local signs = { Error = "", Warn = " ", Hint = "", Info = " " }
         for type, icon in pairs(signs) do
             local hl = "DiagnosticSign" .. type
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })

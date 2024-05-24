@@ -86,7 +86,7 @@ return {
     end,
     keys = {
     
-        {"<leader>et","<Cmd>NvimTreeToggle<Cr>", mode = "n", desc = "Nvim tree toggle" },
+        {"<leader>ee","<Cmd>NvimTreeToggle<Cr>", mode = "n", desc = "Nvim tree toggle" },
         {"<leader>ef","<Cmd>NvimTreeFindFileToggle<Cr>", mode = "n", desc = "Nvim tree find file toggle" }
     }
 

@@ -104,6 +104,11 @@ return {
         local mappings = {
             ["q"] = { "<cmd>q!<CR>", "Quit" },
             ["<Cr>"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+            e = {
+                name = "NvimTree",
+                e = {"<Cmd>NvimTreeToggle<Cr>", "Nvim tree toggle" },
+                f = {"<Cmd>NvimTreeFindFileToggle<Cr>", "Nvim tree find file toggle" },
+            },
             v = {
                 name = "Vsnip",
                 o = { "<cmd>VsnipOpenEdit<cr>", "Vsnip open edit" },

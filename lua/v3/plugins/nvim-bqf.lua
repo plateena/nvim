@@ -4,17 +4,14 @@ return {
         {
             "junegunn/fzf",
             build = function()
-                vim.fn['fzf#install']()
-
-            end
-        }
+                vim.fn["fzf#install"]()
+            end,
+        },
     },
     event = "VeryLazy",
-    ft = {"qf", "lf" },
-    opts = {
-    },
-    config = function() 
-        require("bqf").setup({
-        })
+    ft = { "qf", "lf" },
+    opts = {},
+    config = function()
+        require("bqf").setup({})
     end,
 }
