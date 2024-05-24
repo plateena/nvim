@@ -2,6 +2,11 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile"},
     main= "ibl",
+    opts = {
+        indent = {
+            char = "",
+        }
+    },
     config = function()
         local highlight = {
             "RainbowRed",
@@ -27,11 +32,11 @@ return {
         end)
 
         require("ibl").setup({
-            indent = { highlight = highlight },
-            scope = { enabled = true },
-            -- space_char_blankline = " ",
-            -- show_current_context = true,
-            -- show_current_context_start = true,
+            -- 
+            indent = { highlight = highlight, char = "" },
+            scope = { highlight = highlight,  enabled = true },
         })
+
+        hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end
 }

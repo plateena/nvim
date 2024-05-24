@@ -48,7 +48,8 @@ o.softtabstop = 4       -- On insert use 4 spaces for tab
 o.tabstop = 4           -- Tab size of 4 spaces
 o.shiftwidth = 4           -- Tab size of 4 spaces
 
-o.termguicolors = true  -- Required for some themes
+vim.opt.termguicolors = true  -- Required for some themes
+vim.opt.background = "dark"
 
 o.updatetime = 750      -- I have a modern machine. No need to wait that long
 -- vim.o.splitright = true     -- New vert splits are on the right

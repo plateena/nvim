@@ -1,46 +1,46 @@
 return {
-    'hrsh7th/nvim-cmp',
+    "hrsh7th/nvim-cmp",
     dependencies = {
-        'onsails/lspkind.nvim',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'hrsh7th/cmp-cmdline',
-    "jcha0713/cmp-tw2css",
-    "delphinus/cmp-ctags",
-    "delphinus/cmp-ctags",
+        "onsails/lspkind.nvim",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "jcha0713/cmp-tw2css",
+        "delphinus/cmp-ctags",
+        "delphinus/cmp-ctags",
     },
     config = function()
         -- Initialize LSPKind for rich completion icons
         require("lspkind").init({
             mode = "symbol_text", -- Show only symbol annotations
-            preset = "codicons",  -- Use Codicons for symbol icons
+            preset = "codicons", -- Use Codicons for symbol icons
             symbol_map = {
                 -- Override default symbols with Codicons
-                Text = "",
-                Method = "",
-                Function = "",
+                Text = "󰊄", -- 󰊄
+                Method = "", -- 
+                Function = "󰊕", -- 󰊕
                 Constructor = "",
-                Field = "ﰠ",
-                Variable = "",
-                Class = "ﴯ",
+                Field = "", -- ﰠ
+                Variable = "", -- 
+                Class = "", -- ﴯ
                 Interface = "",
                 Module = "",
-                Property = "ﰠ",
+                Property = "", -- ﰠ
                 Unit = "塞",
-                Value = "",
+                Value = "󰫧", -- 󰫧
                 Enum = "",
                 Keyword = "",
                 Snippet = "",
-                Color = "",
-                File = "",
+                Color = "", -- 
+                File = "", -- 
                 Reference = "",
-                Folder = "",
+                Folder = "", -- 
                 EnumMember = "",
                 Constant = "",
                 Struct = "פּ",
                 Event = "",
-                Operator = "",
+                Operator = "", -- 
                 TypeParameter = "",
                 Copilot = "",
             },
@@ -49,7 +49,6 @@ return {
         if not table.unpack then
             table.unpack = unpack
         end
-
 
         -- Function to define custom borders for completion and documentation windows
         local function border(hl_name)
@@ -75,14 +74,14 @@ return {
         end
 
         -- Configure cmp for auto-completion
-        local cmp = require 'cmp'
+        local cmp = require("cmp")
         cmp.setup({
             completion = {
                 -- autocomplete = true,
             },
             window = {
                 completion = {
-                    border = border("FloatBorder"),                                      -- Custom border for completion window
+                    border = border("FloatBorder"), -- Custom border for completion window
                     winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None", -- Highlight configuration
                 },
                 documentation = {
@@ -113,11 +112,13 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                ['<A-l>'] = cmp.mapping.complete(),
-                ['<C-e>'] = cmp.mapping.abort(),
-                ['<CR>'] = cmp.mapping.confirm({ select = false }),
+                ["<C-j>"] = cmp.mapping.select_next_item(),
+                ["<C-k>"] = cmp.mapping.select_prev_item(),
+                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<A-l>"] = cmp.mapping.complete(),
+                ["<C-e>"] = cmp.mapping.abort(),
+                ["<CR>"] = cmp.mapping.confirm({ select = false }),
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
@@ -143,45 +144,44 @@ return {
             }),
             sources = cmp.config.sources({
                 -- { name = 'copilot' },
-                { name = 'vsnip' },
-                { name = 'nvim_lsp' },
+                { name = "vsnip" },
+                { name = "nvim_lsp" },
                 { name = "buffer" },
                 { name = "path" },
                 { name = "treesitter" },
                 { name = "tags" },
                 { name = "rg" },
             }, {
-                { name = 'buffer' },
+                { name = "buffer" },
             }),
             experimental = {
-                ghost_text = false
-            }
+                ghost_text = false,
+            },
         })
 
-
         -- Set filetype-specific configuration
-        cmp.setup.filetype('gitcommit', {
+        cmp.setup.filetype("gitcommit", {
             sources = cmp.config.sources({
-                { name = 'git' },
+                { name = "git" },
             }, {
-                { name = 'buffer' },
-            })
+                { name = "buffer" },
+            }),
         })
 
         -- Cmdline completion for '/', '?', and ':'
-        cmp.setup.cmdline({ '/', '?' }, {
+        cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = { { name = 'buffer' } }
+            sources = { { name = "buffer" } },
         })
 
         -- Additional cmdline configuration for ':'
-        cmp.setup.cmdline(':', {
+        cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources({
-                { name = 'path' }
+                { name = "path" },
             }, {
-                { name = 'cmdline' }
-            })
+                { name = "cmdline" },
+            }),
         })
-    end
+    end,
 }
