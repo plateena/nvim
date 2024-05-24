@@ -66,9 +66,9 @@ return {
                 signcolumn = "yes",
                 -- mappings = {
                 --     list = {
-                -- { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
-                -- { key = "h", cb = tree_cb "close_node" },
-                -- { key = "v", cb = tree_cb "vsplit" },
+                --         { key = { "l", "<CR>", "o" }, cb = tree_cb("edit") },
+                --         { key = "h", cb = tree_cb("close_node") },
+                --         { key = "v", cb = tree_cb("vsplit") },
                 --     },
                 -- },
             },
@@ -81,7 +81,13 @@ return {
             },
         })
 
-        vim.keymap.set("n", "<leader>et", "<Cmd>NvimTreeToggle<Cr>", { desc = "Nvim tree toggle" })
-        vim.keymap.set("n", "<leader>ef", "<Cmd>NvimTreeFindFileToggle<Cr>", { desc = "Nvim tree find file toggle" })
+        -- vim.keymap.set("n", "<leader>et", "<Cmd>NvimTreeToggle<Cr>", { desc = "Nvim tree toggle" })
+        -- vim.keymap.set("n", "<leader>ef", "<Cmd>NvimTreeFindFileToggle<Cr>", { desc = "Nvim tree find file toggle" })
     end,
+    keys = {
+    
+        {"<leader>et","<Cmd>NvimTreeToggle<Cr>", mode = "n", desc = "Nvim tree toggle" },
+        {"<leader>ef","<Cmd>NvimTreeFindFileToggle<Cr>", mode = "n", desc = "Nvim tree find file toggle" }
+    }
+
 }
