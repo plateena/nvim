@@ -10,7 +10,7 @@ return {
                 json = { "prettier" },
                 lua = { "stylua" },
                 markdown = { "prettier" },
-                php = { "prettier", "phpcbf" },
+                php = { "prettier-php", "phpcbf" },
                 typescript = { "prettier" },
                 yaml = { "prettier" },
             },
