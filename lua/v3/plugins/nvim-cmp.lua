@@ -1,14 +1,17 @@
 return {
     "hrsh7th/nvim-cmp",
     dependencies = {
-        "onsails/lspkind.nvim",
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-cmdline",
-        "jcha0713/cmp-tw2css",
-        "delphinus/cmp-ctags",
-        "delphinus/cmp-ctags",
+        { "onsails/lspkind.nvim", lazy = true },
+        { "hrsh7th/cmp-nvim-lsp", lazy = true },
+        { "hrsh7th/cmp-buffer", lazy = true },
+        { "hrsh7th/cmp-path", lazy = true },
+        { "hrsh7th/cmp-cmdline", lazy = true },
+        { "hrsh7th/cmp-nvim-lsp-signature-help", lazy = true },
+        { "hrsh7th/cmp-vsnip", lazy = true },
+        { "davidsierradz/cmp-conventionalcommits", lazy = true },
+        { "jcha0713/cmp-tw2css", lazy = true },
+        { "delphinus/cmp-ctags", lazy = true },
+        { "kbwo/cmp-yank", lazy = true },
     },
     config = function()
         -- Initialize LSPKind for rich completion icons
@@ -77,6 +80,7 @@ return {
         local cmp = require("cmp")
         cmp.setup({
             completion = {
+                completeopt = "longest,menu,preview",
                 -- autocomplete = true,
             },
             window = {
@@ -90,17 +94,18 @@ return {
             },
             formatting = {
                 format = require("lspkind").cmp_format({
+                    -- mode = "symbol_text", -- Show only symbol annotations
                     mode = "symbol_text", -- Show only symbol annotations
                     before = function(entry, vim_item)
                         -- Customize menu item annotations based on source
                         vim_item.menu = ({
-                            nvim_lsp = "[LSP]",
-                            vsnip = "[Snippet]",
-                            buffer = "[Buffer]",
-                            path = "[Path]",
-                            treesitter = "[Treesitter]",
-                            tags = "[Tags]",
-                            rg = "[Text]",
+                            vsnip = "",
+                            buffer = "",
+                            path = "",
+                            treesitter = "󰐅",
+                            nvim_lsp = "",
+                            tags = "",
+                            rg = "󰊄",
                         })[entry.source.name]
                         return vim_item
                     end,
@@ -144,13 +149,16 @@ return {
             }),
             sources = cmp.config.sources({
                 -- { name = 'copilot' },
-                { name = "vsnip" },
-                { name = "nvim_lsp" },
-                { name = "buffer" },
-                { name = "path" },
-                { name = "treesitter" },
-                { name = "tags" },
-                { name = "rg" },
+                { name = "vsnip", priority = 100 },
+                { name = "buffer", priority = 90 },
+                { name = "path", priority = 80 },
+                { name = "treesitter", priority = 70 },
+                { name = 'conventionalcommits', priority = 60 },
+                { name = 'nvim_lsp_signature_help', priority = 50 },
+                { name = "yank", priority = 40 },
+                { name = "nvim_lsp", priority = 30 },
+                { name = "tags", priority = 20 },
+                { name = "rg", priority = 10 },
             }, {
                 { name = "buffer" },
             }),

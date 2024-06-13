@@ -21,6 +21,7 @@ o.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)
 o.encoding = "utf-8"    -- Just in case
 o.hidden = true         -- Allow multple buffers
 o.history = 5000
+o.completeopt = "longest,menu,preview"
 
 
 o.hlsearch = false       -- Highlight search results
