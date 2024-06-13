@@ -1,4 +1,6 @@
 -- require("plateena")
-require("keymaps")
-require("options")
+require("config/keymaps")
+require("config/options")
+
+-- define which version of config
 require("v3")
