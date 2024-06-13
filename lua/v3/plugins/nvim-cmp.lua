@@ -11,7 +11,6 @@ return {
         { "davidsierradz/cmp-conventionalcommits", lazy = true },
         { "jcha0713/cmp-tw2css", lazy = true },
         { "delphinus/cmp-ctags", lazy = true },
-        { "kbwo/cmp-yank", lazy = true },
         { "lukas-reineke/cmp-rg", lazy = true },
         { "ray-x/cmp-treesitter", lazy = true },
     },
@@ -95,7 +94,7 @@ return {
                 },
             },
             formatting = {
-                fields = {"abbr", "kind", "menu"},
+                fields = { "abbr", "kind", "menu" },
                 format = require("lspkind").cmp_format({
                     -- mode = "symbol_text", -- Show only symbol annotations
                     mode = "symbol_text", -- Show only symbol annotations
@@ -111,7 +110,7 @@ return {
                             nvim_lsp = "",
                             tags = "",
                             rg = "󰊄",
-                        })[entry.source.name] 
+                        })[entry.source.name]
 
                         -- vim_item.dup = 0
 
@@ -162,7 +161,6 @@ return {
                 { name = "path", priority = 80 },
                 { name = "treesitter", priority = 70 },
                 { name = "nvim_lsp_signature_help", priority = 50 },
-                { name = "yank", priority = 40 },
                 {
                     name = "nvim_lsp",
                     priority = 30,
@@ -175,8 +173,8 @@ return {
                 },
                 { name = "ctags", priority = 20 },
             }, {
-                { name = "buffer" },
                 { name = "rg", priority = 10 },
+                { name = "buffer" },
             }),
             experimental = {
                 ghost_text = false,
@@ -186,14 +184,17 @@ return {
                     cmp.config.compare.exact,
                     cmp.config.compare.offset,
                     cmp.config.compare.recently_used,
-                    function (entry1, entry2)
+                    cmp.config.compare.scopes,
+                    cmp.config.compare.locality,
+                    function(entry1, entry2)
                         local result = vim.stricmp(entry1.completion_item.label, entry2.completion_item.label)
                         if result < 0 then
                             return true
                         end
-                    end
-                }
-            }
+                        return false
+                    end,
+                },
+            },
         })
 
         -- Set filetype-specific configuration
