@@ -24,8 +24,7 @@ return {
                         ["<C-s>"] = actions.send_selected_to_qflist + actions.open_qflist,
                         ["<C-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
                     },
-                    n = {
-                    }
+                    n = {},
                 },
             },
             pickers = {
