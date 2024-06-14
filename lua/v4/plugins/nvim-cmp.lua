@@ -50,6 +50,19 @@ return {
             symbol_map = icons,
         })
 
+        local function border(hl_name)
+            return {
+                { "┌", hl_name },
+                { "─", hl_name },
+                { "┐", hl_name },
+                { "│", hl_name },
+                { "┘", hl_name },
+                { "─", hl_name },
+                { "└", hl_name },
+                { "│", hl_name },
+            }
+        end
+
         local has_words_before = function()
             local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
             return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
@@ -147,7 +160,6 @@ return {
         -- Set filetype-specific configuration
         cmp.setup.filetype("gitcommit", {
             sources = cmp.config.sources({
-                { name = "conventionalcommits" },
                 { name = "vsnip" },
             }, {
                 { name = "buffer" },

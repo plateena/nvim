@@ -97,5 +97,7 @@ return {
                 end, setOpts("Lsp format"))
             end,
         })
+
+        vim.keymap.set("n", "<leader>l", "", { desc = "LSP" })
     end,
 }
