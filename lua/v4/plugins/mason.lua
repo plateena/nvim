@@ -16,6 +16,8 @@ return {
                 "cssls",
                 "docker_compose_language_service",
                 "dockerls",
+                "emmet_language_server",
+                "emmet_ls",
                 "jsonls",
                 "lua_ls",
                 "phpactor",
@@ -23,7 +25,6 @@ return {
                 "tailwindcss",
                 "tsserver",
                 "yamlls",
-                "emmet_ls",
             },
         })
 

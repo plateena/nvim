@@ -1,9 +1,7 @@
 return {
-    "mattn/emmet-vim",
-    ft = {
-        'scss',
-        'css',
-        'html',
-        'blade.php',
-    },
+    "olrtg/nvim-emmet",
+    config = function()
+        local emmet = require('nvim-emmet')
+        vim.keymap.set({ "n", "v", "i" }, "<C-y>,", emmet.wrap_with_abbreviation)
+    end,
 }

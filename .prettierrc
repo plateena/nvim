@@ -1,9 +1,19 @@
 {
     "plugins": [
-        "@prettier/plugin-php"
+        "@prettier/plugin-php",
+        "@shufo/prettier-plugin-blade"
     ],
     "tabWidth": 4,
     "printWidth": 120,
     "phpVersion": "8.0",
-    "braceStyle": "per-cs"
+    "braceStyle": "per-cs",
+    "overrides": [
+        {
+            "files": ["*.blade.php"],
+            "options": {
+                "parser": "blade",
+                "tabWidth": 4
+            }
+        }
+    ]
 }

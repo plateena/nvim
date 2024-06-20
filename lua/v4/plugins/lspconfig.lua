@@ -15,9 +15,35 @@ return {
 
         mason_lspconfig.setup_handlers({
             function(server_name)
-                lspconfig[server_name].setup({
-                    capabilities = capabilities,
-                })
+                local server_config = {}
+                if server_name == "phpactor" then
+                    server_config = {
+                        capabilities = capabilities,
+                        filetypes = { "php", "blade", "blade.php" },
+                    }
+                elseif server_name == "emmet_language_server" or server_name == "emmet_ls" then
+                    server_config = {
+                        capabilities = capabilities,
+                        filetypes = {
+                            "blade",
+                            "css",
+                            "eruby",
+                            "html",
+                            "javascript",
+                            "javascriptreact",
+                            "less",
+                            "pug",
+                            "sass",
+                            "scss",
+                            "typescriptreact",
+                            "vue",
+                        },
+                    }
+                else
+                    server_config = {}
+                end
+
+                lspconfig[server_name].setup(server_config)
             end,
         })
 
