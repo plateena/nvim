@@ -104,16 +104,16 @@ return {
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, setOpts("Lsp Hover"))
                 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, setOpts("Lsp implimentation"))
                 vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, setOpts("Lsp signature help"))
-                vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, setOpts("Lsp add workspace folder"))
-                vim.keymap.set(
-                    "n",
-                    "<space>wr",
-                    vim.lsp.buf.remove_workspace_folder,
-                    setOpts("Lsp remove workspace folder")
-                )
-                vim.keymap.set("n", "<space>wl", function()
-                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-                end, setOpts("Lsp list workspace folder"))
+                -- vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, setOpts("Lsp add workspace folder"))
+                -- vim.keymap.set(
+                --     "n",
+                --     "<space>wr",
+                --     vim.lsp.buf.remove_workspace_folder,
+                --     setOpts("Lsp remove workspace folder")
+                -- )
+                -- vim.keymap.set("n", "<space>wl", function()
+                --     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                -- end, setOpts("Lsp list workspace folder"))
                 vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, setOpts("Lsp type definition"))
                 vim.keymap.set("n", "<space>lrn", vim.lsp.buf.rename, setOpts("Lsp rename"))
                 vim.keymap.set("n", "<space>la", vim.lsp.buf.code_action, setOpts("Lsp code action"))
