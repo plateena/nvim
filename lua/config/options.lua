@@ -13,7 +13,7 @@ opt.wildmode="longest:list,full"
 opt.conceallevel=1
 opt.concealcursor=""
 opt.foldmethod="expr"
-opt.scrolloff = 12
+opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
 o.colorcolumn = '80'
 o.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
