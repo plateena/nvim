@@ -1,6 +1,6 @@
 return {
     "hrsh7th/vim-vsnip",
-    event = { "BufReadPre", "BufNewFile"},
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "hrsh7th/vim-vsnip-integ",
         "rafamadriz/friendly-snippets",

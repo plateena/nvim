@@ -2,6 +2,8 @@ local opt = vim.opt
 local g = vim.g
 local o = vim.o
 
+vim.g.OmniSharp_server_stdio = 0
+
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 vim.opt.listchars:append "eol:↴"
@@ -52,7 +54,7 @@ o.shiftwidth = 4           -- Tab size of 4 spaces
 vim.opt.termguicolors = true  -- Required for some themes
 vim.opt.background = "dark"
 
-o.updatetime = 750      -- I have a modern machine. No need to wait that long
+o.updatetime = 50      -- I have a modern machine. No need to wait that long
 -- vim.o.splitright = true     -- New vert splits are on the right
 -- vim.o.splitbelow = true     -- New horizontal splits, like `:help`, are on the bottom window
 -- vim.o.cmdheight=2           -- Shows better messages

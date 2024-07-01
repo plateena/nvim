@@ -47,7 +47,12 @@ map('i', 'jk', '<Esc>', {})
 map('n', 'YY', '"+p', {})
 map('n', 'XX', '"+y', {})
 
-vim.keymap.set('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>', { desc = "Resource vim config file"})
+vim.keymap.set('x', "<leader>p", "\"_dP", { desc = "Paste without yank the replace word" })
+vim.keymap.set({ 'n', 'v' }, "<leader>y", "\"+y", { desc = "Yank to system clipboard" })
+vim.keymap.set({ 'n', 'v' }, "<leader>Y", "\"+Y", { desc = "Yank with the new line" })
+vim.keymap.set({ 'n', 'v' }, "<leader>d", "\"_d", { desc = "Delete to the void" })
+
+vim.keymap.set('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>', { desc = "Resource vim config file" })
 vim.keymap.set('n', '<Leader>w', ':write<CR>', { desc = "Write file" })
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { desc = "Quit nvim" })
 vim.keymap.set('n', '<Leader>bd', ':bd<CR>', { desc = "Buffer delete" })

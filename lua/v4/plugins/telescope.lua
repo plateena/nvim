@@ -9,6 +9,8 @@ return {
         local telescope = require("telescope")
         local actions = require("telescope.actions")
         local builtin = require("telescope.builtin")
+        local open_with_trouble = require("trouble.sources.telescope").open
+        local add_to_trouble = require("trouble.sources.telescope").add
 
         telescope.setup({
             defaults = {
@@ -23,6 +25,7 @@ return {
                         ["<C-n>"] = actions.move_selection_next,
                         ["<C-s>"] = actions.send_selected_to_qflist + actions.open_qflist,
                         ["<C-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
+                        ["<C-t>"] = open_with_trouble,
                     },
                     n = {},
                 },
@@ -61,6 +64,7 @@ return {
         vim.keymap.set("n", "<leader>fF", builtin.live_grep, { desc = "Live grep" })
         vim.keymap.set("n", "<leader>fs", builtin.grep_string, { desc = "Search string in working directory" })
         vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Git file" })
+        vim.keymap.set("n", "<leader>fa", builtin.git_status, { desc = "Git status" })
         vim.keymap.set("n", "<leader>fm", builtin.marks, { desc = "Mark" })
         vim.keymap.set("n", "<leader>fR", builtin.registers, { desc = "Register" })
         vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "Resume" })

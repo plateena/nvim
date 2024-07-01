@@ -1,0 +1,9 @@
+{
+    "vmenu": {
+        "prefix": ["vmenu"],
+        "body": [
+            "[Home](../index.md) | [TODO](../todo/todo.md) | [Info](../info/info.md) | [Meeting](../meeting/meeting.md)"
+        ],
+        "description": "Print vimwiki main menu"
+    }
+}

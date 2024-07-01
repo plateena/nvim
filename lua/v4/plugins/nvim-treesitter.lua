@@ -15,9 +15,38 @@ return {
         local ts = require("nvim-treesitter.configs")
         ts.setup({
             auto_install = true,
-            highlight = { enabled = true },
+            ensure_installed = {
+                -- 'help',
+                'bash',
+                'comment',
+                'css',
+                'diff',
+                'dockerfile',
+                'git_rebase',
+                'gitcommit',
+                'html',
+                'javascript',
+                'json',
+                'lua',
+                'lua',
+                'markdown',
+                'markdown_inline',
+                'php',
+                'ruby',
+                'scss',
+                'typescript',
+                'vue',
+            },
+            sync_install = false,
+            TSConfig = {},
+            modules = {},
+            ignore_install = {},
             indent = { enable = true },
             autotag = { enable = true },
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
+            },
 
             -- disabled on certain condition
             disable = function(_, buf)

@@ -9,4 +9,5 @@ return {
     "olimorris/onedarkpro.nvim",
     "sainnhe/sonokai",
     "shaunsingh/nord.nvim",
+     "rose-pine/neovim",
 }
