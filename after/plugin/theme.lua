@@ -1,6 +1,6 @@
 -- Function to set the colorscheme and adjust some highlight groups
 local function setColorscheme(color)
-    color = color or "sonokai"
+    color = color or "tokyonight"
 
     local colorscheme_exists = vim.fn.exists("&background")
     if colorscheme_exists == 0 then
