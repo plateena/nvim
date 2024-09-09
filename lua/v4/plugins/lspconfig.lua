@@ -21,6 +21,19 @@ return {
                         capabilities = capabilities,
                         filetypes = { "php", "blade", "blade.php" },
                     }
+                elseif server_name == "pylsp" then
+                    server_config = {
+                        settings = {
+                            pylsp = {
+                                plugins = {
+                                    pycodestyle = {
+                                        -- ignore = { "E501" },
+                                        maxLineLength = 120,
+                                    },
+                                },
+                            },
+                        },
+                    }
                 elseif server_name == "emmet_language_server" or server_name == "emmet_ls" then
                     server_config = {
                         capabilities = capabilities,

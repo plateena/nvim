@@ -23,7 +23,7 @@ return {
                 "phpactor",
                 "sqlls",
                 "tailwindcss",
-                "tsserver",
+                "ts_ls",
                 "yamlls",
             },
         })
