@@ -34,6 +34,17 @@ return {
                             },
                         },
                     }
+                elseif server_name == "yamlls" then
+                    server_config = {
+                        yaml = {
+                            schemas = {
+                                ["https://bitbucket.org/atlassianlabs/intellij-bitbucket-references-plugin/raw/master/src/main/resources/schemas/bitbucket-pipelines.schema.json"] = "/bitbucket.pipeline.yml",
+                            },
+                            schemaStore = {
+                                enable = true,
+                            },
+                        },
+                    }
                 elseif server_name == "emmet_language_server" or server_name == "emmet_ls" then
                     server_config = {
                         capabilities = capabilities,
