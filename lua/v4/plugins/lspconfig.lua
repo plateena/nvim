@@ -13,6 +13,8 @@ return {
 
         local capabilities = cmp_nvim_lsp.default_capabilities()
 
+
+
         mason_lspconfig.setup_handlers({
             function(server_name)
                 local server_config = {}
@@ -62,6 +64,16 @@ return {
                             "typescriptreact",
                             "vue",
                         },
+                    }
+                elseif server_name == "ruby_lsp" then
+                    server_config = {
+                        cmd ={ "/home/zack/.rbenv/shims/ruby", "-S", "ruby-lsp" },
+                        capabilities = capabilities,
+                    }
+                elseif server_name == "rubocop" then
+                    server_config = {
+                        cmd ={ "/home/zack/.rbenv/versions/3.0.4/bin/rubocop", "--lsp" },
+                        capabilities = capabilities,
                     }
                 else
                     server_config = {}

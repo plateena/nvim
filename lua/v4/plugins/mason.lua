@@ -21,6 +21,7 @@ return {
                 "jsonls",
                 "lua_ls",
                 "phpactor",
+                "ruby_lsp",
                 "sqlls",
                 "tailwindcss",
                 "ts_ls",
