@@ -7,7 +7,11 @@ return {
         local ui = require('harpoon.ui')
 
         local idx = vim.fn.line('.')
-        harpoon:setup()
+        harpoon:setup({
+            settings = {
+                sync_on_ui_close = true,
+            }
+        })
 
         vim.keymap.set("n", "<leader>h", "", {
             desc = "Harpoon2"
