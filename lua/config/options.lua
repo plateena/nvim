@@ -2,6 +2,8 @@ local opt = vim.opt
 local g = vim.g
 local o = vim.o
 
+vim.g.OmniSharp_server_stdio = 0
+
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 vim.opt.listchars:append "eol:↴"

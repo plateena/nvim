@@ -49,7 +49,7 @@ local function decrypt_vimwiki()
     vim.fn.system('gpg --batch --yes --passphrase "' .. passphrase .. '" ' .. filename)
 
     -- Remove the encrypted file after decryption
-    vim.fn.system('rm ' .. filename)
+    -- vim.fn.system('rm ' .. filename)
 
     -- Open the decrypted file
     local decrypted_filename = filename:sub(1, -5)  -- Remove .gpg extension
