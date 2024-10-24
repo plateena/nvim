@@ -9,6 +9,8 @@ return {
         local telescope = require("telescope")
         local actions = require("telescope.actions")
         local builtin = require("telescope.builtin")
+        local open_with_trouble = require("trouble.sources.telescope").open
+        local add_to_trouble = require("trouble.sources.telescope").add
 
         telescope.setup({
             defaults = {
@@ -23,6 +25,7 @@ return {
                         ["<C-n>"] = actions.move_selection_next,
                         ["<C-s>"] = actions.send_selected_to_qflist + actions.open_qflist,
                         ["<C-l>"] = actions.send_selected_to_loclist + actions.open_loclist,
+                        ["<C-t>"] = open_with_trouble,
                     },
                     n = {},
                 },
