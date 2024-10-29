@@ -8,9 +8,7 @@ return {
 
         local idx = vim.fn.line('.')
         harpoon:setup({
-            settings = {
-                sync_on_ui_close = true,
-            }
+            settings = {}
         })
 
         vim.keymap.set("n", "<leader>h", "", {

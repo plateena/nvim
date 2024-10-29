@@ -7,5 +7,6 @@ return {
         -- transparent.clear_prefix("lualine")
         transparent.clear_prefix("Telescope")
         transparent.clear_prefix("Harpoon")
+        transparent.clear_prefix("Fidget")
     end,
 }

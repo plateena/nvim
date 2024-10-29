@@ -4,7 +4,13 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim", opts = {} },
+        { "folke/neodev.nvim",                   opts = {} },
+        {
+            "j-hui/fidget.nvim",
+            config = function()
+                require('fidget').setup()
+            end
+        },
     },
     config = function()
         local lspconfig = require("lspconfig")
@@ -40,7 +46,8 @@ return {
                     server_config = {
                         yaml = {
                             schemas = {
-                                ["https://bitbucket.org/atlassianlabs/intellij-bitbucket-references-plugin/raw/master/src/main/resources/schemas/bitbucket-pipelines.schema.json"] = "/bitbucket.pipeline.yml",
+                                ["https://bitbucket.org/atlassianlabs/intellij-bitbucket-references-plugin/raw/master/src/main/resources/schemas/bitbucket-pipelines.schema.json"] =
+                                "/bitbucket.pipeline.yml",
                             },
                             schemaStore = {
                                 enable = true,
@@ -67,12 +74,12 @@ return {
                     }
                 elseif server_name == "ruby_lsp" then
                     server_config = {
-                        cmd ={ "/home/zack/.rbenv/shims/ruby", "-S", "ruby-lsp" },
+                        cmd = { "/home/zack/.rbenv/shims/ruby", "-S", "ruby-lsp" },
                         capabilities = capabilities,
                     }
                 elseif server_name == "rubocop" then
                     server_config = {
-                        cmd ={ "/home/zack/.rbenv/versions/3.0.4/bin/rubocop", "--lsp" },
+                        cmd = { "/home/zack/.rbenv/versions/3.0.4/bin/rubocop", "--lsp" },
                         capabilities = capabilities,
                     }
                 else
@@ -150,13 +157,14 @@ return {
                 -- vim.keymap.set("n", "<space>wl", function()
                 --     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
                 -- end, setOpts("Lsp list workspace folder"))
-                vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, setOpts("Lsp type definition"))
+                vim.keymap.set("n", "<space>lD", vim.lsp.buf.type_definition, setOpts("Lsp type definition"))
                 vim.keymap.set("n", "<space>lrn", vim.lsp.buf.rename, setOpts("Lsp rename"))
                 vim.keymap.set("n", "<space>la", vim.lsp.buf.code_action, setOpts("Lsp code action"))
                 vim.keymap.set("n", "<space>lre", vim.lsp.buf.references, setOpts("Lsp reference"))
-                vim.keymap.set("n", "<space>lf", function()
+                vim.keymap.set({ "n", "v" }, "<space>lf", function()
                     vim.lsp.buf.format({ async = true })
                 end, setOpts("Lsp format"))
+                vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, setOpts("Lsp signature help"))
             end,
         })
 
