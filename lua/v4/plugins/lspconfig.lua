@@ -8,7 +8,7 @@ return {
         {
             "j-hui/fidget.nvim",
             config = function()
-                require('fidget').setup()
+                require('fidget').setup({})
             end
         },
     },
@@ -95,7 +95,7 @@ return {
             underline = false,
             virtual_text = true,
             signs = true,
-            update_in_insert = false,
+            update_in_insert = true,
         })
 
         local _border = "single"
