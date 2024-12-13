@@ -31,14 +31,15 @@ local icons = {
 return {
     "hrsh7th/nvim-cmp",
     dependencies = {
-        { "hrsh7th/cmp-nvim-lsp", lazy = true },
-        { "hrsh7th/cmp-vsnip", lazy = true },
-        { "hrsh7th/cmp-buffer", lazy = true },
-        { "hrsh7th/cmp-path", lazy = true },
-        { "hrsh7th/cmp-cmdline", lazy = true },
-        { "octaltree/cmp-look", lazy = true },
-        { "onsails/lspkind.nvim", lazy = true },
+        { "github/copilot.vim",                  lazy = true },
+        { "hrsh7th/cmp-buffer",                  lazy = true },
+        { "hrsh7th/cmp-cmdline",                 lazy = true },
+        { "hrsh7th/cmp-nvim-lsp",                lazy = true },
         { "hrsh7th/cmp-nvim-lsp-signature-help", lazy = true },
+        { "hrsh7th/cmp-path",                    lazy = true },
+        { "hrsh7th/cmp-vsnip",                   lazy = true },
+        { "octaltree/cmp-look",                  lazy = true },
+        { "onsails/lspkind.nvim",                lazy = true },
     },
     config = function()
         local cmp = require("cmp")
@@ -46,7 +47,7 @@ return {
 
         lspkind.init({
             mode = "symbol_text", -- Show only symbol annotations
-            preset = "codicons", -- Use Codicons for symbol icons
+            preset = "codicons",  -- Use Codicons for symbol icons
             symbol_map = icons,
         })
 
@@ -83,7 +84,7 @@ return {
 
             window = {
                 completion = {
-                    border = border("FloatBorder"), -- Custom border for completion window
+                    border = border("FloatBorder"),                                      -- Custom border for completion window
                     winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None", -- Highlight configuration
                 },
                 documentation = {
@@ -130,6 +131,8 @@ return {
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
+                    elseif vim.fn["copilot#Accept"]("") ~= "" then
+                        vim.api.nvim_feedkeys(vim.fn["copilot#Accept"]("<Tab>"), "n", true)
                     elseif vim.fn["vsnip#available"](1) == 1 then
                         feedkey("<Plug>(vsnip-expand-or-jump)", "")
                     elseif has_words_before() then
@@ -140,22 +143,51 @@ return {
                 end, { "i", "s" }),
                 ["<S-Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.select_next_item()
+                        cmp.select_prev_item()
                     elseif vim.fn["vsnip#jumpable"](-1) == 1 then
                         feedkey("<Plug>(vsnip-jump-prev)", "")
-                    elseif has_words_before() then
-                        cmp.complete()
                     else
                         fallback()
                     end
                 end, { "i", "s" }),
             }),
+            -- mapping = cmp.mapping.preset.insert({
+            --     ["<C-j>"] = cmp.mapping.select_next_item(),
+            --     ["<C-k>"] = cmp.mapping.select_prev_item(),
+            --     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+            --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            --     ["<A-l>"] = cmp.mapping.complete(),
+            --     ["<C-e>"] = cmp.mapping.abort(),
+            --     ["<CR>"] = cmp.mapping.confirm({ select = false }),
+            --     ["<Tab>"] = cmp.mapping(function(fallback)
+            --         if cmp.visible() then
+            --             cmp.select_next_item()
+            --         elseif vim.fn["vsnip#available"](1) == 1 then
+            --             feedkey("<Plug>(vsnip-expand-or-jump)", "")
+            --         elseif has_words_before() then
+            --             cmp.complete()
+            --         else
+            --             fallback()
+            --         end
+            --     end, { "i", "s" }),
+            --     ["<S-Tab>"] = cmp.mapping(function(fallback)
+            --         if cmp.visible() then
+            --             cmp.select_next_item()
+            --         elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+            --             feedkey("<Plug>(vsnip-jump-prev)", "")
+            --         elseif has_words_before() then
+            --             cmp.complete()
+            --         else
+            --             fallback()
+            --         end
+            --     end, { "i", "s" }),
+            -- }),
             sources = cmp.config.sources({
                 { name = "vsnip" },
-                { name = "nvim_lsp", keywords_length = 3 },
+                { name = "nvim_lsp",               keywords_length = 3 },
                 { name = "nvim_lsp_signature_help" },
                 { name = "path" },
-                { name = "look", keywords_length = 4 },
+                { name = "look",                   keywords_length = 4 },
                 { name = "buffer" },
             }),
         })
@@ -183,5 +215,15 @@ return {
                 { name = "cmdline" },
             }),
         })
+
+        vim.keymap.set('i', '<C-f>', 'copilot#Accept("\\<CR>")', {
+            expr = true,
+            replace_keycodes = false
+        })
+        vim.keymap.set('i', '<C-l>', '<Plug>(copilot-accept-word)')
+        vim.keymap.set('i', '<M-j>', '<Plug>(copilot-next)')
+        vim.keymap.set('i', '<M-k>', '<Plug>(copilot-previous)')
+        vim.keymap.set('i', '<M-n>', '<Plug>(copilot-accept-line)')
+        vim.g.copilot_no_tab_map = true
     end,
 }

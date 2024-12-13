@@ -17,7 +17,7 @@ opt.concealcursor=""
 opt.foldmethod="expr"
 opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
-o.colorcolumn = '80'
+o.colorcolumn = '120'
 o.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
 o.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)
 o.encoding = "utf-8"    -- Just in case
