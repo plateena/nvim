@@ -24,8 +24,8 @@ return {
                 root_folder_modifier = ":t",
                 icons = {
                     glyphs = {
-                        -- default = "",
-                        -- symlink = "",
+                        default = "",
+                        symlink = "",
                         folder = {
                             arrow_open = "",
                             arrow_closed = "",
@@ -81,8 +81,6 @@ return {
             },
         })
 
-        -- vim.keymap.set("n", "<leader>et", "<Cmd>NvimTreeToggle<Cr>", { desc = "Nvim tree toggle" })
-        -- vim.keymap.set("n", "<leader>ef", "<Cmd>NvimTreeFindFileToggle<Cr>", { desc = "Nvim tree find file toggle" })
     end,
     keys = {
     

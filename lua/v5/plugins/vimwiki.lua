@@ -16,7 +16,7 @@ return {
             global = 0,
         }
     end,
-    config = function()
-        vim.keymap.set("n", "<Cr>", "<Plug>VimwikiFollowLink")
-    end,
+    keys = {
+        {"<Cr>","<Plug>VimwikiFollowLink", mode = "n", desc = "Vimwiki follow link" },
+    }
 }

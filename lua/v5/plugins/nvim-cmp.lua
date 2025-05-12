@@ -1,142 +1,139 @@
-local icons = {
-    -- Override default symbols with Codicons
-    Text = "󰊄", -- 󰊄
-    Method = "", -- 
-    Function = "󰊕", -- 󰊕
-    Constructor = "",
-    Field = "", -- ﰠ
-    Variable = "", -- 
-    Class = "", -- ﴯ
-    Interface = "",
-    Module = "",
-    Property = "", -- ﰠ
-    Unit = "塞",
-    Value = "󰫧", -- 󰫧
-    Enum = "",
-    Keyword = "",
-    Snippet = "",
-    Color = "", -- 
-    File = "", -- 
-    Reference = "",
-    Folder = "", -- 
-    EnumMember = "",
-    Constant = "",
-    Struct = "פּ",
-    Event = "",
-    Operator = "", -- 
-    TypeParameter = "",
-    Copilot = "",
-}
-
 return {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     dependencies = {
-        -- { "github/copilot.vim",                  lazy = true },
-        { "hrsh7th/cmp-buffer",                  lazy = true },
-        { "hrsh7th/cmp-cmdline",                 lazy = true },
-        { "hrsh7th/cmp-nvim-lsp",                lazy = true },
-        { "hrsh7th/cmp-nvim-lsp-signature-help", lazy = true },
-        { "hrsh7th/cmp-path",                    lazy = true },
-        { "hrsh7th/cmp-vsnip",                   lazy = true },
-        { "octaltree/cmp-look",                  lazy = true },
-        { "onsails/lspkind.nvim",                lazy = true },
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
+        "hrsh7th/cmp-path",
+        {
+            "L3MON4D3/LuaSnip",
+            version = "v2.*",
+            build = "make install_jsregexp",
+            dependencies = {
+                "rafamadriz/friendly-snippets",
+                "honza/vim-snippets",
+            },
+        },
+        "onsails/lspkind.nvim",
     },
     config = function()
         local cmp = require("cmp")
+        local luasnip = require("luasnip")
         local lspkind = require("lspkind")
 
+        -- Enhanced icon set with better visual hierarchy
+        local icons = {
+            Text = "",
+            Method = "",
+            Function = "󰊕",
+            Constructor = "",
+            Field = "",
+            Variable = "",
+            Class = "",
+            Interface = "",
+            Module = "",
+            Property = "",
+            Unit = "",
+            Value = "",
+            Enum = "",
+            Keyword = "",
+            Snippet = "",
+            Color = "",
+            File = "",
+            Reference = "",
+            Folder = "",
+            EnumMember = "",
+            Constant = "",
+            Struct = "",
+            Event = "",
+            Operator = "",
+            TypeParameter = "",
+            Copilot = "",
+            Codeium = "",
+            TabNine = "",
+        }
+
+        -- Load snippets from friendly-snippets and vim-snippets
+        require("luasnip.loaders.from_vscode").lazy_load()
+        require("luasnip.loaders.from_snipmate").lazy_load()
+
+        -- Initialize lspkind with better defaults
         lspkind.init({
-            mode = "symbol_text", -- Show only symbol annotations
-            preset = "codicons",  -- Use Codicons for symbol icons
+            mode = "symbol_text",
+            preset = "default",
             symbol_map = icons,
         })
 
-        local function border(hl_name)
-            return {
-                { "┌", hl_name },
-                { "─", hl_name },
-                { "┐", hl_name },
-                { "│", hl_name },
-                { "┘", hl_name },
-                { "─", hl_name },
-                { "└", hl_name },
-                { "│", hl_name },
-            }
-        end
-
-        local has_words_before = function()
-            local cursor = vim.api.nvim_win_get_cursor(0)
-            return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or "")
-                :sub(cursor[2], cursor[2])
-                :match("%s")
-        end
-
-        local feedkey = function(key, mode)
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-        end
+        -- Unified border configuration
+        local border = {
+            { "╭", "CmpBorder" },
+            { "─", "CmpBorder" },
+            { "╮", "CmpBorder" },
+            { "│", "CmpBorder" },
+            { "╯", "CmpBorder" },
+            { "─", "CmpBorder" },
+            { "╰", "CmpBorder" },
+            { "│", "CmpBorder" },
+        }
 
         cmp.setup({
             snippet = {
                 expand = function(args)
-                    vim.fn["vsnip#anonymous"](args.body)
+                    luasnip.lsp_expand(args.body)
                 end,
             },
-
             window = {
                 completion = {
-                    border = border("FloatBorder"),                                      -- Custom border for completion window
-                    winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None", -- Highlight configuration
+                    border = border,
+                    winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None",
+                    scrollbar = false,
+                    col_offset = -1,
+                    side_padding = 0,
                 },
                 documentation = {
-                    border = border("FloatBorder"), -- Custom border for documentation window
+                    border = border,
+                    max_width = 80,
+                    max_height = 20,
                 },
             },
-
             formatting = {
                 fields = { "abbr", "kind", "menu" },
-                format = require("lspkind").cmp_format({
-                    -- mode = "symbol_text", -- Show only symbol annotations
-                    mode = "symbol_text", -- Show only symbol annotations
+                format = lspkind.cmp_format({
+                    mode = "symbol_text",
+                    maxwidth = 50,
+                    ellipsis_char = "...",
                     before = function(entry, vim_item)
-                        local source = entry.source.name
-                        local kind = vim_item.kind
-                        -- Customize menu item annotations based on source
-                        vim_item.menu = " 󱞪 "
-                            .. (
-                                ({
-                                    vsnip = "",
-                                    buffer = "",
-                                    path = "",
-                                    treesitter = "󰐅",
-                                    nvim_lsp = "",
-                                    tags = "",
-                                    rg = "󰊄",
-                                    look = "󰓆",
-                                })[source] or "[" .. source .. "]"
-                            )
-
+                        local source_icons = {
+                            buffer = "󰈙",
+                            nvim_lsp = "",
+                            luasnip = "󰞷",
+                            nvim_lua = "",
+                            path = "",
+                            cmdline = "",
+                        }
+                        vim_item.menu = string.format(" %s", source_icons[entry.source.name] or "")
                         return vim_item
                     end,
                 }),
             },
-
-            mapping = cmp.mapping.preset.insert({
-                ["<C-j>"] = cmp.mapping.select_next_item(),
-                ["<C-k>"] = cmp.mapping.select_prev_item(),
-                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                ["<A-l>"] = cmp.mapping.complete(),
+            mapping = {
+                ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+                ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+                ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-e>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm({ select = false }),
+                ["<CR>"] = cmp.mapping.confirm({
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = true,
+                }),
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
-                    -- elseif vim.fn["copilot#Accept"]("") ~= "" then
-                    --     vim.api.nvim_feedkeys(vim.fn["copilot#Accept"]("<Tab>"), "n", true)
-                    elseif vim.fn["vsnip#available"](1) == 1 then
-                        feedkey("<Plug>(vsnip-expand-or-jump)", "")
-                    elseif has_words_before() then
-                        cmp.complete()
+                    elseif luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
                     else
                         fallback()
                     end
@@ -144,86 +141,85 @@ return {
                 ["<S-Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_prev_item()
-                    elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-                        feedkey("<Plug>(vsnip-jump-prev)", "")
+                    elseif luasnip.jumpable(-1) then
+                        luasnip.jump(-1)
                     else
                         fallback()
                     end
                 end, { "i", "s" }),
-            }),
-            -- mapping = cmp.mapping.preset.insert({
-            --     ["<C-j>"] = cmp.mapping.select_next_item(),
-            --     ["<C-k>"] = cmp.mapping.select_prev_item(),
-            --     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-            --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            --     ["<A-l>"] = cmp.mapping.complete(),
-            --     ["<C-e>"] = cmp.mapping.abort(),
-            --     ["<CR>"] = cmp.mapping.confirm({ select = false }),
-            --     ["<Tab>"] = cmp.mapping(function(fallback)
-            --         if cmp.visible() then
-            --             cmp.select_next_item()
-            --         elseif vim.fn["vsnip#available"](1) == 1 then
-            --             feedkey("<Plug>(vsnip-expand-or-jump)", "")
-            --         elseif has_words_before() then
-            --             cmp.complete()
-            --         else
-            --             fallback()
-            --         end
-            --     end, { "i", "s" }),
-            --     ["<S-Tab>"] = cmp.mapping(function(fallback)
-            --         if cmp.visible() then
-            --             cmp.select_next_item()
-            --         elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-            --             feedkey("<Plug>(vsnip-jump-prev)", "")
-            --         elseif has_words_before() then
-            --             cmp.complete()
-            --         else
-            --             fallback()
-            --         end
-            --     end, { "i", "s" }),
-            -- }),
+                ["<C-l>"] = cmp.mapping(function()
+                    if luasnip.choice_active() then
+                        luasnip.change_choice(1)
+                    end
+                end, { "i", "s" }),
+            },
             sources = cmp.config.sources({
-                { name = "vsnip" },
-                { name = "nvim_lsp",               keywords_length = 3 },
+                { name = "nvim_lsp" },
                 { name = "nvim_lsp_signature_help" },
+                { name = "luasnip" },
+                { name = "buffer", keyword_length = 3 },
                 { name = "path" },
-                { name = "look",                   keywords_length = 4 },
-                { name = "buffer" },
             }),
+            -- performance = {
+            --     debounce = 100,
+            --     throttle = 60,
+            --     fetching_timeout = 200,
+            --     max_view_entries = 30,
+            -- },
+            experimental = {
+                ghost_text = {
+                    hl_group = "Comment",
+                },
+                native_menu = false,
+            },
         })
-        -- Set filetype-specific configuration
+
+        -- Enhanced filetype-specific configurations
         cmp.setup.filetype("gitcommit", {
             sources = cmp.config.sources({
-                { name = "vsnip" },
-            }, {
+                { name = "git" },
                 { name = "buffer" },
-            }),
+            })
         })
 
-        -- Cmdline completion for '/', '?', and ':'
+        cmp.setup.filetype("markdown", {
+            sources = cmp.config.sources({
+                { name = "buffer" },
+                { name = "path" },
+                { name = "luasnip" },
+            })
+        })
+
+        -- Improved cmdline configuration
         cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = { { name = "buffer" } },
+            sources = {
+                { name = "buffer" }
+            },
+            view = {
+                entries = { name = "wildmenu", separator = "|" }
+            },
         })
 
-        -- Additional cmdline configuration for ':'
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-                { name = "path" },
-            }, {
-                { name = "cmdline" },
-            }),
+            sources = cmp.config.sources(
+                { { name = "path" } },
+                { { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] } }
+            ),
         })
 
-        -- vim.keymap.set('i', '<C-f>', 'copilot#Accept("\\<CR>")', {
-        --     expr = true,
-        --     replace_keycodes = false
-        -- })
-        -- vim.keymap.set('i', '<C-l>', '<Plug>(copilot-accept-word)')
-        -- vim.keymap.set('i', '<M-j>', '<Plug>(copilot-next)')
-        -- vim.keymap.set('i', '<M-k>', '<Plug>(copilot-previous)')
-        -- vim.keymap.set('i', '<M-n>', '<Plug>(copilot-accept-line)')
-        -- vim.g.copilot_no_tab_map = true
+        -- Additional snippet keymaps
+        vim.keymap.set({ "i", "s" }, "<C-j>", function()
+            if luasnip.jumpable(1) then
+                luasnip.jump(1)
+            end
+        end)
+
+        vim.keymap.set({ "i", "s" }, "<C-k>", function()
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            end
+        end)
     end,
 }
