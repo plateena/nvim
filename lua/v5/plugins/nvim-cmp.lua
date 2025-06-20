@@ -10,16 +10,8 @@ return {
         "ray-x/cmp-treesitter", -- Added treesitter completion
         "David-Kunz/cmp-npm",   -- Added npm package completion
         "petertriho/cmp-git",   -- Added git completion (was missing)
-        {
-            "L3MON4D3/LuaSnip",
-            version = "v2.*",
-            build = "make install_jsregexp",
-            dependencies = {
-                "rafamadriz/friendly-snippets",
-                "honza/vim-snippets",
-            },
-        },
         "onsails/lspkind.nvim",
+        "saadparwaiz1/cmp_luasnip",
     },
     config = function()
         local cmp = require("cmp")
@@ -59,10 +51,6 @@ return {
             TreesitterContext = "󰐅", -- Icon for treesitter
             Npm = "", -- Icon for npm packages
         }
-
-        -- Load snippets from friendly-snippets and vim-snippets
-        require("luasnip.loaders.from_vscode").lazy_load()
-        require("luasnip.loaders.from_snipmate").lazy_load()
 
         -- Initialize lspkind with better defaults
         lspkind.init({
@@ -131,7 +119,7 @@ return {
                 ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
                 ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                 ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-k>"] = cmp.mapping.complete(),
                 ["<C-e>"] = cmp.mapping.abort(),
                 ["<CR>"] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Replace,
