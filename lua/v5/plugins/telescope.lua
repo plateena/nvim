@@ -55,6 +55,21 @@ return {
             },
         })
 
+        local function grep_git_files()
+            -- Check if we're in a git repository
+            local git_files = vim.fn.systemlist('git ls-files 2>/dev/null')
+
+            if vim.v.shell_error ~= 0 or #git_files == 0 then
+                print("Not in a git repository or no tracked files found")
+                return
+            end
+
+            builtin.live_grep({
+                search_dirs = git_files,
+                prompt_title = "Live Grep Git Files"
+            })
+        end
+
         -- load extension
         telescope.load_extension("fzf")
 
@@ -62,6 +77,7 @@ return {
         vim.keymap.set("n", "<leader>n", builtin.buffers, { desc = "Find buffers" })
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find file" })
         vim.keymap.set("n", "<leader>fF", builtin.live_grep, { desc = "Live grep" })
+        vim.keymap.set("n", "<leader>fG", grep_git_files, { desc = "Live grep git files" })
         vim.keymap.set("n", "<leader>fs", builtin.grep_string, { desc = "Search string in working directory" })
         vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Git file" })
         vim.keymap.set("n", "<leader>fa", builtin.git_status, { desc = "Git status" })
