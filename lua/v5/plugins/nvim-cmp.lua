@@ -7,9 +7,9 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-path",
-        "ray-x/cmp-treesitter",      -- Added treesitter completion
-        "David-Kunz/cmp-npm",        -- Added npm package completion
-        "petertriho/cmp-git",        -- Added git completion (was missing)
+        "ray-x/cmp-treesitter", -- Added treesitter completion
+        "David-Kunz/cmp-npm",   -- Added npm package completion
+        "petertriho/cmp-git",   -- Added git completion (was missing)
         {
             "L3MON4D3/LuaSnip",
             version = "v2.*",
@@ -56,8 +56,8 @@ return {
             Copilot = "",
             Codeium = "",
             TabNine = "",
-            TreesitterContext = "󰐅",    -- Icon for treesitter
-            Npm = "",                    -- Icon for npm packages
+            TreesitterContext = "󰐅", -- Icon for treesitter
+            Npm = "", -- Icon for npm packages
         }
 
         -- Load snippets from friendly-snippets and vim-snippets
@@ -162,12 +162,12 @@ return {
                 end, { "i", "s" }),
             },
             sources = cmp.config.sources({
-                { name = "nvim_lsp", priority = 1000 },
+                { name = "nvim_lsp",                priority = 1000 },
                 { name = "nvim_lsp_signature_help", priority = 1000 },
-                { name = "luasnip", priority = 750 },
-                { name = "treesitter", priority = 850, keyword_length = 2 },
-                { name = "buffer", priority = 500, keyword_length = 3 },
-                { name = "path", priority = 250 },
+                { name = "luasnip",                 priority = 750 },
+                { name = "treesitter",              priority = 850, keyword_length = 2 },
+                { name = "buffer",                  priority = 500, keyword_length = 3 },
+                { name = "path",                    priority = 250 },
             }),
             performance = {
                 debounce = 100,
@@ -203,71 +203,70 @@ return {
         -- JavaScript/TypeScript specific configuration with npm support
         cmp.setup.filetype({ "javascript", "typescript", "javascriptreact", "typescriptreact" }, {
             sources = cmp.config.sources({
-                { name = "nvim_lsp", priority = 1000 },
-                { name = "npm", priority = 900 },
-                { name = "luasnip", priority = 750 },
+                { name = "nvim_lsp",   priority = 1000 },
+                { name = "npm",        priority = 900 },
+                { name = "luasnip",    priority = 750 },
                 { name = "treesitter", priority = 650 },
-                { name = "buffer", priority = 500, keyword_length = 3 },
-                { name = "path", priority = 250 },
+                { name = "buffer",     priority = 500, keyword_length = 3 },
+                { name = "path",       priority = 250 },
             })
         })
 
         -- JSON files (package.json, composer.json, etc.) with npm support
         cmp.setup.filetype("json", {
             sources = cmp.config.sources({
-                { name = "npm", priority = 900 },
-                { name = "nvim_lsp", priority = 800 },
+                { name = "npm",        priority = 900 },
+                { name = "nvim_lsp",   priority = 800 },
                 { name = "treesitter", priority = 650 },
-                { name = "buffer", priority = 500 },
-                { name = "path", priority = 250 },
+                { name = "buffer",     priority = 500 },
+                { name = "path",       priority = 250 },
             })
         })
 
         -- Ruby configuration (for your Ruby development)
         cmp.setup.filetype("ruby", {
             sources = cmp.config.sources({
-                { name = "nvim_lsp", priority = 1000 },
-                { name = "luasnip", priority = 750 },
+                { name = "nvim_lsp",   priority = 1000 },
+                { name = "luasnip",    priority = 750 },
                 { name = "treesitter", priority = 650 },
-                { name = "buffer", priority = 500, keyword_length = 3 },
-                { name = "path", priority = 250 },
+                { name = "buffer",     priority = 500, keyword_length = 3 },
+                { name = "path",       priority = 250 },
             })
         })
 
         -- PHP configuration (for your Laravel development)
         cmp.setup.filetype("php", {
             sources = cmp.config.sources({
-                { name = "nvim_lsp", priority = 1000 },
-                { name = "luasnip", priority = 750 },
+                { name = "nvim_lsp",   priority = 1000 },
+                { name = "luasnip",    priority = 750 },
                 { name = "treesitter", priority = 650 },
-                { name = "buffer", priority = 500, keyword_length = 3 },
-                { name = "path", priority = 250 },
+                { name = "buffer",     priority = 500, keyword_length = 3 },
+                { name = "path",       priority = 250 },
             })
         })
 
         -- Shell script configuration (for your bash scripting)
         cmp.setup.filetype({ "sh", "bash", "zsh" }, {
             sources = cmp.config.sources({
-                { name = "nvim_lsp", priority = 1000 },
-                { name = "luasnip", priority = 750 },
+                { name = "nvim_lsp",   priority = 1000 },
+                { name = "luasnip",    priority = 750 },
                 { name = "treesitter", priority = 650 },
-                { name = "buffer", priority = 500, keyword_length = 2 },
-                { name = "path", priority = 800 }, -- Higher priority for shell scripts
+                { name = "buffer",     priority = 500, keyword_length = 2 },
+                { name = "path",       priority = 800 }, -- Higher priority for shell scripts
             })
         })
 
-        -- Improved cmdline configuration
+        -- For `/` and `?` (search) cmdline
         cmp.setup.cmdline({ "/", "?" }, {
+            completion = { completeopt = "menu,menuone,noselect" },
             mapping = cmp.mapping.preset.cmdline(),
-            sources = {
-                { name = "buffer" }
-            },
-            view = {
-                entries = { name = "wildmenu", separator = "|" }
-            },
+            sources = { { name = "buffer" } },
+            view = { entries = { name = "wildmenu", separator = "|" } },
         })
 
+        -- For `:` command-line mode
         cmp.setup.cmdline(":", {
+            completion = { completeopt = "menu,menuone,noselect" },
             mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources(
                 { { name = "path" } },
@@ -292,12 +291,12 @@ return {
         local npm_ok, cmp_npm = pcall(require, "cmp-npm")
         if npm_ok then
             cmp_npm.setup({
-                ignore = {}, -- ignore specific packages
+                ignore = {},                   -- ignore specific packages
                 only_semantic_versions = true, -- only show semantic versions
             })
         end
 
-        -- Setup cmp-git if available  
+        -- Setup cmp-git if available
         local git_ok, cmp_git = pcall(require, "cmp_git")
         if git_ok then
             cmp_git.setup()
