@@ -7,6 +7,9 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-path",
+        "ray-x/cmp-treesitter",      -- Added treesitter completion
+        "David-Kunz/cmp-npm",        -- Added npm package completion
+        "petertriho/cmp-git",        -- Added git completion (was missing)
         {
             "L3MON4D3/LuaSnip",
             version = "v2.*",
@@ -25,34 +28,36 @@ return {
 
         -- Enhanced icon set with better visual hierarchy
         local icons = {
-            Text = "",
-            Method = "",
+            Text = "",
+            Method = "",
             Function = "󰊕",
-            Constructor = "",
-            Field = "",
-            Variable = "",
-            Class = "",
-            Interface = "",
-            Module = "",
-            Property = "",
-            Unit = "",
-            Value = "",
-            Enum = "",
-            Keyword = "",
-            Snippet = "",
-            Color = "",
-            File = "",
-            Reference = "",
-            Folder = "",
-            EnumMember = "",
-            Constant = "",
-            Struct = "",
-            Event = "",
-            Operator = "",
-            TypeParameter = "",
-            Copilot = "",
-            Codeium = "",
-            TabNine = "",
+            Constructor = "",
+            Field = "",
+            Variable = "",
+            Class = "",
+            Interface = "",
+            Module = "",
+            Property = "",
+            Unit = "",
+            Value = "",
+            Enum = "",
+            Keyword = "",
+            Snippet = "",
+            Color = "",
+            File = "",
+            Reference = "",
+            Folder = "",
+            EnumMember = "",
+            Constant = "",
+            Struct = "",
+            Event = "",
+            Operator = "",
+            TypeParameter = "",
+            Copilot = "",
+            Codeium = "",
+            TabNine = "",
+            TreesitterContext = "󰐅",    -- Icon for treesitter
+            Npm = "",                    -- Icon for npm packages
         }
 
         -- Load snippets from friendly-snippets and vim-snippets
@@ -68,14 +73,14 @@ return {
 
         -- Unified border configuration
         local border = {
-            { "╭", "CmpBorder" },
-            { "─", "CmpBorder" },
-            { "╮", "CmpBorder" },
-            { "│", "CmpBorder" },
-            { "╯", "CmpBorder" },
-            { "─", "CmpBorder" },
-            { "╰", "CmpBorder" },
-            { "│", "CmpBorder" },
+            { "╭", "FloatBorder" },
+            { "─", "FloatBorder" },
+            { "╮", "FloatBorder" },
+            { "│", "FloatBorder" },
+            { "╯", "FloatBorder" },
+            { "─", "FloatBorder" },
+            { "╰", "FloatBorder" },
+            { "│", "FloatBorder" },
         }
 
         cmp.setup({
@@ -107,13 +112,16 @@ return {
                     before = function(entry, vim_item)
                         local source_icons = {
                             buffer = "󰈙",
-                            nvim_lsp = "",
+                            nvim_lsp = "",
                             luasnip = "󰞷",
-                            nvim_lua = "",
-                            path = "",
-                            cmdline = "",
+                            nvim_lua = "",
+                            path = "",
+                            cmdline = "",
+                            treesitter = "󰐅",
+                            npm = "",
+                            git = "",
                         }
-                        vim_item.menu = string.format(" %s", source_icons[entry.source.name] or "")
+                        vim_item.menu = string.format(" %s", source_icons[entry.source.name] or "")
                         return vim_item
                     end,
                 }),
@@ -154,18 +162,19 @@ return {
                 end, { "i", "s" }),
             },
             sources = cmp.config.sources({
-                { name = "nvim_lsp" },
-                { name = "nvim_lsp_signature_help" },
-                { name = "luasnip" },
-                { name = "buffer", keyword_length = 3 },
-                { name = "path" },
+                { name = "nvim_lsp", priority = 1000 },
+                { name = "nvim_lsp_signature_help", priority = 1000 },
+                { name = "luasnip", priority = 750 },
+                { name = "treesitter", priority = 850, keyword_length = 2 },
+                { name = "buffer", priority = 500, keyword_length = 3 },
+                { name = "path", priority = 250 },
             }),
-            -- performance = {
-            --     debounce = 100,
-            --     throttle = 60,
-            --     fetching_timeout = 200,
-            --     max_view_entries = 30,
-            -- },
+            performance = {
+                debounce = 100,
+                throttle = 60,
+                fetching_timeout = 200,
+                max_view_entries = 30,
+            },
             experimental = {
                 ghost_text = {
                     hl_group = "Comment",
@@ -187,6 +196,63 @@ return {
                 { name = "buffer" },
                 { name = "path" },
                 { name = "luasnip" },
+                { name = "treesitter", keyword_length = 2 },
+            })
+        })
+
+        -- JavaScript/TypeScript specific configuration with npm support
+        cmp.setup.filetype({ "javascript", "typescript", "javascriptreact", "typescriptreact" }, {
+            sources = cmp.config.sources({
+                { name = "nvim_lsp", priority = 1000 },
+                { name = "npm", priority = 900 },
+                { name = "luasnip", priority = 750 },
+                { name = "treesitter", priority = 650 },
+                { name = "buffer", priority = 500, keyword_length = 3 },
+                { name = "path", priority = 250 },
+            })
+        })
+
+        -- JSON files (package.json, composer.json, etc.) with npm support
+        cmp.setup.filetype("json", {
+            sources = cmp.config.sources({
+                { name = "npm", priority = 900 },
+                { name = "nvim_lsp", priority = 800 },
+                { name = "treesitter", priority = 650 },
+                { name = "buffer", priority = 500 },
+                { name = "path", priority = 250 },
+            })
+        })
+
+        -- Ruby configuration (for your Ruby development)
+        cmp.setup.filetype("ruby", {
+            sources = cmp.config.sources({
+                { name = "nvim_lsp", priority = 1000 },
+                { name = "luasnip", priority = 750 },
+                { name = "treesitter", priority = 650 },
+                { name = "buffer", priority = 500, keyword_length = 3 },
+                { name = "path", priority = 250 },
+            })
+        })
+
+        -- PHP configuration (for your Laravel development)
+        cmp.setup.filetype("php", {
+            sources = cmp.config.sources({
+                { name = "nvim_lsp", priority = 1000 },
+                { name = "luasnip", priority = 750 },
+                { name = "treesitter", priority = 650 },
+                { name = "buffer", priority = 500, keyword_length = 3 },
+                { name = "path", priority = 250 },
+            })
+        })
+
+        -- Shell script configuration (for your bash scripting)
+        cmp.setup.filetype({ "sh", "bash", "zsh" }, {
+            sources = cmp.config.sources({
+                { name = "nvim_lsp", priority = 1000 },
+                { name = "luasnip", priority = 750 },
+                { name = "treesitter", priority = 650 },
+                { name = "buffer", priority = 500, keyword_length = 2 },
+                { name = "path", priority = 800 }, -- Higher priority for shell scripts
             })
         })
 
@@ -205,7 +271,7 @@ return {
             mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources(
                 { { name = "path" } },
-                { { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] } }
+                { { name = "cmdline" } }
             ),
         })
 
@@ -214,12 +280,27 @@ return {
             if luasnip.jumpable(1) then
                 luasnip.jump(1)
             end
-        end)
+        end, { desc = "Jump to next snippet placeholder" })
 
         vim.keymap.set({ "i", "s" }, "<C-k>", function()
             if luasnip.jumpable(-1) then
                 luasnip.jump(-1)
             end
-        end)
+        end, { desc = "Jump to previous snippet placeholder" })
+
+        -- Setup cmp-npm if available
+        local npm_ok, cmp_npm = pcall(require, "cmp-npm")
+        if npm_ok then
+            cmp_npm.setup({
+                ignore = {}, -- ignore specific packages
+                only_semantic_versions = true, -- only show semantic versions
+            })
+        end
+
+        -- Setup cmp-git if available  
+        local git_ok, cmp_git = pcall(require, "cmp_git")
+        if git_ok then
+            cmp_git.setup()
+        end
     end,
 }

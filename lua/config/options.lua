@@ -113,3 +113,7 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
 	g["loaded_" .. plugin] = 1
 end
+
+-- Add this at the top of your config
+vim.g.format_on_save_enabled = false
+
