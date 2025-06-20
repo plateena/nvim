@@ -93,66 +93,108 @@ return {
             },
             formatting = {
                 fields = { "abbr", "kind", "menu" },
-                format = lspkind.cmp_format({
+                format = require("lspkind").cmp_format({
                     mode = "symbol_text",
                     maxwidth = 50,
                     ellipsis_char = "...",
                     before = function(entry, vim_item)
-                        local source_icons = {
-                            buffer = "󰈙",
-                            nvim_lsp = "",
-                            luasnip = "󰞷",
-                            nvim_lua = "",
-                            path = "",
-                            cmdline = "",
-                            treesitter = "󰐅",
-                            npm = "",
-                            git = "",
+                        local source_labels = {
+                            buffer     = "[Buffer]",
+                            -- nvim_lsp   = "[LSP]",
+                            luasnip    = "[LuaSnip]",
+                            nvim_lua   = "[Lua]",
+                            path       = "[Path]",
+                            cmdline    = "[Cmd]",
+                            treesitter = "[TS]",
+                            npm        = "[NPM]",
+                            git        = "[Git]",
                         }
-                        vim_item.menu = string.format(" %s", source_icons[entry.source.name] or "")
+
+                        local source_icons = {
+                            buffer     = "󰈙",
+                            -- nvim_lsp   = "",
+                            luasnip    = "󰞷",
+                            nvim_lua   = "",
+                            path       = "",
+                            cmdline    = "",
+                            treesitter = "󰐅",
+                            npm        = "",
+                            git        = "",
+                        }
+
+                        local icon = source_icons[entry.source.name] or ""
+                        local label = source_labels[entry.source.name] or "[Other]"
+
+                        vim_item.menu = string.format("%s %s", icon, label)
                         return vim_item
                     end,
                 }),
             },
             mapping = {
-                ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-                ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+                -- Scroll documentation
                 ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
                 ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+
+                -- Force completion
                 ["<C-k>"] = cmp.mapping.complete(),
+
+                -- Abort completion
                 ["<C-e>"] = cmp.mapping.abort(),
+
+                -- Confirm completion
                 ["<CR>"] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Replace,
                     select = true,
                 }),
+
+                -- Enhanced Tab - handles both completion and snippets
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.select_next_item()
+                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
                     elseif luasnip.expand_or_jumpable() then
                         luasnip.expand_or_jump()
                     else
                         fallback()
                     end
                 end, { "i", "s" }),
+
+                -- Enhanced Shift-Tab - handles both completion and snippets
                 ["<S-Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.select_prev_item()
+                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                     elseif luasnip.jumpable(-1) then
                         luasnip.jump(-1)
                     else
                         fallback()
                     end
                 end, { "i", "s" }),
-                ["<C-l>"] = cmp.mapping(function()
-                    if luasnip.choice_active() then
+
+                -- Choice navigation (forward) - only when not in completion menu
+                ["<C-p>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                    elseif luasnip.choice_active() then
                         luasnip.change_choice(1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+
+                -- Choice navigation (backward) - only when not in completion menu
+                ["<C-n>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                    elseif luasnip.choice_active() then
+                        luasnip.change_choice(-1)
+                    else
+                        fallback()
                     end
                 end, { "i", "s" }),
             },
             sources = cmp.config.sources({
-                { name = "nvim_lsp",                priority = 1000 },
-                { name = "nvim_lsp_signature_help", priority = 1000 },
+                -- { name = "nvim_lsp_signature_help", priority = 1000 },
                 { name = "luasnip",                 priority = 750 },
+                { name = "nvim_lsp",                priority = 700 },
                 { name = "treesitter",              priority = 850, keyword_length = 2 },
                 { name = "buffer",                  priority = 500, keyword_length = 3 },
                 { name = "path",                    priority = 250 },
@@ -192,9 +234,9 @@ return {
         -- JavaScript/TypeScript specific configuration with npm support
         cmp.setup.filetype({ "javascript", "typescript", "javascriptreact", "typescriptreact" }, {
             sources = cmp.config.sources({
-                { name = "nvim_lsp",   priority = 1000 },
                 { name = "npm",        priority = 900 },
                 { name = "luasnip",    priority = 750 },
+                -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
                 { name = "buffer",     priority = 500, keyword_length = 3 },
                 { name = "path",       priority = 250 },
@@ -205,8 +247,8 @@ return {
         cmp.setup.filetype("json", {
             sources = cmp.config.sources({
                 { name = "npm",        priority = 899 },
-                { name = "nvim_lsp",   priority = 800 },
                 { name = "luasnip",    priority = 750 },
+                -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
                 { name = "buffer",     priority = 500 },
                 { name = "path",       priority = 250 },
@@ -216,8 +258,8 @@ return {
         -- Ruby configuration (for your Ruby development)
         cmp.setup.filetype("ruby", {
             sources = cmp.config.sources({
-                { name = "nvim_lsp",   priority = 1000 },
                 { name = "luasnip",    priority = 750 },
+                -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
                 { name = "buffer",     priority = 500, keyword_length = 3 },
                 { name = "path",       priority = 250 },
@@ -227,8 +269,8 @@ return {
         -- PHP configuration (for your Laravel development)
         cmp.setup.filetype("php", {
             sources = cmp.config.sources({
-                { name = "nvim_lsp",   priority = 1000 },
                 { name = "luasnip",    priority = 750 },
+                -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
                 { name = "buffer",     priority = 500, keyword_length = 3 },
                 { name = "path",       priority = 250 },
@@ -238,8 +280,8 @@ return {
         -- Shell script configuration (for your bash scripting)
         cmp.setup.filetype({ "sh", "bash", "zsh" }, {
             sources = cmp.config.sources({
-                { name = "nvim_lsp",   priority = 1000 },
                 { name = "luasnip",    priority = 750 },
+                -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
                 { name = "buffer",     priority = 500, keyword_length = 2 },
                 { name = "path",       priority = 800 }, -- Higher priority for shell scripts

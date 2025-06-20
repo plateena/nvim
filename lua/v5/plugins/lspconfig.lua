@@ -350,7 +350,7 @@ return {
 
         -- Enhanced diagnostic configuration
         vim.diagnostic.config({
-            underline = true,
+            underline = false,
             virtual_text = {
                 spacing = 4,
                 prefix = "●",

@@ -1,10 +1,11 @@
 return {
     "hrsh7th/vim-vsnip",
+    enabled = false,
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-        "hrsh7th/vim-vsnip-integ",
-        "rafamadriz/friendly-snippets",
-    },
+    -- dependencies = {
+    --     "hrsh7th/vim-vsnip-integ",
+    --     "rafamadriz/friendly-snippets",
+    -- },
     config = function()
         vim.cmd("let g:vsnip_snippet_dir='" .. vim.fn.stdpath("config") .. "/snippets'")
 
