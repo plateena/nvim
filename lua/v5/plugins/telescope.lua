@@ -70,6 +70,31 @@ return {
             })
         end
 
+        local function grep_in_dir_picker()
+            builtin.find_files({
+                prompt_title = "Select Directory to Grep",
+                find_command = { "find", ".", "-type", "d", "-not", "-path", "*/.*" },
+                attach_mappings = function(prompt_bufnr, map)
+                    local actions = require('telescope.actions')
+                    local action_state = require('telescope.actions.state')
+                    
+                    map('i', '<CR>', function()
+                        local selection = action_state.get_selected_entry()
+                        actions.close(prompt_bufnr)
+                        
+                        if selection then
+                            builtin.live_grep({ 
+                                search_dirs = { selection.path },
+                                prompt_title = "Live Grep in " .. selection.value
+                            })
+                        end
+                    end)
+                    
+                    return true
+                end,
+            })
+        end
+
         -- load extension
         telescope.load_extension("fzf")
 
@@ -78,6 +103,7 @@ return {
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find file" })
         vim.keymap.set("n", "<leader>fF", builtin.live_grep, { desc = "Live grep" })
         vim.keymap.set("n", "<leader>fG", grep_git_files, { desc = "Live grep git files" })
+        vim.keymap.set("n", "<leader>fD", grep_in_dir_picker, { desc = "Live grep in dir" })
         vim.keymap.set("n", "<leader>fs", builtin.grep_string, { desc = "Search string in working directory" })
         vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Git file" })
         vim.keymap.set("n", "<leader>fa", builtin.git_status, { desc = "Git status" })
