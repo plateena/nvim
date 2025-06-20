@@ -12,7 +12,7 @@ return {
             desc = "Format buffer",
         },
         {
-            "<space>lf",
+            "<space>lt",
             function()
                 vim.g.conform_format_on_save = not vim.g.conform_format_on_save
                 print("Format on save: " .. (vim.g.conform_format_on_save and "enabled" or "disabled"))
