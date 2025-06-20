@@ -10,7 +10,6 @@ return {
         local actions = require("telescope.actions")
         local builtin = require("telescope.builtin")
         local open_with_trouble = require("trouble.sources.telescope").open
-        local add_to_trouble = require("trouble.sources.telescope").add
 
         telescope.setup({
             defaults = {
@@ -75,21 +74,20 @@ return {
                 prompt_title = "Select Directory to Grep",
                 find_command = { "find", ".", "-type", "d", "-not", "-path", "*/.*" },
                 attach_mappings = function(prompt_bufnr, map)
-                    local actions = require('telescope.actions')
                     local action_state = require('telescope.actions.state')
-                    
+
                     map('i', '<CR>', function()
                         local selection = action_state.get_selected_entry()
                         actions.close(prompt_bufnr)
-                        
+
                         if selection then
-                            builtin.live_grep({ 
+                            builtin.live_grep({
                                 search_dirs = { selection.path },
                                 prompt_title = "Live Grep in " .. selection.value
                             })
                         end
                     end)
-                    
+
                     return true
                 end,
             })

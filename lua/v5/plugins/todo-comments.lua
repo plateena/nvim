@@ -122,36 +122,63 @@ return {
             require("todo-comments").jump_prev()
         end, { desc = "Previous todo comment" })
 
-        local map = vim.keymap.set
         local pickers = require("telescope.pickers")
         local finders = require("telescope.finders")
         local actions = require("telescope.actions")
         local action_state = require("telescope.actions.state")
         local conf = require("telescope.config").values
+        local scan = require("plenary.scandir")
+        local fn = vim.fn
+
+        -- In-memory cache (session only)
+        local dir_cache = nil
+        local recent_dirs = {}
 
         map("n", "<leader>st", function()
-            local scan = require("plenary.scandir")
-            local cwd = vim.fn.getcwd()
+            local cwd = fn.getcwd()
 
-            -- Absolute paths
-            local abs_dirs = scan.scan_dir(cwd, {
-                only_dirs = true,
-                depth = 3,
-                respect_gitignore = true,
-            })
+            -- 1. Cache scanned directories
+            if not dir_cache then
+                local abs_dirs = scan.scan_dir(cwd, {
+                    only_dirs = true,
+                    depth = 7,
+                    respect_gitignore = true,
+                })
 
-            -- Show relative paths in Telescope UI
-            local entries = vim.tbl_map(function(dir)
-                return {
-                    display = vim.fn.fnamemodify(dir, ":."), -- relative from cwd
-                    value = dir,                     -- actual full path for execution
-                }
-            end, abs_dirs)
+                dir_cache = vim.tbl_map(function(dir)
+                    return {
+                        display = fn.fnamemodify(dir, ":."), -- relative display
+                        value = dir,                 -- absolute path
+                    }
+                end, abs_dirs)
+            end
 
+            -- 2. Build list: recent_dirs first, then unique dirs from dir_cache
+            local unique = {}
+            local all_entries = {}
+
+            local function add_unique(entry)
+                if not unique[entry.value] then
+                    table.insert(all_entries, entry)
+                    unique[entry.value] = true
+                end
+            end
+
+            -- Add recent first
+            for _, entry in ipairs(recent_dirs) do
+                add_unique(entry)
+            end
+
+            -- Then the full scan list
+            for _, entry in ipairs(dir_cache) do
+                add_unique(entry)
+            end
+
+            -- 3. Telescope picker with attach_mappings
             pickers.new({}, {
                 prompt_title = "Select directory for TODO search",
                 finder = finders.new_table {
-                    results = entries,
+                    results = all_entries,
                     entry_maker = function(entry)
                         return {
                             value = entry.value,
@@ -166,7 +193,24 @@ return {
                         actions.close(prompt_bufnr)
                         local entry = action_state.get_selected_entry()
                         local selected_dir = entry.value
-                        vim.cmd("TodoTelescope cwd=" .. vim.fn.fnameescape(selected_dir))
+
+                        -- 4. Update recent cache
+                        table.insert(recent_dirs, 1, {
+                            value = selected_dir,
+                            display = fn.fnamemodify(selected_dir, ":."),
+                        })
+
+                        -- Remove duplicates
+                        local seen = {}
+                        recent_dirs = vim.tbl_filter(function(item)
+                            if seen[item.value] then
+                                return false
+                            end
+                            seen[item.value] = true
+                            return true
+                        end, recent_dirs)
+
+                        vim.cmd("TodoTelescope cwd=" .. fn.fnameescape(selected_dir))
                     end)
                     return true
                 end,
