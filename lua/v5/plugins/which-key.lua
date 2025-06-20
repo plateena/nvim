@@ -22,13 +22,13 @@ return {
         })
 
         which_key.add({
-            { "<leader>b", group = "Buffer" },
-            { "<leader>e", group = "Nerd Tree" },
-            { "<leader>f", group = "Telescope" },
+            { "<leader>b",   group = "Buffer" },
+            { "<leader>e",   group = "Nerd Tree" },
+            { "<leader>f",   group = "Telescope" },
 
-            { "<leader>o", group = "Options" },
-            { "<leader>oy", group = "Yank" },
-            { "<leader>oyi", "<Cmd>setlocal paste<Cr>", desc = "Set paste true" },
+            { "<leader>o",   group = "Options" },
+            { "<leader>oy",  group = "Yank" },
+            { "<leader>oyi", "<Cmd>setlocal paste<Cr>",   desc = "Set paste true" },
             { "<leader>oyo", "<Cmd>setlocal nopaste<Cr>", desc = "Set paste false" },
         })
     end,

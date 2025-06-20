@@ -1,61 +1,69 @@
 return {
     "stevearc/conform.nvim",
-    -- event = { "BufReadPre", "BufNewFile" },
-    ft = { "js", "ts", "php", "html", "css", "scss", "lua", "bash", "sh", "ts", "tsx", "jsx", "yaml", "json", "md" },
+    ft = {
+        "js", "ts", "php", "html", "css", "scss", "lua", "bash",
+        "sh", "tsx", "jsx", "yaml", "json", "md"
+    },
     config = function()
         local conform = require("conform")
+
+        local php_plugin = "/home/zack/.dotfiles/npm-global/lib/node_modules/@prettier/plugin-php/src/index.mjs"
+        local ruby_plugin = "/home/zack/.dotfiles/npm-global/lib/node_modules/@prettier/plugin-ruby/src/plugin.js"
+        local prettier_config = "/home/zack/.dotfiles/.prettierrc"
+
         conform.setup({
             formatters = {
                 prettier = {
                     command = "npx",
                     args = {
                         "prettier",
-                        "--stdin-filepath",
-                        "$FILENAME",
-                        "--plugin",
-                        "/home/zack/.dotfiles/npm-global/lib/node_modules/@prettier/plugin-php/src/index.mjs",
-                        "--config",
-                        "/home/zack/.dotfiles/.prettierrc",
-                        stdin = true,
+                        "--stdin-filepath", "$FILENAME",
+                        "--plugin", php_plugin,
+                        "--plugin", ruby_plugin,
+                        "--config", prettier_config
                     },
+                    stdin = true,
                 },
             },
             formatters_by_ft = {
-                bash = { "beautysh", "beautysh" },
+                bash = { "beautysh" },
+                sh = { "beautysh" },
+                zsh = { "beautysh" },
                 css = { "prettier" },
+                scss = { "prettier" },
+                html = { "prettier" },
                 javascript = { "prettier" },
+                typescript = { "prettier" },
+                tsx = { "prettier" },
+                jsx = { "prettier" },
                 json = { "prettier" },
-                lua = { "stylua" },
+                yaml = { "prettier" },
                 markdown = { "prettier" },
+                lua = { "stylua" },
                 php = { "prettier", "phpcbf" },
                 ruby = { "prettier" },
-                sh = { "beautysh" },
-                typescript = { "prettier" },
-                yaml = { "prettier" },
-                zsh = { "beautysh" },
             },
-            -- format_on_save = {
-            --     lsp_fallback = true,
-            --     async = false,
-            --     timeout_ms = 1000,
-            -- },
+            format_on_save = function(bufnr)
+                if vim.g.format_on_save_enabled then
+                    return {
+                        timeout_ms = 500,
+                        lsp_fallback = true,
+                    }
+                end
+            end,
         })
 
         vim.keymap.set({ "n", "v" }, "<leader>mp", function()
             if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
-                -- Get the start and end positions of the visual selection
                 local start_pos = vim.fn.getpos("'<")
                 local end_pos = vim.fn.getpos("'>")
-                -- Convert positions to a range table
                 local range = {
                     start = { start_pos[2], start_pos[3] },
                     ["end"] = { end_pos[2], end_pos[3] },
                 }
-                -- Format the selected range
-                require("conform").format({ range = range })
+                conform.format({ range = range })
             else
-                -- Format the entire buffer in Normal mode
-                require("conform").format()
+                conform.format()
             end
         end, { desc = "Format code" })
     end,

@@ -4,7 +4,7 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim", opts = {} },
+        { "folke/neodev.nvim",                   opts = {} },
         {
             "j-hui/fidget.nvim",
             opts = {
@@ -174,7 +174,8 @@ return {
                         schemas = {
                             ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*.{yml,yaml}",
                             ["https://json.schemastore.org/docker-compose.json"] = "/docker-compose*.{yml,yaml}",
-                            ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "/openapi*.{yml,yaml}",
+                            ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] =
+                            "/openapi*.{yml,yaml}",
                         },
                         schemaStore = {
                             enable = true,
@@ -263,7 +264,7 @@ return {
             map("n", "<space>lrn", vim.lsp.buf.rename, "LSP: Rename")
 
             -- Formatting
-            if client.supports_method("textDocument/formatting") then
+            if client:supports_method("textDocument/formatting") then
                 map({ "n", "v" }, "<space>lf", function()
                     vim.lsp.buf.format({
                         async = true,
@@ -326,10 +327,10 @@ return {
 
             -- Create LSP which-key group
             if pcall(require, "which-key") then
-                require("which-key").register({
-                    ["<space>l"] = { name = "LSP" },
-                    ["<space>t"] = { name = "Test" },
-                }, { buffer = bufnr })
+                require("which-key").add({
+                    { "<space>l", group = "LSP" },
+                    { "<space>t", group = "Test" },
+                })
             end
         end
 
