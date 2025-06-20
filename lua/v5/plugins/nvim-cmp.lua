@@ -2,15 +2,15 @@ return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
+        "David-Kunz/cmp-npm", -- Added npm package completion
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-path",
-        "ray-x/cmp-treesitter", -- Added treesitter completion
-        "David-Kunz/cmp-npm",   -- Added npm package completion
-        "petertriho/cmp-git",   -- Added git completion (was missing)
         "onsails/lspkind.nvim",
+        "petertriho/cmp-git",   -- Added git completion (was missing)
+        "ray-x/cmp-treesitter", -- Added treesitter completion
         "saadparwaiz1/cmp_luasnip",
     },
     config = function()
@@ -174,6 +174,7 @@ return {
         -- Enhanced filetype-specific configurations
         cmp.setup.filetype("gitcommit", {
             sources = cmp.config.sources({
+                { name = "luasnip" },
                 { name = "git" },
                 { name = "buffer" },
             })
@@ -203,8 +204,9 @@ return {
         -- JSON files (package.json, composer.json, etc.) with npm support
         cmp.setup.filetype("json", {
             sources = cmp.config.sources({
-                { name = "npm",        priority = 900 },
+                { name = "npm",        priority = 899 },
                 { name = "nvim_lsp",   priority = 800 },
+                { name = "luasnip",    priority = 750 },
                 { name = "treesitter", priority = 650 },
                 { name = "buffer",     priority = 500 },
                 { name = "path",       priority = 250 },
