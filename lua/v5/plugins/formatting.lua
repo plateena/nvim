@@ -1,26 +1,60 @@
 return {
     "stevearc/conform.nvim",
     ft = {
-        "js", "ts", "php", "html", "css", "scss", "lua", "bash",
-        "sh", "tsx", "jsx", "yaml", "json", "md"
+        "javascript", "typescript", "php", "html", "css", "scss", "lua", "bash",
+        "sh", "tsx", "jsx", "yaml", "json", "markdown", "ruby"
+    },
+    keys = {
+        {
+            "<leader>mp",
+            function()
+                if vim.fn.mode():match("[vV]") then
+                    local s_pos = vim.fn.getpos("'<")
+                    local e_pos = vim.fn.getpos("'>")
+                    require("conform").format({
+                        range = {
+                            start = { s_pos[2], s_pos[3] - 1 },   -- Convert to 0-indexed
+                            ["end"] = { e_pos[2], e_pos[3] - 1 }, -- Convert to 0-indexed
+                        },
+                    })
+                else
+                    require("conform").format()
+                end
+            end,
+            mode = { "n", "v" },
+            desc = "Format code or selected range",
+        },
     },
     config = function()
         local conform = require("conform")
-
         local php_plugin = "/home/zack/.dotfiles/npm-global/lib/node_modules/@prettier/plugin-php/src/index.mjs"
-        local ruby_plugin = "/home/zack/.dotfiles/npm-global/lib/node_modules/@prettier/plugin-ruby/src/plugin.js"
         local prettier_config = "/home/zack/.dotfiles/.prettierrc"
 
         conform.setup({
             formatters = {
-                prettier = {
-                    command = "npx",
+                prettier_with_php = {
+                    command = "prettier",
                     args = {
-                        "prettier",
                         "--stdin-filepath", "$FILENAME",
                         "--plugin", php_plugin,
-                        "--plugin", ruby_plugin,
                         "--config", prettier_config
+                    },
+                    stdin = true,
+                },
+                prettier_standard = {
+                    command = "prettier",
+                    args = {
+                        "--stdin-filepath", "$FILENAME",
+                        "--config", prettier_config
+                    },
+                    stdin = true,
+                },
+                rubocop_fix = {
+                    command = "rubocop",
+                    args = {
+                        "--stdin", "$FILENAME",
+                        "--auto-correct",
+                        "--format", "quiet"
                     },
                     stdin = true,
                 },
@@ -29,42 +63,28 @@ return {
                 bash = { "beautysh" },
                 sh = { "beautysh" },
                 zsh = { "beautysh" },
-                css = { "prettier" },
-                scss = { "prettier" },
-                html = { "prettier" },
-                javascript = { "prettier" },
-                typescript = { "prettier" },
-                tsx = { "prettier" },
-                jsx = { "prettier" },
-                json = { "prettier" },
-                yaml = { "prettier" },
-                markdown = { "prettier" },
+                css = { "prettier_standard" },
+                scss = { "prettier_standard" },
+                html = { "prettier_standard" },
+                javascript = { "prettier_standard" },
+                typescript = { "prettier_standard" },
+                tsx = { "prettier_standard" },
+                jsx = { "prettier_standard" },
+                json = { "prettier_standard" },
+                yaml = { "prettier_standard" },
+                markdown = { "prettier_standard" },
                 lua = { "stylua" },
-                php = { "prettier", "phpcbf" },
-                ruby = { "prettier" },
+                php = { "prettier_with_php", "phpcbf" },
+                ruby = { "rubocop_fix" }, -- Using custom rubocop formatter
             },
             format_on_save = function(bufnr)
                 if vim.g.format_on_save_enabled then
                     return {
-                        timeout_ms = 500,
+                        timeout_ms = 3000, -- Increased timeout
                         lsp_fallback = true,
                     }
                 end
             end,
         })
-
-        vim.keymap.set({ "n", "v" }, "<leader>mp", function()
-            if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
-                local start_pos = vim.fn.getpos("'<")
-                local end_pos = vim.fn.getpos("'>")
-                local range = {
-                    start = { start_pos[2], start_pos[3] },
-                    ["end"] = { end_pos[2], end_pos[3] },
-                }
-                conform.format({ range = range })
-            else
-                conform.format()
-            end
-        end, { desc = "Format code" })
     end,
 }

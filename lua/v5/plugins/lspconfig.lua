@@ -59,7 +59,7 @@ return {
                 filetypes = {
                     "blade",
                     "css",
-                    "eruby",
+                    "ruby",
                     "html",
                     "javascript",
                     "javascriptreact",
