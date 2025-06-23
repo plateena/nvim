@@ -19,8 +19,6 @@ opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
 opt.colorcolumn = '120'
 opt.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
-api.nvim_set_hl(0, "CursorLine", { bg = "#2e2e2e" })
-
 
 opt.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)
 opt.encoding = "utf-8"    -- Just in case
