@@ -56,7 +56,7 @@ vim.keymap.set({ 'n', 'v' }, "<leader>p", "\"+p", { desc = "Paste without the vo
 
 vim.keymap.set('n', '<Leader>sv', ':source ~/.config/nvim/init.lua<Cr>', { desc = "Resource vim config file" })
 vim.keymap.set('n', '<Leader>w', ':write<CR>', { desc = "Write file" })
-vim.keymap.set('n', '<Leader>q', ':q<CR>', { desc = "Quit nvim" })
+vim.keymap.set('n', '<Leader>qq', ':q<CR>', { desc = "Quit nvim" })
 vim.keymap.set('n', '<Leader>bd', ':bd<CR>', { desc = "Buffer delete" })
 vim.keymap.set('n', '<Leader>bD', ':bufdo bd<CR>', { desc = "Delete all buffer" })
 

@@ -30,6 +30,14 @@ return {
             { "<leader>oy",  group = "Yank" },
             { "<leader>oyi", "<Cmd>setlocal paste<Cr>",   desc = "Set paste true" },
             { "<leader>oyo", "<Cmd>setlocal nopaste<Cr>", desc = "Set paste false" },
+            {
+                "<leader>oh",
+                function()
+                    vim.o.hlsearch = not vim.o.hlsearch
+                    print("hlsearch: " .. (vim.o.hlsearch and "on" or "off"))
+                end,
+                desc = "Toggle hlsearch",
+            },
         })
     end,
 }
