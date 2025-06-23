@@ -1,13 +1,13 @@
 local opt = vim.opt
 local g = vim.g
-local o = vim.o
+local api = vim.api
 
-vim.g.OmniSharp_server_stdio = 0
+g.OmniSharp_server_stdio = 0
 
-vim.opt.list = true
-vim.opt.listchars:append "space:⋅"
-vim.opt.listchars:append "eol:↴"
--- vim.opt.clipboard:append('unnamedplus')
+opt.list = true
+opt.listchars:append "space:⋅"
+opt.listchars:append "eol:↴"
+-- opt.clipboard:append('unnamedplus')
 
 opt.autoindent = true
 opt.smartindent = true
@@ -17,48 +17,51 @@ opt.concealcursor=""
 opt.foldmethod="expr"
 opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
-o.colorcolumn = '120'
-o.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
-o.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)
-o.encoding = "utf-8"    -- Just in case
-o.hidden = true         -- Allow multple buffers
-o.history = 5000
-o.completeopt = "longest,menu,preview"
+opt.colorcolumn = '120'
+opt.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
+api.nvim_set_hl(0, "CursorLine", { bg = "#2e2e2e" })
 
 
-o.hlsearch = false       -- Highlight search results
-o.incsearch = true
+opt.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)
+opt.encoding = "utf-8"    -- Just in case
+opt.hidden = true         -- Allow multple buffers
+opt.history = 5000
+opt.completeopt = "longest,menu,preview"
 
-o.ignorecase = true     -- Search ignoring case
-o.mouse="i"             -- Enable mouse on insert mode
+
+opt.hlsearch = false       -- Highlight search results
+opt.incsearch = true
+
+opt.ignorecase = true     -- Search ignoring case
+opt.mouse="i"             -- Enable mouse on insert mode
 
 -- line number
-o.number = true         -- Show numbers on the left
-o.relativenumber = true -- Its better if you use motions like 10j or 5yk
+opt.number = true         -- Show numbers on the left
+opt.relativenumber = true -- Its better if you use motions like 10j or 5yk
 
-o.shiftwidth = 0        -- Number of spaces to use for each step of (auto)indent
-o.showmatch  = true     -- Highlights the matching parenthesis
-o.showmode = false      -- Remove the -- INSERT -- message at the bottom
-o.signcolumn = "yes"    -- Always show the signcolumn, otherwise it would shift the text
-o.smartcase = true      -- Do not ignore case if the search patter has uppercase
+opt.shiftwidth = 0        -- Number of spaces to use for each step of (auto)indent
+opt.showmatch  = true     -- Highlights the matching parenthesis
+opt.showmode = false      -- Remove the -- INSERT -- message at the bottom
+opt.signcolumn = "yes"    -- Always show the signcolumn, otherwise it would shift the text
+opt.smartcase = true      -- Do not ignore case if the search patter has uppercase
 
-o.swapfile = false      -- Do not leave any backup files
-o.backup = false      -- Do not leave any backup files
-o.undofile = true      -- Do not leave any backup files
+opt.swapfile = false      -- Do not leave any backup files
+opt.backup = false      -- Do not leave any backup files
+opt.undofile = true      -- Do not leave any backup files
 
-o.expandtab = true      -- Use appropriate number of spaces (no so good for PHP but we can fix this in ft)
-o.softtabstop = 4       -- On insert use 4 spaces for tab
-o.tabstop = 4           -- Tab size of 4 spaces
-o.shiftwidth = 4           -- Tab size of 4 spaces
+opt.expandtab = true      -- Use appropriate number of spaces (no so good for PHP but we can fix this in ft)
+opt.softtabstop = 4       -- On insert use 4 spaces for tab
+opt.tabstop = 4           -- Tab size of 4 spaces
+opt.shiftwidth = 4           -- Tab size of 4 spaces
 
-vim.opt.termguicolors = true  -- Required for some themes
-vim.opt.background = "dark"
+opt.termguicolors = true  -- Required for some themes
+opt.background = "dark"
 
-o.updatetime = 50      -- I have a modern machine. No need to wait that long
--- vim.o.splitright = true     -- New vert splits are on the right
--- vim.o.splitbelow = true     -- New horizontal splits, like `:help`, are on the bottom window
--- vim.o.cmdheight=2           -- Shows better messages
--- vim.o.wrap = false          -- Wrapping sucks (except on markdown)
+opt.updatetime = 50      -- I have a modern machine. No need to wait that long
+-- opt.splitright = true     -- New vert splits are on the right
+-- opt.splitbelow = true     -- New horizontal splits, like `:help`, are on the bottom window
+-- opt.cmdheight=2           -- Shows better messages
+-- opt.wrap = false          -- Wrapping sucks (except on markdown)
 
 -- set list chars
 local list_chars_symbols = {
@@ -115,5 +118,5 @@ for _, plugin in pairs(disabled_built_ins) do
 end
 
 -- Add this at the top of your config
-vim.g.format_on_save_enabled = false
+g.format_on_save_enabled = false
 
