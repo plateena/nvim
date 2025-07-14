@@ -173,7 +173,7 @@ return {
                     yaml = {
                         schemas = {
                             ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*.{yml,yaml}",
-                            ["https://json.schemastore.org/docker-compose.json"] = "/docker-compose*.{yml,yaml}",
+                            ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose*.{yml,yaml}",
                             ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] =
                             "/openapi*.{yml,yaml}",
                         },

@@ -28,18 +28,46 @@ return {
     config = function()
         local conform = require("conform")
         local php_plugin = "/home/zack/.dotfiles/npm-global/lib/node_modules/@prettier/plugin-php/src/index.mjs"
-        local prettier_config = "/home/zack/.dotfiles/.prettierrc"
+        local fallback_config = vim.fn.expand("~/.dotfiles/.prettierrc")
+
+        -- Check if a Prettier config exists in the current working directory
+        local function has_local_prettier_config()
+            local config_files = {
+                ".prettierrc",
+                ".prettierrc.json",
+                ".prettierrc.js",
+                ".prettierrc.yaml",
+                ".prettierrc.yml",
+                "prettier.config.js",
+            }
+
+            for _, file in ipairs(config_files) do
+                local path = vim.loop.cwd() .. "/" .. file
+                local stat = vim.loop.fs_stat(path)
+                if stat then return true end
+            end
+
+            return false
+        end
 
         conform.setup({
             formatters = {
                 prettier_with_php = {
                     command = "prettier",
-                    args = {
-                        "--stdin-filepath", "$FILENAME",
-                        "--plugin", php_plugin,
-                        "--config", prettier_config
-                    },
-                    stdin = true,
+                    args = function(ctx)
+                        local args = {
+                            "--stdin-filepath", "$FILENAME",
+                            "--plugin", php_plugin,
+                        }
+
+                        if not has_local_prettier_config() then
+                            table.insert(args, "--config")
+                            table.insert(args, fallback_config)
+                        end
+
+                        return args
+                    end,
+                stdin = true,
                 },
                 prettier_standard = {
                     command = "prettier",

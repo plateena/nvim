@@ -8,54 +8,56 @@ return {
             sign_priority = 8, -- sign priority
             -- keywords recognized as todo comments
             keywords = {
-                TODO = { icon = " ", color = "info" },
+                TODO = { icon = "", color = "info" }, -- checkmark
 
                 FIX = {
-                    icon = " ",
+                    icon = "", -- bug icon
                     color = "error",
                     alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "DEBUG" },
                 },
 
-                HACK = { icon = " ", color = "warning" },
+                HACK = { icon = "", color = "warning" }, -- flame icon
 
                 WARN = {
-                    icon = " ",
+                    icon = "", -- warning sign
                     color = "warning",
                     alt = { "WARNING", "XXX" },
                 },
 
                 PERF = {
-                    icon = " ",
+                    icon = "", -- performance/speed icon
                     color = "hint",
                     alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" },
                 },
 
                 NOTE = {
-                    icon = " ",
+                    icon = "", -- note/info icon
                     color = "hint",
                     alt = { "INFO" },
                 },
 
                 TEST = {
-                    icon = "⏲ ",
+                    icon = "⏲", -- timer/clock
                     color = "test",
                     alt = { "TESTING", "PASSED", "FAILED" },
                 },
 
                 SPEC = {
-                    icon = "📄",
+                    -- icon = "📄", -- document
+                    -- icon = "", -- Nerd Font: book/manual
+                    icon = "", -- document icon
                     color = "test",
                     alt = { "SPECIFICATION", "BEHAVIOR" },
                 },
 
                 MOCK = {
-                    icon = "🧪",
+                    icon = "🧪", -- test tube
                     color = "test",
                     alt = { "STUB", "FAKE" },
                 },
 
                 REFACTOR = {
-                    icon = "♻️",
+                    icon = "", -- wrench
                     color = "hint",
                     alt = { "CLEANUP", "IMPROVE" },
                 },
@@ -77,6 +79,7 @@ return {
                 keyword = "wide",                -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
                 after = "fg",                    -- "fg" or "bg" or empty
                 pattern = {
+                    [[.*()%s+/()%s*(KEYWORDS)%s*:]], -- slim comments
                     [[.*<(KEYWORDS)\s*:]],       -- Default pattern
                     [[.*#\s*(KEYWORDS)\s*:]],    -- Ruby/Bash comments
                     [[.*//\s*(KEYWORDS)\s*:]],   -- JavaScript comments
@@ -148,7 +151,7 @@ return {
                 dir_cache = vim.tbl_map(function(dir)
                     return {
                         display = fn.fnamemodify(dir, ":."), -- relative display
-                        value = dir,                 -- absolute path
+                        value = dir,                         -- absolute path
                     }
                 end, abs_dirs)
             end

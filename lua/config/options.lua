@@ -14,7 +14,12 @@ opt.smartindent = true
 opt.wildmode="longest:list,full"
 opt.conceallevel=1
 opt.concealcursor=""
+
+-- Fold method
 opt.foldmethod="expr"
+opt.foldexpr="nvim_treesitter#foldexpr()"
+opt.foldlevel=99
+
 opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
 opt.colorcolumn = '120'
