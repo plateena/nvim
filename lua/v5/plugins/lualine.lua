@@ -25,7 +25,17 @@ return {
                 lualine_a = { "mode" },
                 lualine_b = { "branch", "diff", "diagnostics" },
                 lualine_c = { "filename" },
-                lualine_x = { "encoding", "fileformat", "filetype" },
+                lualine_x = {
+                    {
+                        function()
+                            return vim.fn["copilot#Enabled"]() == 1 and " Copilot" or ""
+                        end,
+                        color = { fg = "#50fa7b" }, -- optional styling
+                    },
+                    "encoding",
+                    "fileformat",
+                    "filetype"
+                },
                 lualine_y = { "progress" },
                 lualine_z = { "location" },
             },
