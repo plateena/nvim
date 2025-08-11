@@ -93,6 +93,26 @@ return {
             })
         end
 
+        local function live_grep_quickfix()
+            local qf_list = vim.fn.getqflist()
+            local files = {}
+            local seen = {}
+
+            for _, item in ipairs(qf_list) do
+                if item.bufnr > 0 then
+                    local filename = vim.fn.bufname(item.bufnr)
+                    if filename ~= "" and not seen[filename] then
+                        table.insert(files, filename)
+                        seen[filename] = true
+                    end
+                end
+            end
+
+            builtin.live_grep({
+                search_dirs = files
+            })
+        end
+
         -- load extension
         telescope.load_extension("fzf")
 
@@ -102,6 +122,7 @@ return {
         vim.keymap.set("n", "<leader>fF", builtin.live_grep, { desc = "Live grep" })
         vim.keymap.set("n", "<leader>fG", grep_git_files, { desc = "Live grep git files" })
         vim.keymap.set("n", "<leader>fD", grep_in_dir_picker, { desc = "Live grep in dir" })
+        vim.keymap.set("n", "<leader>fQ", live_grep_quickfix, { desc = "Live grep in quickfix" })
         vim.keymap.set("n", "<leader>fs", builtin.grep_string, { desc = "Search string in working directory" })
         vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Git file" })
         vim.keymap.set("n", "<leader>fa", builtin.git_status, { desc = "Git status" })
