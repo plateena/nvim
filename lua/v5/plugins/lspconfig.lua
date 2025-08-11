@@ -236,9 +236,11 @@ return {
                 return
             end
 
-            -- Disable semantic tokens for large files
-            if line_count > 1000 then
-                client.server_capabilities.semanticTokensProvider = nil
+            -- Disable semantic tokens for large files if supported
+            if line_count > 1000 and client.server_capabilities then
+                if client.server_capabilities.semanticTokensProvider then
+                    client.server_capabilities.semanticTokensProvider = nil
+                end
             end
 
             -- Helper function for keymaps
