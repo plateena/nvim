@@ -234,7 +234,7 @@ return {
         -- JavaScript/TypeScript specific configuration with npm support
         cmp.setup.filetype({ "javascript", "typescript", "javascriptreact", "typescriptreact" }, {
             sources = cmp.config.sources({
-                { name = "copilot",    priority = 1000 },
+                -- { name = "copilot",    priority = 1000 },
                 { name = "npm",        priority = 900 },
                 { name = "luasnip",    priority = 750 },
                 -- { name = "nvim_lsp",   priority = 700 },
@@ -259,7 +259,7 @@ return {
         -- Ruby configuration (for your Ruby development)
         cmp.setup.filetype("ruby", {
             sources = cmp.config.sources({
-                { name = "copilot",    priority = 1000 },
+                -- { name = "copilot",    priority = 1000 },
                 { name = "luasnip",    priority = 750 },
                 -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
@@ -271,7 +271,7 @@ return {
         -- PHP configuration (for your Laravel development)
         cmp.setup.filetype("php", {
             sources = cmp.config.sources({
-                { name = "copilot",    priority = 1000 },
+                -- { name = "copilot",    priority = 1000 },
                 { name = "luasnip",    priority = 750 },
                 -- { name = "nvim_lsp",   priority = 700 },
                 { name = "treesitter", priority = 650 },
