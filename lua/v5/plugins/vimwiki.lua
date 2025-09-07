@@ -14,21 +14,38 @@ return {
             }
             vim.g.vimwiki_key_mappings = { all_maps = 0, global = 0 }
         end,
+
         config = function()
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = { "markdown", "vimwiki" },
                 callback = function(args)
-                    vim.keymap.set(
-                        "n",
-                        "<CR>",
-                        "<Plug>VimwikiFollowLink",
-                        { buffer = args.buf, desc = "Vimwiki: follow link", noremap = true }
-                    )
+                    -- Follow link
+                    vim.keymap.set("n", "<CR>", "<Plug>VimwikiFollowLink", {
+                        buffer = args.buf,
+                        desc = "Vimwiki: follow link",
+                        noremap = true,
+                        silent = true,
+                    })
+
+                    -- Next link with count support
+                    vim.keymap.set("n", "<Tab>", function()
+                        local count = vim.v.count1
+                        for _ = 1, count do
+                            vim.cmd("VimwikiNextLink")
+                        end
+                    end, { buffer = args.buf, desc = "Vimwiki: next link (with count)" })
+
+                    -- Previous link with count support
+                    vim.keymap.set("n", "<S-Tab>", function()
+                        local count = vim.v.count1
+                        for _ = 1, count do
+                            vim.cmd("VimwikiPrevLink")
+                        end
+                    end, { buffer = args.buf, desc = "Vimwiki: previous link (with count)" })
                 end,
             })
         end,
 
-        -- Move render-markdown into dependencies
         dependencies = {
             {
                 "MeanderingProgrammer/render-markdown.nvim",

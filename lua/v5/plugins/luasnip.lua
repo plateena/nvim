@@ -26,7 +26,7 @@ return {
         -- Enhanced LuaSnip configuration
         luasnip.config.setup({
             enable_autosnippets = true,
-            store_selection_keys = "<Tab>", -- For visual selection snippets
+            store_selection_keys = "<C-s>", -- For visual selection snippets
             update_events = { "TextChangedI", "TextChangedP" },
             delete_check_events = { "TextChanged", "InsertLeave" },
             ext_opts = {
@@ -86,20 +86,20 @@ return {
 
         -- Key mappings for snippet navigation (using non-conflicting keys)
         vim.keymap.set({ "i", "s" }, "<Tab>", function()
-            if luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
+            if require("luasnip").expand_or_locally_jumpable() then
+                return "<Plug>luasnip-expand-or-jump"
             else
                 return "<Tab>"
             end
-        end, { desc = "Expand snippet or jump to next node", silent = true, expr = true })
+        end, { expr = true, silent = true })
 
         vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
-            if luasnip.jumpable(-1) then
-                luasnip.jump(-1)
+            if require("luasnip").jumpable(-1) then
+                return "<Plug>luasnip-jump-prev"
             else
                 return "<S-Tab>"
             end
-        end, { desc = "Jump to previous snippet node", silent = true, expr = true })
+        end, { expr = true, silent = true })
 
         vim.keymap.set({ "i", "s" }, "<C-p>", function()
             if luasnip.choice_active() then
