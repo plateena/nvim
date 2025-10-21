@@ -19,7 +19,7 @@ return {
         },
     },
     config = function()
-        local lspconfig = require("lspconfig")
+        -- local lspconfig = require("lspconfig")
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
         -- Constants
@@ -99,7 +99,7 @@ return {
             -- PHP/Laravel
             phpactor = {
                 filetypes = { "php", "blade", "blade.php" },
-                root_dir = lspconfig.util.root_pattern("composer.json", ".git"),
+                root_dir = vim.fs.root(0,{"composer.json", ".git"}),
                 init_options = {
                     ["language_server_phpstan.enabled"] = true,
                     ["language_server_psalm.enabled"] = false,
@@ -121,7 +121,7 @@ return {
             -- Ruby
             ruby_lsp = {
                 cmd = { "ruby-lsp" },
-                root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
+                root_dir = vim.fs.root(0, {"Gemfile", ".git"}),
                 init_options = {
                     formatter = "rubocop",
                 },
@@ -129,7 +129,7 @@ return {
 
             rubocop = {
                 cmd = { "rubocop", "--lsp" },
-                root_dir = lspconfig.util.root_pattern(".rubocop.yml", "Gemfile", ".git"),
+                root_dir = vim.fs.root(0, {".rubocop.yml", "Gemfile", ".git"}),
             },
 
             -- Lua
@@ -337,18 +337,19 @@ return {
         end
 
         -- Setup servers
-        for name, opts in pairs(servers) do
-            opts.capabilities = capabilities
-            opts.on_attach = on_attach
+            for name, opts in pairs(servers) do
+                opts.capabilities = capabilities
+                opts.on_attach = on_attach
 
-            local ok, err = pcall(function()
-                lspconfig[name].setup(opts)
-            end)
+                local ok, err = pcall(function()
+                    vim.lsp.config[name] = opts
+                    vim.lsp.enable(name)
+                end)
 
-            if not ok then
-                vim.notify(string.format("Failed to setup LSP server '%s': %s", name, err), vim.log.levels.ERROR)
+                if not ok then
+                    vim.notify(string.format("Failed to enable LSP server '%s': %s", name, err), vim.log.levels.ERROR)
+                end
             end
-        end
 
         -- Enhanced diagnostic configuration
         vim.diagnostic.config({

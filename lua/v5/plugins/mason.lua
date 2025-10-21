@@ -8,7 +8,9 @@ return {
         local mason = require("mason")
         local mason_lspconfig = require("mason-lspconfig")
         local mason_tool_installer = require("mason-tool-installer")
-        local lspconfig = require("lspconfig")
+
+        -- 🧩 Remove deprecated require("lspconfig")
+        -- local lspconfig = require("lspconfig") ← REMOVE THIS LINE
 
         -- Function to check file size
         local function is_file_too_large(bufnr, max_lines)
@@ -29,6 +31,7 @@ return {
         }
 
         mason.setup()
+
         mason_lspconfig.setup({
             automatic_enable = false,
             ensure_installed = {
@@ -50,7 +53,7 @@ return {
         })
 
         for _, server in ipairs(auto_enable_servers) do
-            lspconfig[server].setup({
+            vim.lsp.config[server] = {
                 on_attach = function(client, bufnr)
                     local too_large, line_count = is_file_too_large(bufnr)
                     if too_large then
@@ -61,7 +64,15 @@ return {
                         )
                     end
                 end,
-            })
+            }
+
+            local ok, err = pcall(function()
+                vim.lsp.enable(server)
+            end)
+
+            if not ok then
+                vim.notify(string.format("Failed to enable LSP server '%s': %s", server, err), vim.log.levels.ERROR)
+            end
         end
 
         mason_tool_installer.setup({
