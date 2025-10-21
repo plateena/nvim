@@ -66,6 +66,10 @@ opt.updatetime = 50      -- I have a modern machine. No need to wait that long
 -- opt.cmdheight=2           -- Shows better messages
 -- opt.wrap = false          -- Wrapping sucks (except on markdown)
 
+-- Spell
+opt.spell = true
+opt.spelllang = { 'en_us' }
+
 -- set list chars
 local list_chars_symbols = {
 	-- ["eol"] = "↲",
@@ -101,7 +105,7 @@ local disabled_built_ins = {
 	"tar",
 	"tarPlugin",
 	"rrhelper",
-	"spellfile_plugin",
+	-- "spellfile_plugin",
 	"vimball",
 	"vimballPlugin",
 	"zip",
