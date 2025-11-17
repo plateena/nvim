@@ -3,94 +3,41 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-        require("todo-comments").setup({
-            signs = true,      -- show icons in the signs column
-            sign_priority = 8, -- sign priority
-            -- keywords recognized as todo comments
+        local todo = require("todo-comments")
+
+        todo.setup({
+            signs = true,
+            sign_priority = 8,
+
             keywords = {
-                TODO = { icon = "", color = "info" }, -- checkmark
-
-                FIX = {
-                    icon = "", -- bug icon
-                    color = "error",
-                    alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "DEBUG" },
-                },
-
-                HACK = { icon = "", color = "warning" }, -- flame icon
-
-                WARN = {
-                    icon = "", -- warning sign
-                    color = "warning",
-                    alt = { "WARNING", "XXX" },
-                },
-
-                PERF = {
-                    icon = "", -- performance/speed icon
-                    color = "hint",
-                    alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" },
-                },
-
-                NOTE = {
-                    icon = "", -- note/info icon
-                    color = "hint",
-                    alt = { "INFO" },
-                },
-
-                TEST = {
-                    icon = "⏲", -- timer/clock
-                    color = "test",
-                    alt = { "TESTING", "PASSED", "FAILED" },
-                },
-
-                SPEC = {
-                    -- icon = "📄", -- document
-                    -- icon = "", -- Nerd Font: book/manual
-                    icon = "", -- document icon
-                    color = "test",
-                    alt = { "SPECIFICATION", "BEHAVIOR" },
-                },
-
-                MOCK = {
-                    icon = "🧪", -- test tube
-                    color = "test",
-                    alt = { "STUB", "FAKE" },
-                },
-
-                REFACTOR = {
-                    icon = "", -- wrench
-                    color = "hint",
-                    alt = { "CLEANUP", "IMPROVE" },
-                },
+                TODO = { icon = "", color = "info" },
+                FIX = { icon = "", color = "error", alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "DEBUG" } },
+                HACK = { icon = "", color = "warning" },
+                WARN = { icon = "", color = "warning", alt = { "WARNING", "XXX" } },
+                PERF = { icon = "", color = "hint", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                NOTE = { icon = "", color = "hint", alt = { "INFO" } },
+                TEST = { icon = "⏲", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+                SPEC = { icon = "", color = "test", alt = { "SPECIFICATION", "BEHAVIOR" } },
+                MOCK = { icon = "🧪", color = "test", alt = { "STUB", "FAKE" } },
+                REFACTOR = { icon = "", color = "hint", alt = { "CLEANUP", "IMPROVE" } },
             },
-            gui_style = {
-                fg = "NONE",       -- The gui style to use for the fg highlight group.
-                bg = "BOLD",       -- The gui style to use for the bg highlight group.
-            },
-            merge_keywords = true, -- when true, custom keywords will be merged with the defaults
-            -- highlighting of the line containing the todo comment
-            -- * before: highlights before the keyword (typically comment characters)
-            -- * keyword: highlights of the keyword
-            -- * after: highlights after the keyword (todo text)
+
             highlight = {
-                multiline = true,                -- enable multine todo comments
-                multiline_pattern = "^.",        -- lua pattern to match the next multiline from the start of the matched keyword
-                multiline_context = 5,           -- extra lines that will be re-evaluated when changing a line (reduced for better performance)
-                before = "",                     -- "fg" or "bg" or empty
-                keyword = "wide",                -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty. (wide and wide_bg is the same as bg, but will also highlight surrounding characters, wide_fg acts accordingly but with fg)
-                after = "fg",                    -- "fg" or "bg" or empty
-                pattern = {
-                    [[.*()%s+/()%s*(KEYWORDS)%s*:]], -- slim comments
-                    [[.*<(KEYWORDS)\s*:]],       -- Default pattern
-                    [[.*#\s*(KEYWORDS)\s*:]],    -- Ruby/Bash comments
-                    [[.*//\s*(KEYWORDS)\s*:]],   -- JavaScript comments
-                    [[.*<!--\s*(KEYWORDS)\s*:]], -- HTML comments
-                },                               -- pattern or table of patterns, used for highlighting (vim regex)
-                comments_only = true,            -- uses treesitter to match keywords in comments only
-                max_line_len = 400,              -- ignore lines longer than this
-                exclude = {},                    -- list of file types to exclude highlighting
+                multiline = true,
+                multiline_pattern = "^.",
+                multiline_context = 5,
+                before = "",
+                keyword = "wide",
+                after = "fg",
+
+                -- ✅ fully valid Vim regex
+                pattern = [[\v<(KEYWORDS)>\s*:]],
+
+                comments_only = true,
+                max_line_len = 400,
+                exclude = {},
             },
-            -- list of named colors where we try to extract the guifg from the
-            -- list of highlight groups or use the hex color if hl not found as a fallback
+
             colors = {
                 error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
                 warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
@@ -99,6 +46,7 @@ return {
                 default = { "Identifier", "#7C3AED" },
                 test = { "Identifier", "#FF00FF" },
             },
+
             search = {
                 command = "rg",
                 args = {
@@ -108,23 +56,21 @@ return {
                     "--line-number",
                     "--column",
                 },
-                -- regex that will be used to match keywords.
-                -- don't replace the (KEYWORDS) placeholder
-                pattern = [[\b(KEYWORDS):]], -- ripgrep regex
-                -- pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
+
+                -- ✅ valid ripgrep regex
+                pattern = [[\b(KEYWORDS):]],
             },
         })
 
-        -- Set up useful keymaps for todo navigation
-        local map = vim.keymap.set
-        map("n", "]t", function()
-            require("todo-comments").jump_next()
-        end, { desc = "Next todo comment" })
+        ------------------------------------------------------------------------
+        -- ✅ Keymaps (cleaned up)
+        ------------------------------------------------------------------------
+        vim.keymap.set("n", "]t", todo.jump_next, { desc = "Next TODO comment" })
+        vim.keymap.set("n", "[t", todo.jump_prev, { desc = "Previous TODO comment" })
 
-        map("n", "[t", function()
-            require("todo-comments").jump_prev()
-        end, { desc = "Previous todo comment" })
-
+        ------------------------------------------------------------------------
+        -- ✅ Telescope directory picker (optimized, same behavior)
+        ------------------------------------------------------------------------
         local pickers = require("telescope.pickers")
         local finders = require("telescope.finders")
         local actions = require("telescope.actions")
@@ -133,87 +79,77 @@ return {
         local scan = require("plenary.scandir")
         local fn = vim.fn
 
-        -- In-memory cache (session only)
         local dir_cache = nil
         local recent_dirs = {}
 
-        map("n", "<leader>st", function()
+        vim.keymap.set("n", "<leader>st", function()
             local cwd = fn.getcwd()
 
-            -- 1. Cache scanned directories
+            -- ✅ Cache the directory list (first run only)
             if not dir_cache then
                 local abs_dirs = scan.scan_dir(cwd, {
                     only_dirs = true,
-                    depth = 7,
+                    depth = 7,                -- ✅ you asked to keep this
                     respect_gitignore = true,
                 })
 
                 dir_cache = vim.tbl_map(function(dir)
                     return {
-                        display = fn.fnamemodify(dir, ":."), -- relative display
-                        value = dir,                         -- absolute path
+                        display = fn.fnamemodify(dir, ":."), -- show relative path
+                        value = dir,                         -- actual directory
                     }
                 end, abs_dirs)
             end
 
-            -- 2. Build list: recent_dirs first, then unique dirs from dir_cache
-            local unique = {}
-            local all_entries = {}
+            -- ✅ Merge recent dirs + cached dirs (unique)
+            local seen = {}
+            local entries = {}
 
-            local function add_unique(entry)
-                if not unique[entry.value] then
-                    table.insert(all_entries, entry)
-                    unique[entry.value] = true
+            local function add(entry)
+                if not seen[entry.value] then
+                    seen[entry.value] = true
+                    table.insert(entries, entry)
                 end
             end
 
-            -- Add recent first
-            for _, entry in ipairs(recent_dirs) do
-                add_unique(entry)
-            end
+            for _, e in ipairs(recent_dirs) do add(e) end
+            for _, e in ipairs(dir_cache) do add(e) end
 
-            -- Then the full scan list
-            for _, entry in ipairs(dir_cache) do
-                add_unique(entry)
-            end
-
-            -- 3. Telescope picker with attach_mappings
+            -- ✅ Telescope picker
             pickers.new({}, {
                 prompt_title = "Select directory for TODO search",
-                finder = finders.new_table {
-                    results = all_entries,
-                    entry_maker = function(entry)
+                finder = finders.new_table({
+                    results = entries,
+                    entry_maker = function(e)
                         return {
-                            value = entry.value,
-                            display = entry.display,
-                            ordinal = entry.display,
+                            value = e.value,
+                            display = e.display,
+                            ordinal = e.display,
                         }
                     end,
-                },
+                }),
                 sorter = conf.generic_sorter({}),
-                attach_mappings = function(prompt_bufnr, _)
+                attach_mappings = function(prompt_bufnr)
                     actions.select_default:replace(function()
                         actions.close(prompt_bufnr)
                         local entry = action_state.get_selected_entry()
-                        local selected_dir = entry.value
+                        local dir = entry.value
 
-                        -- 4. Update recent cache
+                        -- ✅ update recent dirs MRU list
                         table.insert(recent_dirs, 1, {
-                            value = selected_dir,
-                            display = fn.fnamemodify(selected_dir, ":."),
+                            value = dir,
+                            display = fn.fnamemodify(dir, ":."),
                         })
 
-                        -- Remove duplicates
-                        local seen = {}
+                        -- unique filter
+                        local s = {}
                         recent_dirs = vim.tbl_filter(function(item)
-                            if seen[item.value] then
-                                return false
-                            end
-                            seen[item.value] = true
+                            if s[item.value] then return false end
+                            s[item.value] = true
                             return true
                         end, recent_dirs)
 
-                        vim.cmd("TodoTelescope cwd=" .. fn.fnameescape(selected_dir))
+                        vim.cmd("TodoTelescope cwd=" .. fn.fnameescape(dir))
                     end)
                     return true
                 end,

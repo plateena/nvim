@@ -22,7 +22,8 @@ opt.foldlevel=99
 
 opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
-opt.colorcolumn = '120'
+opt.colorcolumn = '180'
+opt.textwidth = 180 -- set maximum text width to 120 only
 opt.cursorline = true     -- Highlight the current cursor line (Can slow the UI)
 
 opt.cursorcolumn = true     -- Highlight the current cursor line (Can slow the UI)

@@ -80,6 +80,8 @@ return {
                 "prettier",
                 "stylua",
                 "phpcbf",
+                "rubocop",
+                "shfmt"
             },
         })
     end,

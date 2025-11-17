@@ -100,6 +100,7 @@ return {
             phpactor = {
                 filetypes = { "php", "blade", "blade.php" },
                 root_dir = vim.fs.root(0,{"composer.json", ".git"}),
+                -- root_dir = require("lspconfig/util").root_pattern("artisan", "composer.json", ".git"),
                 init_options = {
                     ["language_server_phpstan.enabled"] = true,
                     ["language_server_psalm.enabled"] = false,

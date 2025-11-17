@@ -60,4 +60,6 @@ vim.keymap.set('n', '<Leader>qq', ':q<CR>', { desc = "Quit nvim" })
 vim.keymap.set('n', '<Leader>bd', ':bd<CR>', { desc = "Buffer delete" })
 vim.keymap.set('n', '<Leader>bD', ':bufdo bd<CR>', { desc = "Delete all buffer" })
 
+vim.keymap.set('n', '<Leader>qj', ':let @a="do]c"<Cr>', { desc = "Macro fugitive bufdo" })
+
 -- vim: ts=2 sw=2 et
