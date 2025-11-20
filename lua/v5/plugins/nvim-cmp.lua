@@ -87,6 +87,7 @@ return {
                 },
                 documentation = {
                     border = border,
+                    winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None",
                     max_width = 80,
                     max_height = 20,
                 },
