@@ -32,5 +32,7 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-[*.php]
-prettier = true
+# Lua files - 6 space indentation
+[*.lua]
+indent_style = space
+indent_size = 2
