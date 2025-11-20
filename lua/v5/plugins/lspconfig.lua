@@ -1,10 +1,11 @@
 return {
     "neovim/nvim-lspconfig",
+    enabled = false,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim",                   opts = {} },
+        { "folke/neodev.nvim", opts = {} },
         {
             "j-hui/fidget.nvim",
             opts = {
@@ -19,7 +20,6 @@ return {
         },
     },
     config = function()
-        -- local lspconfig = require("lspconfig")
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
         -- Constants
@@ -31,7 +31,7 @@ return {
             [vim.diagnostic.severity.INFO] = "»",
         }
 
-        -- Enhanced capabilities
+        -- Capabilities
         local capabilities = vim.tbl_deep_extend(
             "force",
             {},
@@ -52,176 +52,13 @@ return {
             }
         )
 
-        -- Server configurations
-        local servers = {
-            -- Web Development
-            emmet_ls = {
-                filetypes = {
-                    "blade",
-                    "css",
-                    "ruby",
-                    "html",
-                    "javascript",
-                    "javascriptreact",
-                    "less",
-                    "pug",
-                    "sass",
-                    "scss",
-                    "svelte",
-                    "typescriptreact",
-                    "vue",
-                },
-            },
+        -- Helper function for keymaps
+        local function map(mode, lhs, rhs, desc, bufnr)
+            vim.keymap.set(mode, lhs, rhs, { desc = desc, buffer = bufnr, silent = true })
+        end
 
-            -- JavaScript/TypeScript (Added for Node.js)
-            ts_ls = {
-                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-                settings = {
-                    typescript = {
-                        preferences = {
-                            disableSuggestions = false,
-                        },
-                    },
-                },
-            },
-
-            eslint = {
-                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-                settings = {
-                    workingDirectory = { mode = "auto" },
-                },
-            },
-
-            -- Prettier for formatting (JavaScript, TypeScript, JSON, etc.)
-            -- Note: This requires null-ls or conform.nvim for formatting integration
-            -- Alternative: Use prettier via external tools or null-ls
-
-            -- PHP/Laravel
-            phpactor = {
-                filetypes = { "php", "blade", "blade.php" },
-                root_dir = vim.fs.root(0,{"composer.json", ".git"}),
-                -- root_dir = require("lspconfig/util").root_pattern("artisan", "composer.json", ".git"),
-                init_options = {
-                    ["language_server_phpstan.enabled"] = true,
-                    ["language_server_psalm.enabled"] = false,
-                },
-            },
-
-            -- Alternative PHP LSP (uncomment if preferred)
-            -- intelephense = {
-            --     filetypes = { "php", "blade" },
-            --     settings = {
-            --         intelephense = {
-            --             files = {
-            --                 maxSize = 1000000,
-            --             },
-            --         },
-            --     },
-            -- },
-
-            -- Ruby
-            ruby_lsp = {
-                cmd = { "ruby-lsp" },
-                root_dir = vim.fs.root(0, {"Gemfile", ".git"}),
-                init_options = {
-                    formatter = "rubocop",
-                },
-            },
-
-            rubocop = {
-                cmd = { "rubocop", "--lsp" },
-                root_dir = vim.fs.root(0, {".rubocop.yml", "Gemfile", ".git"}),
-            },
-
-            -- Lua
-            lua_ls = {
-                settings = {
-                    Lua = {
-                        runtime = { version = "LuaJIT" },
-                        diagnostics = {
-                            globals = { "vim", "describe", "it", "before_each", "after_each" }, -- Added test globals
-                        },
-                        workspace = {
-                            library = vim.api.nvim_get_runtime_file("", true),
-                            checkThirdParty = false,
-                        },
-                        telemetry = { enable = false },
-                    },
-                },
-            },
-
-            -- Python
-            pylsp = {
-                settings = {
-                    pylsp = {
-                        plugins = {
-                            pycodestyle = {
-                                maxLineLength = 120,
-                                ignore = { "E203", "W503" }, -- Black compatibility
-                            },
-                            pylint = { enabled = true },
-                            autopep8 = { enabled = false }, -- Prefer black
-                            black = { enabled = true },
-                            isort = { enabled = true },
-                        },
-                    },
-                },
-            },
-
-            -- YAML
-            yamlls = {
-                settings = {
-                    yaml = {
-                        schemas = {
-                            ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*.{yml,yaml}",
-                            ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "/docker-compose*.{yml,yaml}",
-                            ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] =
-                            "/openapi*.{yml,yaml}",
-                        },
-                        schemaStore = {
-                            enable = true,
-                            url = "https://www.schemastore.org/api/json/catalog.json",
-                        },
-                    },
-                },
-            },
-
-            -- Bash
-            bashls = {
-                filetypes = { "sh", "bash" },
-            },
-
-            -- JSON
-            jsonls = {
-                settings = {
-                    json = {
-                        schemas = {
-                            {
-                                fileMatch = { "package.json" },
-                                url = "https://json.schemastore.org/package.json",
-                            },
-                            {
-                                fileMatch = { "composer.json" },
-                                url = "https://json.schemastore.org/composer.json",
-                            },
-                            {
-                                fileMatch = { ".eslintrc.json", ".eslintrc" },
-                                url = "https://json.schemastore.org/eslintrc.json",
-                            },
-                            {
-                                fileMatch = { "tsconfig.json", "tsconfig.*.json" },
-                                url = "https://json.schemastore.org/tsconfig.json",
-                            },
-                        },
-                        validate = { enable = true },
-                    },
-                },
-            },
-        }
-
-        -- Improved on_attach function
+        -- on_attach
         local on_attach = function(client, bufnr)
-            -- Performance check
             local line_count = vim.api.nvim_buf_line_count(bufnr)
             if line_count >= MAX_FILE_LINES then
                 client.stop()
@@ -237,34 +74,30 @@ return {
                 return
             end
 
-            -- Disable semantic tokens for large files if supported
-            if line_count > 1000 and client.server_capabilities then
-                if client.server_capabilities.semanticTokensProvider then
-                    client.server_capabilities.semanticTokensProvider = nil
-                end
-            end
-
-            -- Helper function for keymaps
-            local function map(mode, lhs, rhs, desc)
-                vim.keymap.set(mode, lhs, rhs, { desc = desc, buffer = bufnr, silent = true })
+            if
+                line_count > 1000
+                and client.server_capabilities
+                and client.server_capabilities.semanticTokensProvider
+            then
+                client.server_capabilities.semanticTokensProvider = nil
             end
 
             -- Navigation
-            map("n", "gD", vim.lsp.buf.declaration, "LSP: Go to declaration")
-            map("n", "gd", vim.lsp.buf.definition, "LSP: Go to definition")
-            map("n", "gi", vim.lsp.buf.implementation, "LSP: Go to implementation")
-            map("n", "gr", vim.lsp.buf.references, "LSP: Show references")
-            map("n", "<space>lD", vim.lsp.buf.type_definition, "LSP: Type definition")
+            map("n", "gD", vim.lsp.buf.declaration, "LSP: Go to declaration", bufnr)
+            map("n", "gd", vim.lsp.buf.definition, "LSP: Go to definition", bufnr)
+            map("n", "gi", vim.lsp.buf.implementation, "LSP: Go to implementation", bufnr)
+            map("n", "gr", vim.lsp.buf.references, "LSP: Show references", bufnr)
+            map("n", "<space>lD", vim.lsp.buf.type_definition, "LSP: Type definition", bufnr)
 
             -- Documentation
-            map("n", "K", vim.lsp.buf.hover, "LSP: Hover documentation")
-            map("n", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature help")
-            map("i", "<C-h>", vim.lsp.buf.signature_help, "LSP: Signature help")
+            map("n", "K", vim.lsp.buf.hover, "LSP: Hover documentation", bufnr)
+            map("n", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature help", bufnr)
+            map("i", "<C-h>", vim.lsp.buf.signature_help, "LSP: Signature help", bufnr)
 
             -- Code actions
-            map("n", "<space>la", vim.lsp.buf.code_action, "LSP: Code action")
-            map("v", "<space>la", vim.lsp.buf.code_action, "LSP: Code action")
-            map("n", "<space>lrn", vim.lsp.buf.rename, "LSP: Rename")
+            map("n", "<space>la", vim.lsp.buf.code_action, "LSP: Code action", bufnr)
+            map("v", "<space>la", vim.lsp.buf.code_action, "LSP: Code action", bufnr)
+            map("n", "<space>lrn", vim.lsp.buf.rename, "LSP: Rename", bufnr)
 
             -- Formatting
             if client:supports_method("textDocument/formatting") then
@@ -272,7 +105,6 @@ return {
                     vim.lsp.buf.format({
                         async = true,
                         filter = function(c)
-                            -- Prefer certain formatters
                             local preferred = { "null-ls", "conform", "prettier", "eslint", "rubocop" }
                             for _, name in ipairs(preferred) do
                                 if c.name == name then
@@ -282,10 +114,9 @@ return {
                             return c.name == client.name
                         end,
                     })
-                end, "LSP: Format")
+                end, "LSP: Format", bufnr)
 
-                -- Auto-format on save for specific filetypes
-                local format_on_save_ft = { "lua", "javascript", "typescript", "php" }
+                local format_on_save_ft = { "lua", "javascript", "typescript", "php", "ruby" }
                 if vim.g.format_on_save_enabled and vim.tbl_contains(format_on_save_ft, vim.bo[bufnr].filetype) then
                     vim.api.nvim_create_autocmd("BufWritePre", {
                         buffer = bufnr,
@@ -297,19 +128,26 @@ return {
             end
 
             -- Diagnostics
-            map("n", "<space>lo", vim.diagnostic.open_float, "LSP: Show diagnostics")
-            map("n", "[d", vim.diagnostic.goto_prev, "LSP: Previous diagnostic")
-            map("n", "]d", vim.diagnostic.goto_next, "LSP: Next diagnostic")
-            map("n", "<space>lq", vim.diagnostic.setloclist, "LSP: Diagnostic quickfix")
+            map("n", "<space>lo", vim.diagnostic.open_float, "LSP: Show diagnostics", bufnr)
+            map("n", "[d", vim.diagnostic.goto_prev, "LSP: Previous diagnostic", bufnr)
+            map("n", "]d", vim.diagnostic.goto_next, "LSP: Next diagnostic", bufnr)
+            map("n", "<space>lq", vim.diagnostic.setloclist, "LSP: Diagnostic quickfix", bufnr)
 
-            -- Testing keymaps (for TDD workflow)
-            if vim.bo[bufnr].filetype == "ruby" then
-                map("n", "<space>tt", ":!bundle exec rspec %<CR>", "Test: Run current file")
-                map("n", "<space>tl", ":!bundle exec rspec %:" .. vim.fn.line(".") .. "<CR>", "Test: Run current line")
-            elseif vim.bo[bufnr].filetype == "javascript" or vim.bo[bufnr].filetype == "typescript" then
-                map("n", "<space>tt", ":!npm test %<CR>", "Test: Run current file")
-            elseif vim.bo[bufnr].filetype == "php" then
-                map("n", "<space>tt", ":!./vendor/bin/phpunit %<CR>", "Test: Run current file")
+            -- Testing keymaps
+            local ft = vim.bo[bufnr].filetype
+            if ft == "ruby" then
+                map("n", "<space>tt", ":!bundle exec rspec %<CR>", "Test: Run current file", bufnr)
+                map(
+                    "n",
+                    "<space>tl",
+                    ":!bundle exec rspec %:" .. vim.fn.line(".") .. "<CR>",
+                    "Test: Run current line",
+                    bufnr
+                )
+            elseif ft == "javascript" or ft == "typescript" then
+                map("n", "<space>tt", ":!npm test %<CR>", "Test: Run current file", bufnr)
+            elseif ft == "php" then
+                map("n", "<space>tt", ":!./vendor/bin/phpunit %<CR>", "Test: Run current file", bufnr)
             end
 
             -- Document highlight
@@ -328,7 +166,7 @@ return {
                 })
             end
 
-            -- Create LSP which-key group
+            -- Which-key groups
             if pcall(require, "which-key") then
                 require("which-key").add({
                     { "<space>l", group = "LSP" },
@@ -337,73 +175,83 @@ return {
             end
         end
 
-        -- Setup servers
-            for name, opts in pairs(servers) do
-                opts.capabilities = capabilities
-                opts.on_attach = on_attach
+        -- LSP servers
+        local servers = {
+            -- Ruby LSP
 
-                local ok, err = pcall(function()
-                    vim.lsp.config[name] = opts
-                    vim.lsp.enable(name)
-                end)
+            ruby_lsp = {
+                cmd = {
+                    "docker",
+                    "run",
+                    "--rm",
+                    "-i",
+                    "-v",
+                    vim.loop.cwd() .. ":/workspace",
+                    "ruby-lsp:3.0.4",
+                },
+                root_dir = vim.fs.root(0, { "Gemfile", ".git" }),
+                init_options = { formatter = "rubocop" },
+            },
 
-                if not ok then
-                    vim.notify(string.format("Failed to enable LSP server '%s': %s", name, err), vim.log.levels.ERROR)
-                end
+            -- Lua
+            lua_ls = {
+                settings = {
+                    Lua = {
+                        runtime = { version = "LuaJIT" },
+                        diagnostics = { globals = { "vim" } },
+                        workspace = { library = vim.api.nvim_get_runtime_file("", true), checkThirdParty = false },
+                        telemetry = { enable = false },
+                    },
+                },
+            },
+            -- Python
+            pylsp = {
+                settings = {
+                    pylsp = {
+                        plugins = {
+                            pycodestyle = { maxLineLength = 120, ignore = { "E203", "W503" } },
+                            pylint = { enabled = true },
+                            black = { enabled = true },
+                            isort = { enabled = true },
+                        },
+                    },
+                },
+            },
+            -- PHP
+            phpactor = {
+                filetypes = { "php", "blade", "blade.php" },
+                root_dir = vim.fs.root(0, { "composer.json", ".git" }),
+                init_options = { ["language_server_phpstan.enabled"] = true, ["language_server_psalm.enabled"] = false },
+            },
+            -- Other servers (ts_ls, eslint, bashls, yamlls, jsonls, etc.) can be added here
+        }
+
+        -- Configure and enable LSP servers
+        for name, opts in pairs(servers) do
+            opts.capabilities = capabilities
+            opts.on_attach = on_attach
+            local ok, err = pcall(function()
+                vim.lsp.config(name, opts)
+                vim.lsp.enable(name)
+            end)
+            if not ok then
+                vim.notify(string.format("Failed to enable LSP server '%s': %s", name, err), vim.log.levels.ERROR)
             end
+        end
 
-        -- Enhanced diagnostic configuration
+        -- Diagnostics
         vim.diagnostic.config({
             underline = false,
-            virtual_text = {
-                spacing = 4,
-                prefix = "●",
-                current_line = true,
-                format = function(diagnostic)
-                    return string.format("%s (%s)", diagnostic.message, diagnostic.source)
-                end,
-            },
-            signs = {
-                text = DIAGNOSTIC_ICONS,
-            },
+            virtual_text = { spacing = 4, prefix = "●", current_line = true },
+            signs = { text = DIAGNOSTIC_ICONS },
             update_in_insert = false,
             severity_sort = true,
-            float = {
-                border = "rounded",
-                source = true,
-                header = "",
-                prefix = "",
-                format = function(diagnostic)
-                    return string.format(
-                        "%s (%s) [%s]",
-                        diagnostic.message,
-                        diagnostic.source or "unknown",
-                        diagnostic.code or "no-code"
-                    )
-                end,
-            },
+            float = { border = "rounded", source = true },
         })
 
         -- Global LSP keymaps
         vim.keymap.set("n", "<space>li", "<cmd>LspInfo<cr>", { desc = "LSP: Info" })
         vim.keymap.set("n", "<space>lr", "<cmd>LspRestart<cr>", { desc = "LSP: Restart" })
-
-        -- Improved updatetime for better responsiveness
         vim.o.updatetime = 300
-
-        -- Optional: Show diagnostics automatically in hover window
-        -- vim.api.nvim_create_autocmd("CursorHold", {
-        --     callback = function()
-        --         local opts = {
-        --             focusable = false,
-        --             close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-        --             border = "rounded",
-        --             source = "always",
-        --             prefix = " ",
-        --             scope = "cursor",
-        --         }
-        --         vim.diagnostic.open_float(nil, opts)
-        --     end,
-        -- })
     end,
 }
