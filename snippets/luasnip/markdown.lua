@@ -35,7 +35,7 @@ local function relpath(from, to)
 end
 
 local function wiki_header()
-    local root   = vim.fn.getcwd()                              -- ← use current project root
+    local root   = vim.fn.getcwd()
     local file   = vim.fn.expand("%:p")
     local curdir = vim.fn.fnamemodify(file, ":h")
 
@@ -44,7 +44,7 @@ local function wiki_header()
 
     return string.format(
         "[Home](%s/index.md) | [Work](%s/work/work.md) | [Sprint](%s/work/sprint/sprint.md) | [Info](%s/info/info.md)",
-        rel, rel, rel, rel
+        rel, rel, rel, rel, rel
     )
 end
 
@@ -61,7 +61,7 @@ ls.add_snippets("markdown", {
 ls.add_snippets("markdown", {
   s("sprintcycle", {
     -- Header
-    t("[Home](../../../index.md) | [Work](../../../work/work.md) | [Sprint](../../../work/sprint/sprint.md)"),
+    t("[Home](../../../index.md) | [Work](../../../work/work.md) | [Sprint](../../../work/sprint/sprint.md) | [Note](../../../notes/index.md)"),
     t({"", ""}),
     t("# 🏃 Sprint "), i(1, "16"),
     t({"", "> ✅ **Sprint Dates:** "}), i(2, "9–28 Nov 2025"),
