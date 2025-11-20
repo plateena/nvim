@@ -39,34 +39,13 @@ return {
         },
 
         strategies = {
-            cmd = {
-                adapter = "ollama",
-                opts = {
-                    stream = true,
-                },
-                roles = {
-                    user = "zack",
-                },
-            },
-            chat = {
-                adapter = "ollama",
-                opts = {
-                    stream = true,
-                },
-                roles = {
-                    user = "zack",
-                },
-            },
+            cmd = { adapter = "ollama", opts = { stream = true }, roles = { user = "zack" } },
+            chat = { adapter = "ollama", opts = { stream = true }, roles = { user = "zack" } },
             inline = {
                 adapter = "ollama",
-                opts = {
-                    stream = false,
-                },
+                opts = { stream = false },
                 keymaps = {
-                    accept_change = {
-                        modes = { n = "ga" },
-                        description = "Accept suggested inline change",
-                    },
+                    accept_change = { modes = { n = "ga" }, description = "Accept suggested inline change" },
                     reject_change = {
                         modes = { n = "gr" },
                         opts = { nowait = true },
@@ -80,24 +59,15 @@ return {
             inline_fix = {
                 strategy = "inline",
                 description = "Fix or rewrite selected code",
-                prompts = {
-                    { role = "user", content = "{{input}}" },
-                },
+                prompts = { { role = "user", content = "{{input}}" } },
             },
             inline_generate = {
                 strategy = "inline",
                 description = "Generate new code based on instructions",
-                prompts = {
-                    { role = "user", content = "{{input}}" },
-                },
+                prompts = { { role = "user", content = "{{input}}" } },
             },
         },
 
-        actions = {
-            edit_current_buffer = true,
-        },
+        actions = { edit_current_buffer = true },
     },
-    init = function()
-        require("v5.fidget-spinner"):init()
-    end,
 }
