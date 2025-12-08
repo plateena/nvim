@@ -1,32 +1,56 @@
 return {
+  -- vim-fugitive: Core Git integration
   {
     "tpope/vim-fugitive",
-    -- ensure it's loaded only when needed
-    event = "VeryLazy", -- or BufReadPost, whichever fits your workflow
+    event = "VeryLazy",
     config = function()
-      -- Load diff syntax first
-      vim.cmd("runtime! syntax/diff.vim")
-
       -- Git keymaps
       vim.keymap.set("n", "<Leader>g", "", { desc = "Git" })
-      vim.keymap.set("n", "<Leader>gs", "<Cmd>Git<Cr>", { desc = "Git" })
-      vim.keymap.set("n", "<Leader>gP", "<Cmd>Git pull<Cr>", { desc = "Git pull" })
-      vim.keymap.set("n", "<Leader>gv", "<Cmd>Gvdiffsplit<Cr>", { desc = "Git diff split" })
+      vim.keymap.set("n", "<Leader>gs", "<Cmd>Git<CR>", { desc = "Git status" })
+      vim.keymap.set("n", "<Leader>gP", "<Cmd>Git pull<CR>", { desc = "Git pull" })
+      vim.keymap.set("n", "<Leader>gv", "<Cmd>Gvdiffsplit<CR>", { desc = "Git diff split" })
 
-      -- Diff buffer keymaps (only when diff mode)
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "fugitive",
-        callback = function()
-          if vim.wo.diff then
-            vim.keymap.set("n", "<Leader>gh", "<Cmd>diffget //2<Cr>", { desc = "diffget //2", buffer = true })
-            vim.keymap.set("n", "<Leader>gl", "<Cmd>diffget //3<Cr>", { desc = "diffget //3", buffer = true })
-            vim.keymap.set("n", "<Leader>gu", "<Cmd>diffput //2<Cr>", { desc = "diffput //2", buffer = true })
-            vim.keymap.set("n", "<Leader>gi", "<Cmd>diffput //3<Cr>", { desc = "diffput //3", buffer = true })
-          end
-        end,
+      -- Create augroup for Fugitive-specific mappings
+      local augroup = vim.api.nvim_create_augroup("FugitiveDiffMaps", { clear = true })
+
+      -- Attach diff-specific keymaps in merge conflict buffers
+      local function setup_fugitive_diff_maps()
+        local bufname = vim.api.nvim_buf_get_name(0)
+        if not vim.wo.diff or not bufname:match("^fugitive://") then
+          -- return false
+        end
+
+        local opts = { buffer = true, silent = true }
+
+        -- Get changes from target/merge branches
+        vim.keymap.set("n", "<Leader>gh", "<Cmd>diffget //2<CR>", opts)
+        vim.keymap.set("n", "<Leader>gl", "<Cmd>diffget //3<CR>", opts)
+
+        -- Put changes to target/merge branches
+        vim.keymap.set("n", "<Leader>gu", "<Cmd>diffput //2<CR>", opts)
+        vim.keymap.set("n", "<Leader>gi", "<Cmd>diffput //3<CR>", opts)
+
+        return true
+      end
+
+      -- Auto-attach diff mappings
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufEnter" }, {
+        group = augroup,
+        callback = setup_fugitive_diff_maps,
       })
+
+      -- Manual attachment command
+      vim.api.nvim_create_user_command("FugitiveDiffMaps", function()
+        if setup_fugitive_diff_maps() then
+          vim.notify("Fugitive diff keymaps attached", vim.log.levels.INFO)
+        else
+          vim.notify("Not a Fugitive diff buffer", vim.log.levels.WARN)
+        end
+      end, { desc = "Attach Fugitive diff keymaps" })
     end,
   },
+
+  -- LazyGit: Terminal UI for Git
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
@@ -38,45 +62,45 @@ return {
       "LazyGitFilterCurrentFile",
     },
   },
+
+  -- Gitsigns: Git decorations and hunks
   {
     "lewis6991/gitsigns.nvim",
-    enabled = true,
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
-      local gitsigns = require("gitsigns")
-      gitsigns.setup({
+      require("gitsigns").setup({
         signs = {
-          add = { text = "┃" },
-          change = { text = "┃" },
-          delete = { text = "_" },
-          topdelete = { text = "‾" },
-          changedelete = { text = "~" },
-          untracked = { text = "┆" },
+          add = { text = "▎" },
+          change = { text = "▎" },
+          delete = { text = "" },
+          topdelete = { text = "" },
+          changedelete = { text = "▎" },
+          untracked = { text = "▎" },
         },
-        signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-        numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
-        linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
-        word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+        signcolumn = true,
+        numhl = false,
+        linehl = false,
+        word_diff = false,
         watch_gitdir = {
           follow_files = true,
         },
         auto_attach = true,
-        attach_to_untracked = false,
-        current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+        attach_to_untracked = true,
+        current_line_blame = false,
         current_line_blame_opts = {
           virt_text = true,
-          virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+          virt_text_pos = "eol",
           delay = 1000,
           ignore_whitespace = false,
           virt_text_priority = 100,
         },
-        current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
+        current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
         sign_priority = 6,
         update_debounce = 100,
-        status_formatter = nil, -- Use default
-        max_file_length = 40000, -- Disable if file is longer than this (in lines)
+        status_formatter = nil,
+        max_file_length = 40000,
         preview_config = {
-          -- Options passed to nvim_open_win
-          border = "single",
+          border = "rounded",
           style = "minimal",
           relative = "cursor",
           row = 0,

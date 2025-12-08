@@ -5,6 +5,7 @@ return {
   },
   config = function()
     local lualine = require("lualine")
+    local devicons = require("nvim-web-devicons")
 
     -- Safe Git branch: returns nil if not in a Git repo
     local function safe_git_branch()
@@ -20,7 +21,7 @@ return {
     -- Check if current buffer is in a Git repo
     local function in_git_repo()
       return vim.fn.isdirectory(".git") == 1
-        or vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):match("true") ~= nil
+          or vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):match("true") ~= nil
     end
 
     lualine.setup({
@@ -45,7 +46,7 @@ return {
         lualine_a = { "mode" },
         lualine_b = {
           { safe_git_branch, cond = in_git_repo },
-          { "diff", cond = in_git_repo },
+          { "diff",          cond = in_git_repo },
           {
             "diagnostics",
             sources = { "nvim_diagnostic" },
@@ -55,10 +56,23 @@ return {
         },
         lualine_c = {
           {
-            "filename",
-            file_status = true,
-            path = 1, -- relative path
-            symbols = { modified = "", readonly = "", unnamed = "[No Name]" },
+            function()
+              local filename = vim.fn.expand("%:t")
+              if filename == "" then
+                return "[No Name]"
+              end
+
+              local ext = vim.fn.expand("%:e")
+              local icon, color = devicons.get_icon_color(filename, ext, { default = true })
+
+              return string.format(" %s %s", icon, filename)
+            end,
+            color = function()
+              local filename = vim.fn.expand("%:t")
+              local ext = vim.fn.expand("%:e")
+              local _, color = devicons.get_icon_color(filename, ext, { default = true })
+              return { fg = color }
+            end,
           },
         },
         lualine_x = {

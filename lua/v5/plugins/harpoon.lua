@@ -20,7 +20,7 @@ return {
         vim.keymap.set("n", "<a-3>", function() harpoon:list():select(3) end)
         vim.keymap.set("n", "<a-4>", function() harpoon:list():select(4) end)
         vim.keymap.set("n", "<a-5>", function() harpoon:list():select(5) end)
-        vim.keymap.set("n", "<C-h>", function() harpoon:list():prev() end)
-        vim.keymap.set("n", "<C-l>", function() harpoon:list():next() end)
+        vim.keymap.set("n", "<a-h>", function() harpoon:list():prev() end)
+        vim.keymap.set("n", "<a-l>", function() harpoon:list():next() end)
     end,
 }
