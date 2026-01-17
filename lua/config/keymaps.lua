@@ -60,4 +60,44 @@ vim.keymap.set('n', '<Leader>qq', ':q<CR>', { desc = "Quit nvim" })
 vim.keymap.set('n', '<Leader>bd', ':bd<CR>', { desc = "Buffer delete" })
 vim.keymap.set('n', '<Leader>bD', ':bufdo bd<CR>', { desc = "Delete all buffer" })
 
+vim.keymap.set('n', '<Leader>qj', ':let @a="do]c"<Cr>', { desc = "Macro fugitive bufdo" })
+
+
+local function tmux_or_win(direction)
+  local current_win = vim.fn.winnr()
+  vim.cmd("wincmd " .. direction)
+
+  local new_win = vim.fn.winnr()
+
+  if current_win ~= new_win then
+    return
+  end
+
+  if not vim.env.TMUX then
+    return
+  end
+
+  local pane_cmd = {
+    h = "L",
+    j = "D",
+    k = "U",
+    l = "R",
+  }
+
+  local tmux_direction = pane_cmd[direction]
+  if tmux_direction then
+    local cmd = "tmux select-pane -" .. tmux_direction
+    local output = vim.fn.system(cmd)
+  end
+end
+
+vim.keymap.set({ 'n' }, "<C-w>h", function() tmux_or_win("h") end,
+  { desc = "Move left (vim or tmux)", noremap = true, silent = true })
+vim.keymap.set({ 'n' }, "<C-w>j", function() tmux_or_win("j") end,
+  { desc = "Move down (vim or tmux)", noremap = true, silent = true })
+vim.keymap.set({ 'n' }, "<C-w>k", function() tmux_or_win("k") end,
+  { desc = "Move up (vim or tmux)", noremap = true, silent = true })
+vim.keymap.set({ 'n' }, "<C-w>l", function() tmux_or_win("l") end,
+  { desc = "Move right (vim or tmux)", noremap = true, silent = true })
+
 -- vim: ts=2 sw=2 et

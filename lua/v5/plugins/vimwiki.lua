@@ -1,6 +1,7 @@
 return {
     {
         "vimwiki/vimwiki",
+        enabled = false,
         ft = { "markdown", "vimwiki" },
         cmd = "VimwikiIndex",
         init = function()
@@ -17,7 +18,7 @@ return {
 
         config = function()
             vim.api.nvim_create_autocmd("FileType", {
-                pattern = { "markdown", "vimwiki" },
+                pattern = { "vimwiki" },
                 callback = function(args)
                     -- Follow link
                     vim.keymap.set("n", "<CR>", "<Plug>VimwikiFollowLink", {
@@ -55,7 +56,7 @@ return {
                     "echasnovski/mini.nvim", -- or mini.icons / nvim-web-devicons
                 },
                 opts = {
-                    file_types = { "markdown", "vimwiki" },
+                    file_types = { "vimwiki" },
                 },
                 config = function(_, opts)
                     require("render-markdown").setup(opts)
