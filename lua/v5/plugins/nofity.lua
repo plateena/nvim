@@ -1,5 +1,6 @@
 return {
   "rcarriga/nvim-notify",
+  enabled = false,
   config = function()
     notify = require("notify")
 
@@ -7,5 +8,5 @@ return {
       top_down = false,
       stages = "slide",
     })
-  end
+  end,
 }

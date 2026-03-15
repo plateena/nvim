@@ -1,5 +1,6 @@
 return {
   "nvim-lualine/lualine.nvim",
+  enabled = true,
   dependencies = {
     "franco-ruggeri/codecompanion-lualine.nvim",
   },
@@ -7,31 +8,14 @@ return {
     local lualine = require("lualine")
     local devicons = require("nvim-web-devicons")
 
-    -- Safe Git branch: returns nil if not in a Git repo
-    local function safe_git_branch()
-      local ok, branch = pcall(function()
-        return vim.fn.systemlist("git rev-parse --abbrev-ref HEAD")[1]
-      end)
-      if ok and branch and branch ~= "" then
-        return " " .. branch
-      end
-      return nil
-    end
-
-    -- Check if current buffer is in a Git repo
-    local function in_git_repo()
-      return vim.fn.isdirectory(".git") == 1
-          or vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):match("true") ~= nil
-    end
-
     lualine.setup({
       options = {
         icons_enabled = true,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = {},
-          winbar = {},
+          statusline = { "nvimtree" },
+          winbar = { "nvimtree" },
         },
         ignore_focus = {},
         always_divide_middle = true,
@@ -45,8 +29,8 @@ return {
       sections = {
         lualine_a = { "mode" },
         lualine_b = {
-          { safe_git_branch, cond = in_git_repo },
-          { "diff",          cond = in_git_repo },
+          { "branch" },
+          { "diff", cond = in_git_repo },
           {
             "diagnostics",
             sources = { "nvim_diagnostic" },
@@ -57,21 +41,25 @@ return {
         lualine_c = {
           {
             function()
-              local filename = vim.fn.expand("%:t")
-              if filename == "" then
-                return "[No Name]"
+              local buf = vim.api.nvim_get_current_buf()
+              if not vim.b[buf].lualine_icon then
+                local filename = vim.fn.expand("%:t")
+                local ext = vim.fn.expand("%:e")
+                local icon, color = devicons.get_icon_color(filename, ext, { default = true })
+                vim.b[buf].lualine_icon = icon or ""
+                vim.b[buf].lualine_color = color or "#ffffff"
               end
 
-              local ext = vim.fn.expand("%:e")
-              local icon, color = devicons.get_icon_color(filename, ext, { default = true })
+              local filename = vim.fn.expand("%:t")
+              if filename == "" then
+                filename = "[No Name]"
+              end
 
-              return string.format(" %s %s", icon, filename)
+              return string.format(" %s %s", vim.b[buf].lualine_icon, filename)
             end,
             color = function()
-              local filename = vim.fn.expand("%:t")
-              local ext = vim.fn.expand("%:e")
-              local _, color = devicons.get_icon_color(filename, ext, { default = true })
-              return { fg = color }
+              local buf = vim.api.nvim_get_current_buf()
+              return { fg = vim.b[buf].lualine_color or "#ffffff" }
             end,
           },
         },
