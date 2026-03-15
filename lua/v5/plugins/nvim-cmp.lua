@@ -57,12 +57,13 @@ return {
           col_offset = -1,
           side_padding = 0,
         },
-        documentation = {
-          border = border,
-          winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None",
-          max_width = 80,
-          max_height = 20,
-        },
+        documentation = cmp.config.window.bordered(),
+        -- documentation = {
+        --   border = border,
+        --   winhighlight = "Normal:NormalFloat,CursorLine:PmenuSel,Search:None",
+        --   max_width = 80,
+        --   max_height = 20,
+        -- },
       },
 
       formatting = {
