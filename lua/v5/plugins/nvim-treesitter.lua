@@ -26,21 +26,31 @@ return {
       },
     })
 
-    -- Enable highlighting with core TreeSitter (Neovim 0.11+)
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = "*",
-      callback = function(ctx)
-        pcall(vim.treesitter.start, ctx.buf)
-      end,
-    })
+    -- Use the new config module name
+    local ts_config = require("nvim-treesitter.config")
 
-    -- Optionally enable folding via TreeSitter
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = "*",
-      callback = function()
-        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-        vim.wo.foldmethod = "expr"
-      end,
+    ts_config.setup({
+      ensure_installed = {
+        "bash",
+        "c",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "regex",
+        "vim",
+        "vimdoc",
+        "blade",
+      },
+      highlight = {
+        enable = true,
+        -- additional_vim_regex_highlighting = false,
+      },
+      indent = { enable = true },
+      fold = {
+        enable = true,
+        method = "expr",
+        expr = "v:lua.vim.treesitter.foldexpr()",
+      },
     })
   end,
 }

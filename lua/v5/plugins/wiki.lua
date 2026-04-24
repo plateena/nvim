@@ -1,11 +1,12 @@
 return {
-    "lervag/wiki.vim",
-    enabled = true,
-    cmd = { "WikiIndex", "Wiki", "WikiOpen" },
-    ft = { "markdown" },
-    init = function()
-        -- wiki root folder
-        vim.g.wiki_root = "~/Documents/wiki"
-    end,
-    config = function() end,
+  "lervag/wiki.vim",
+  enabled = true,
+  cmd = { "WikiIndex", "Wiki", "WikiOpen", "WikiTags" },
+  ft = { "markdown" },
+
+  init = function()
+    vim.g.wiki_root = "~/Documents/wiki"
+  end,
+
+  config = function() end,
 }
