@@ -52,7 +52,6 @@ opt.mouse = "i" -- Enable mouse on insert mode
 opt.number = true -- Show numbers on the left
 opt.relativenumber = true -- Its better if you use motions like 10j or 5yk
 
-opt.shiftwidth = 0 -- Number of spaces to use for each step of (auto)indent
 opt.showmatch = true -- Highlights the matching parenthesis
 opt.showmode = false -- Remove the -- INSERT -- message at the bottom
 opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text
@@ -138,3 +137,9 @@ end
 
 -- Add this at the top of your config
 g.format_on_save_enabled = false
+
+-- Modern nvim options (0.10+)
+opt.smoothscroll = true
+opt.splitkeep = "screen"
+opt.jumpoptions = "stack"
+vim.opt.winborder = "rounded"

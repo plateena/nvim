@@ -12,6 +12,6 @@ return {
   --   { "gbc", mode = { "n", "v" } },
   -- },
   config = function()
-    comment.setup({})
+    require("Comment").setup({})
   end,
 }

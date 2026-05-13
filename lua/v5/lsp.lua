@@ -261,7 +261,7 @@ local function setup_lsp()
   })
 
   -- Global LSP keymaps (using built-in functions since nvim-lspconfig is removed)
-  vim.keymap.set("n", "<space>li", function()
+  vim.keymap.set("n", "<space>lci", function()
     local clients = vim.lsp.get_clients()
     if #clients == 0 then
       print("No active LSP clients")
@@ -273,7 +273,7 @@ local function setup_lsp()
     end
   end, { desc = "LSP: Info" })
 
-  vim.keymap.set("n", "<space>lr", function()
+  vim.keymap.set("n", "<space>lcr", function()
     local clients = vim.lsp.get_clients()
     for _, client in ipairs(clients) do
       client:stop()

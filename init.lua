@@ -8,4 +8,5 @@ require("config/options")
 require("config/macros")
 
 -- define which version of config
-require("v5")
+-- require("v5")
+require("v6")
