@@ -14,6 +14,6 @@ return {
     { "<a-l>", function() require("harpoon"):list():next() end },
   },
   config = function()
-    require("harpoon"):setup()
+    require("harpoon"):setup({})
   end,
 }

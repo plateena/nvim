@@ -40,7 +40,6 @@ return {
     "lervag/wiki.vim",
     cmd = { "WikiIndex", "Wiki", "WikiOpen", "WikiTags" },
     ft = { "markdown" },
-    init = function() vim.g.wiki_root = "~/Documents/wiki" end,
   },
   -- Bullets for markdown lists
   {

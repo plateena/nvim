@@ -8,7 +8,9 @@ return {
     local luasnip = require("luasnip")
     local types = require("luasnip.util.types")
 
-    require("luasnip.loaders.from_vscode").lazy_load()
+    require("luasnip.loaders.from_vscode").lazy_load({
+      exclude = { "gruvbox" },
+    })
     require("luasnip.loaders.from_snipmate").lazy_load()
 
     local custom_path = vim.fn.stdpath("config") .. "/snippets/luasnip"

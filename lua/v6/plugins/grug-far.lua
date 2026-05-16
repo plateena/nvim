@@ -7,5 +7,7 @@ return {
         require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
       end, desc = "Search word under cursor" },
   },
-  opts = {},
+  config = function()
+    require("grug-far").setup({})
+  end,
 }

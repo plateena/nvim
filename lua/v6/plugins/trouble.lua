@@ -6,5 +6,7 @@ return {
     { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics" },
     { "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics" },
   },
-  opts = {},
+  config = function()
+    require("trouble").setup({})
+  end,
 }

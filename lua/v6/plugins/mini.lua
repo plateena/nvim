@@ -6,7 +6,12 @@ return {
       local icons = require("mini.icons")
       icons.setup({
         file = {
-          ["blade.php"] = { glyph = "󰫐", hl = "MiniIconsRed" },
+          ["blade.php"] = { glyph = "", hl = "MiniIconsRed" },
+        },
+        extension = {
+          php = { glyph = "", hl = "MiniIconsPurple" },
+          yaml = { glyph = "", hl = "MiniIconsYellow" },
+          yml = { glyph = "", hl = "MiniIconsYellow" },
         },
       })
       icons.mock_nvim_web_devicons()
@@ -15,11 +20,15 @@ return {
   {
     "echasnovski/mini.ai",
     event = "VeryLazy",
-    opts = {},
+    config = function()
+      require("mini.ai").setup({})
+    end,
   },
   {
     "echasnovski/mini.pairs",
     event = "InsertEnter",
-    opts = {},
+    config = function()
+      require("mini.pairs").setup({})
+    end,
   },
 }

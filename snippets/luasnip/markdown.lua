@@ -45,7 +45,8 @@ local function wiki_header()
   end
 
   return string.format(
-    "[Home](%s/index.md) | [Work](%s/work/work.md) | [Sprint](%s/work/sprint/sprint.md) | [Info](%s/info/info.md) | [Notes](%s/notes/notes.md) | [Archive](%s/archive/archive.md)",
+    "[Home](%s/index.md) | [Work](%s/work/work.md) | [Sprint](%s/work/sprint/sprint.md) | [Info](%s/info/info.md) | [Notes](%s/notes/notes.md) | [Archive](%s/archive/archive.md) | [Journal](%s/journal/index.md)",
+    rel,
     rel,
     rel,
     rel,
@@ -63,14 +64,199 @@ local function current_date()
   return os.date("%Y-%m-%d")
 end
 
+local t = ls.text_node
+
 ls.add_snippets("markdown", {
   s("wikihead", { f(wiki_header) }),
+
+  -- Journal entry for today
+  s("journal", {
+    f(wiki_header),
+    t({ "", "", "# " }),
+    f(current_date),
+    t({ "", "", "## Done", "", "- " }),
+    i(1, "task"),
+    t({ "", "", "## Notes", "", "- " }),
+    i(2, "note"),
+    t({ "", "" }),
+  }),
+
+  -- Meeting note
+  s("meeting", {
+    t("## 📋 Meeting: "),
+    i(1, "Title"),
+    t({ "", "> 📅 " }),
+    f(current_date),
+    t(" | 👥 "),
+    i(2, "attendees"),
+    t({ "", "", "### Agenda", "", "- " }),
+    i(3, "topic"),
+    t({ "", "", "### Decisions", "", "- " }),
+    i(4, "decision"),
+    t({ "", "", "### Action Items", "", "- [ ] " }),
+    i(5, "action"),
+    t(" — "),
+    i(6, "owner"),
+    t({ "", "" }),
+  }),
+
+  -- Jira/ticket task block
+  s("ticket", {
+    t("## "),
+    i(1, "CAR-000"),
+    t(": "),
+    i(2, "Title"),
+    t({ "", "", "**Link:** [" }),
+    f(function(args)
+      return args[1][1]
+    end, { 1 }),
+    t("](https://inscaleasia.atlassian.net/browse/"),
+    f(function(args)
+      return args[1][1]
+    end, { 1 }),
+    t({ ")", "", "" }),
+    t({ "### Notes", "", "- " }),
+    i(3, "note"),
+    t({ "", "", "### TODO", "", "- [ ] " }),
+    i(4, "task"),
+    t({ "", "" }),
+  }),
+
+  -- Wiki internal link (relative to current file)
+  s("wlink", {
+    t("["),
+    i(1, "text"),
+    t("](./"),
+    i(2, "file.md"),
+    t(")"),
+  }),
+
+  -- Callout / admonition block
+  s("callout", {
+    t("> **"),
+    i(1, "⚠️ Warning"),
+    t({ "**", "> " }),
+    i(2, "content"),
+    t({ "", "" }),
+  }),
+
+  -- New wiki page with header + title
+  s("wikipage", {
+    f(wiki_header),
+    t({ "", "", "# " }),
+    i(1, "Page Title"),
+    t({ "", "", "" }),
+    i(2),
+  }),
+
+  -- Collapsible details section
+  s("details", {
+    t({ "<details>", "<summary>" }),
+    i(1, "Click to expand"),
+    t({ "</summary>", "", "" }),
+    i(2, "content"),
+    t({ "", "", "</details>", "" }),
+  }),
+
+  -- Decorated title banner
+  s("banner", {
+    t({ "---", "", "# ✨ " }),
+    i(1, "Title"),
+    t({ "", "", "> " }),
+    i(2, "A short description or tagline"),
+    t({ "", "", "---", "" }),
+  }),
+
+  -- Section header with emoji + divider
+  s("hsection", {
+    t({ "", "---", "", "## " }),
+    i(1, "📌"),
+    t(" "),
+    i(2, "Section Title"),
+    t({ "", "", "" }),
+  }),
+
+  -- Fancy page header with metadata
+  s("pagetitle", {
+    f(wiki_header),
+    t({ "", "" }),
+    t({ "---", "" }),
+    t("# "),
+    i(1, "Page Title"),
+    t({ "", "" }),
+    t("> **Author:** "),
+    f(function()
+      return vim.fn.system("git config --get user.name"):gsub("%s+$", "")
+    end),
+    t({ "", "> **Created:** " }),
+    f(current_date),
+    t("  "),
+    t({ "", "> **Tags:** `" }),
+    i(2, "tag1"),
+    t("` `"),
+    i(3, "tag2"),
+    t({ "`", "" }),
+    t({ "---", "", "" }),
+    i(4),
+  }),
+
+  -- Decorative divider
+  s("divider", {
+    t({ "", "---", "" }),
+  }),
+
+  -- Status badge line
+  s("status", {
+    t("> **Status:** "),
+    i(1, "🟢 Active"),
+    t(" | **Updated:** "),
+    f(current_date),
+    t({ "", "" }),
+  }),
+
+  -- Table template
+  s("table", {
+    t("| "),
+    i(1, "Header 1"),
+    t(" | "),
+    i(2, "Header 2"),
+    t(" | "),
+    i(3, "Header 3"),
+    t({ " |", "| --- | --- | --- |", "| " }),
+    i(4, "cell"),
+    t(" | "),
+    i(5, "cell"),
+    t(" | "),
+    i(6, "cell"),
+    t({ " |", "" }),
+  }),
 })
 
 ls.add_snippets("markdown", {
+  -- Jira ticket link: type "jira" then enter ticket ID e.g. CAR-111
+  s("jira", {
+    t("["),
+    i(1, "CAR-111"),
+    t("](https://inscaleasia.atlassian.net/browse/"),
+    f(function(args)
+      return args[1][1]
+    end, { 1 }),
+    t(")"),
+  }),
+})
+
+ls.add_snippets("markdown", {
+  s("worklog", {
+    t("### 📅 "),
+    f(current_date),
+    t({ "", "- " }),
+    i(1, "task"),
+    t({ "", "" }),
+  }),
+
   s("sprintcycle", {
     t(
-      "[Home](../../../index.md) | [Work](../../../work/work.md) | [Sprint](../../../work/sprint/sprint.md) | [Note](../../../notes/notes.md) | [Archive](../../../archive/archive.md)"
+      "[Home](../../../index.md) | [Work](../../../work/work.md) | [Sprint](../../../work/sprint/sprint.md) | [Info](../../../info/info.md) | [Notes](../../../notes/notes.md) | [Archive](../../../archive/archive.md) | [Journal](../../../journal/index.md)"
     ),
     t({ "", "" }),
 

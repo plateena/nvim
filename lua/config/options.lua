@@ -2,6 +2,15 @@ local opt = vim.opt
 local g = vim.g
 local api = vim.api
 
+-- AI directories
+g.ai_global_dir = "~/ai"
+g.ai_project_dir = ".ai"
+g.ai_sso_url = "https://inscale.awsapps.com/start"
+g.ai_chat_width = 120
+
+-- Wiki
+g.wiki_root = "~/Documents/wiki"
+
 g.OmniSharp_server_stdio = 0
 
 -- Diff options
