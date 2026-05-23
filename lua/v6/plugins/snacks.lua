@@ -15,7 +15,7 @@ return {
       picker = { enabled = true },
       quickfile = { enabled = true },
       scope = { enabled = true },
-      scroll = { enabled = true },
+      scroll = { enabled = false },
       statuscolumn = { enabled = true },
       words = { enabled = true },
     })
@@ -182,6 +182,22 @@ return {
         Snacks.notifier.hide()
       end,
       desc = "Dismiss notifications",
+    },
+    -- Terminal
+    {
+      "<C-/>",
+      function()
+        Snacks.terminal()
+      end,
+      desc = "Toggle terminal",
+    },
+    -- Projects
+    {
+      "<leader>fp",
+      function()
+        Snacks.picker.projects()
+      end,
+      desc = "Projects",
     },
   },
 }

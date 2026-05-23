@@ -31,7 +31,7 @@ return {
         },
       },
       signature = { enabled = true },
-      cmdline = { enabled = false },
+      cmdline = { enabled = true },
     })
   end,
 }

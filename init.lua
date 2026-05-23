@@ -6,6 +6,7 @@ vim.g.python3_host_prog = vim.fn.expand("$HOME/.pyenv/versions/nvim-venv/bin/pyt
 require("config/keymaps")
 require("config/options")
 require("config/macros")
+require("config/autocmds")
 
 -- define which version of config
 -- require("v5")

@@ -42,12 +42,10 @@ local function setup_lsp()
 
     if line_count >= MAX_FILE_LINES then
       client:stop()
-
       vim.notify(
         string.format("LSP '%s' disabled: %d lines (limit: %d)", client.name, line_count, MAX_FILE_LINES),
         vim.log.levels.WARN
       )
-
       return
     end
 
@@ -55,40 +53,71 @@ local function setup_lsp()
       client.server_capabilities.semanticTokensProvider = nil
     end
 
+    -- Navigation
     map("n", "gD", vim.lsp.buf.declaration, "LSP: Declaration", bufnr)
     map("n", "gd", vim.lsp.buf.definition, "LSP: Definition", bufnr)
     map("n", "gi", vim.lsp.buf.implementation, "LSP: Implementation", bufnr)
     map("n", "gr", vim.lsp.buf.references, "LSP: References", bufnr)
+    map("n", "gy", vim.lsp.buf.type_definition, "LSP: Type Definition", bufnr)
 
+    -- Info
     map("n", "K", vim.lsp.buf.hover, "LSP: Hover", bufnr)
     map("n", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature", bufnr)
+    map("i", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature", bufnr)
 
-    map("n", "<space>la", vim.lsp.buf.code_action, "LSP: Code Action", bufnr)
-    map("v", "<space>la", vim.lsp.buf.code_action, "LSP: Code Action", bufnr)
-
-    map("n", "<space>lrn", vim.lsp.buf.rename, "LSP: Rename", bufnr)
+    -- Actions
+    map("n", "<leader>la", vim.lsp.buf.code_action, "LSP: Code Action", bufnr)
+    map("v", "<leader>la", vim.lsp.buf.code_action, "LSP: Code Action", bufnr)
+    map("n", "<leader>lr", vim.lsp.buf.rename, "LSP: Rename", bufnr)
 
     if client:supports_method("textDocument/formatting") then
-      map("n", "<space>lf", function()
+      map("n", "<leader>lf", function()
         vim.lsp.buf.format({ async = true })
       end, "LSP: Format", bufnr)
     end
 
-    map("n", "<space>lo", vim.diagnostic.open_float, "Diagnostics", bufnr)
-    map("n", "[d", vim.diagnostic.goto_prev, "Prev Diagnostic", bufnr)
-    map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic", bufnr)
+    -- Diagnostics
+    map("n", "<leader>lo", vim.diagnostic.open_float, "Diagnostic float", bufnr)
+    map("n", "[d", function() vim.diagnostic.goto_prev() vim.cmd("normal! zz") end, "Prev Diagnostic", bufnr)
+    map("n", "]d", function() vim.diagnostic.goto_next() vim.cmd("normal! zz") end, "Next Diagnostic", bufnr)
+    map("n", "<leader>ld", function()
+      vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+    end, "Toggle diagnostics", bufnr)
 
+    -- Symbols (via snacks picker if available)
+    map("n", "<leader>ls", function()
+      local has_snacks, _ = pcall(require, "snacks")
+      if has_snacks then
+        Snacks.picker.lsp_symbols()
+      else
+        vim.lsp.buf.document_symbol()
+      end
+    end, "LSP: Document Symbols", bufnr)
+    map("n", "<leader>lS", function()
+      local has_snacks, _ = pcall(require, "snacks")
+      if has_snacks then
+        Snacks.picker.lsp_workspace_symbols()
+      else
+        vim.lsp.buf.workspace_symbol()
+      end
+    end, "LSP: Workspace Symbols", bufnr)
+
+    -- Inlay hints
+    if client:supports_method("textDocument/inlayHint") then
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      map("n", "<leader>li", function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+      end, "Toggle inlay hints", bufnr)
+    end
+
+    -- Document highlight
     if client:supports_method("textDocument/documentHighlight") then
-      local group = vim.api.nvim_create_augroup("lsp_document_highlight_" .. bufnr, {
-        clear = true,
-      })
-
+      local group = vim.api.nvim_create_augroup("lsp_document_highlight_" .. bufnr, { clear = true })
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
         group = group,
         buffer = bufnr,
         callback = vim.lsp.buf.document_highlight,
       })
-
       vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
         group = group,
         buffer = bufnr,
@@ -136,6 +165,10 @@ local function setup_lsp()
 
           diagnostics = {
             globals = { "vim", "Snacks" },
+          },
+
+          hint = {
+            enable = true,
           },
 
           workspace = {
@@ -324,4 +357,7 @@ local function setup_lsp()
   vim.o.updatetime = 300
 end
 
-vim.defer_fn(setup_lsp, 100)
+vim.api.nvim_create_autocmd("FileType", {
+  once = true,
+  callback = setup_lsp,
+})

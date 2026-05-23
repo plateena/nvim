@@ -11,8 +11,6 @@ g.ai_chat_width = 120
 -- Wiki
 g.wiki_root = "~/Documents/wiki"
 
-g.OmniSharp_server_stdio = 0
-
 -- Diff options
 opt.diffopt:append({
   -- "internal",       -- use internal diff engine
@@ -31,6 +29,9 @@ opt.listchars:append("eol:↴")
 opt.autoindent = true
 opt.smartindent = true
 opt.wildmode = "longest:list,full"
+opt.wildoptions = "pum"
+opt.wildignorecase = true
+opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "node_modules/*", ".git/*", "vendor/*" })
 opt.conceallevel = 1
 opt.concealcursor = ""
 
@@ -87,6 +88,7 @@ opt.updatetime = 50 -- I have a modern machine. No need to wait that long
 -- Spell
 opt.spell = true
 opt.spelllang = { "en_us" }
+opt.spelloptions = "camel"
 
 -- set list chars
 local list_chars_symbols = {
@@ -116,7 +118,6 @@ local disabled_built_ins = {
   "ftplugin",
   "getscript",
   "getscriptPlugin",
-  "gzip",
   "logipat",
   "man",
   "matchparen",
@@ -127,17 +128,8 @@ local disabled_built_ins = {
   "optwin",
   "rrhelper",
   "synmenu",
-  "tar",
-  "tarPlugin",
-  "tutor",
   "vimball",
   "vimballPlugin",
-  "zip",
-  "zipPlugin",
-  -- "matchit",
-  -- "rplugin",
-  -- "spellfile_plugin",
-  -- "syntax",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
@@ -152,3 +144,20 @@ opt.smoothscroll = true
 opt.splitkeep = "screen"
 opt.jumpoptions = "stack"
 vim.opt.winborder = "rounded"
+
+-- UI polish
+opt.pumheight = 12
+opt.fillchars = {
+  horiz = "━",
+  horizup = "┻",
+  horizdown = "┳",
+  vert = "┃",
+  vertleft = "┫",
+  vertright = "┣",
+  verthoriz = "╋",
+  eob = " ",
+  fold = " ",
+  diff = "╱",
+}
+opt.splitright = true
+opt.splitbelow = true

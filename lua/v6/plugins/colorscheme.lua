@@ -1,6 +1,6 @@
 return {
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  { "folke/tokyonight.nvim", priority = 1000 },
-  { "rebelot/kanagawa.nvim", priority = 1000 },
-  { "rose-pine/neovim", name = "rose-pine", priority = 1000 },
+  { "folke/tokyonight.nvim", priority = 1000, lazy = false },
+  { "catppuccin/nvim", name = "catppuccin", lazy = true },
+  { "rebelot/kanagawa.nvim", lazy = true },
+  { "rose-pine/neovim", name = "rose-pine", lazy = true },
 }
