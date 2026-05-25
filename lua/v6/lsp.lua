@@ -231,6 +231,44 @@ local function setup_lsp()
       end,
     },
 
+    intelephense = {
+      cmd = { "intelephense", "--stdio" },
+
+      filetypes = {
+        "php",
+      },
+
+      root_dir = function(bufnr)
+        local path = vim.api.nvim_buf_get_name(bufnr)
+
+        local root = vim.fs.find({
+          "composer.json",
+          ".git",
+        }, {
+          upward = true,
+          path = vim.fs.dirname(path),
+        })[1]
+
+        return root and vim.fs.dirname(root) or vim.loop.cwd()
+      end,
+
+      settings = {
+        intelephense = {
+          stubs = {
+            "apache", "bcmath", "bz2", "calendar", "Core", "ctype",
+            "curl", "date", "dom", "exif", "fileinfo", "filter", "ftp",
+            "gd", "gettext", "gmp", "hash", "iconv", "intl", "json",
+            "ldap", "libxml", "mbstring", "meta", "mysqli", "openssl",
+            "pcntl", "pcre", "PDO", "pdo_mysql", "pdo_pgsql", "pdo_sqlite",
+            "pgsql", "Phar", "posix", "random", "readline", "Reflection",
+            "regex", "session", "SimpleXML", "soap", "sockets", "sodium",
+            "SPL", "sqlite3", "standard", "superglobals", "tokenizer",
+            "xml", "xmlreader", "xmlwriter", "xsl", "zip", "zlib",
+          },
+        },
+      },
+    },
+
     pylsp = {
       cmd = { "pylsp" },
 
