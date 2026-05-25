@@ -68,3 +68,38 @@ vim.api.nvim_create_user_command("Browse", function()
   end
   vim.fn.system({ "google-chrome", url })
 end, { desc = "Open URL/file in Chrome" })
+
+-- LSP stop/start commands with tab completion
+vim.api.nvim_create_user_command("LspStop", function(opts)
+  local name = opts.args
+  local clients = vim.lsp.get_clients({ name = name })
+  if #clients == 0 then
+    vim.notify("No active LSP: " .. name, vim.log.levels.WARN)
+    return
+  end
+  vim.lsp.stop_client(clients)
+  vim.notify(name .. " stopped")
+end, {
+  nargs = 1,
+  desc = "Stop an LSP by name",
+  complete = function()
+    local names = {}
+    for _, c in ipairs(vim.lsp.get_clients()) do
+      names[c.name] = true
+    end
+    return vim.tbl_keys(names)
+  end,
+})
+
+vim.api.nvim_create_user_command("LspStart", function(opts)
+  local name = opts.args
+  -- Trigger FileType autocmd to re-attach the server
+  vim.cmd("edit")
+  vim.notify(name .. " starting...")
+end, {
+  nargs = 1,
+  desc = "Start an LSP by name (re-triggers attach)",
+  complete = function()
+    return { "phpactor", "intelephense", "ts_ls", "pylsp", "bashls" }
+  end,
+})
