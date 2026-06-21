@@ -31,7 +31,20 @@ return {
         },
       },
       signature = { enabled = true },
-      cmdline = { enabled = true },
+      cmdline = {
+        enabled = true,
+        keymap = {
+          ["<Tab>"] = { "show", "accept" },
+          ["<S-Tab>"] = { "show", "select_prev" },
+        },
+        completion = {
+          menu = { auto_show = true },
+        },
+      },
+      fuzzy = {
+        sorts = { "exact", "score", "sort_text" },
+        frecency = { enabled = false },
+      },
     })
   end,
 }

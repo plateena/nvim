@@ -27,7 +27,7 @@ return {
     {
       "<leader>n",
       function()
-        Snacks.picker.buffers()
+        Snacks.picker.buffers({ current = false })
       end,
       desc = "Find buffers",
     },
@@ -182,6 +182,13 @@ return {
         Snacks.notifier.hide()
       end,
       desc = "Dismiss notifications",
+    },
+    {
+      "<leader>uN",
+      function()
+        Snacks.notifier.show_history()
+      end,
+      desc = "Notification history",
     },
     -- Terminal
     {

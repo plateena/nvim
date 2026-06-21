@@ -30,6 +30,7 @@ return {
             end)
         end, desc = "Pick icon" },
       { "<Leader>iy", "<cmd>IconPickerYank<CR>", desc = "Yank icon" },
+      { "<A-i>", "<cmd>IconPickerInsert<cr>", mode = "i", desc = "Pick icon (insert)" },
     },
     opts = { disable_legacy_commands = true },
   },
