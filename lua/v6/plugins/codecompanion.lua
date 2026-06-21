@@ -197,6 +197,31 @@ return {
             { role = "user" },
           },
         },
+        ["Akai Playwright"] = {
+          interaction = "chat",
+          description = "ATS Playwright automation with Akai",
+          opts = {
+            auto_submit = false,
+            callbacks = {
+              on_created = function(chat)
+                local files = vim.deepcopy(core_files)
+                vim.list_extend(files, { "skills/playwright.md" })
+                local content = load_ai_files(files)
+                local project_dir = vim.fn.expand("~/work/playwright/ats/.ai")
+                if vim.fn.isdirectory(project_dir) == 1 then
+                  content = content .. "\n\n---\n\n" .. load_dir_files(project_dir)
+                end
+                chat:add_message(
+                  { role = "user", content = content },
+                  { visible = false, _meta = { sent = false } }
+                )
+              end,
+            },
+          },
+          prompts = {
+            { role = "user" },
+          },
+        },
         ["Akai Bash"] = {
           interaction = "chat",
           description = "Bash automation scripts with Akai",
