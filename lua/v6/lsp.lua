@@ -145,6 +145,10 @@ local function setup_lsp()
       root_dir = function(bufnr)
         local path = vim.api.nvim_buf_get_name(bufnr)
 
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
         local root = vim.fs.find({
           ".luarc.json",
           ".luarc.jsonc",
@@ -154,7 +158,7 @@ local function setup_lsp()
           path = vim.fs.dirname(path),
         })[1]
 
-        return root and vim.fs.dirname(root) or vim.loop.cwd()
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
       end,
 
       settings = {
@@ -196,6 +200,10 @@ local function setup_lsp()
       root_dir = function(bufnr)
         local path = vim.api.nvim_buf_get_name(bufnr)
 
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
         local root = vim.fs.find({
           "package.json",
           "tsconfig.json",
@@ -205,7 +213,7 @@ local function setup_lsp()
           path = vim.fs.dirname(path),
         })[1]
 
-        return root and vim.fs.dirname(root) or vim.loop.cwd()
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
       end,
     },
 
@@ -219,6 +227,10 @@ local function setup_lsp()
       root_dir = function(bufnr)
         local path = vim.api.nvim_buf_get_name(bufnr)
 
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
         local root = vim.fs.find({
           "composer.json",
           ".git",
@@ -227,7 +239,7 @@ local function setup_lsp()
           path = vim.fs.dirname(path),
         })[1]
 
-        return root and vim.fs.dirname(root) or vim.loop.cwd()
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
       end,
     },
 
@@ -241,6 +253,10 @@ local function setup_lsp()
       root_dir = function(bufnr)
         local path = vim.api.nvim_buf_get_name(bufnr)
 
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
         local root = vim.fs.find({
           "composer.json",
           ".git",
@@ -249,7 +265,7 @@ local function setup_lsp()
           path = vim.fs.dirname(path),
         })[1]
 
-        return root and vim.fs.dirname(root) or vim.loop.cwd()
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
       end,
 
       settings = {
@@ -279,6 +295,10 @@ local function setup_lsp()
       root_dir = function(bufnr)
         local path = vim.api.nvim_buf_get_name(bufnr)
 
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
         local root = vim.fs.find({
           "pyproject.toml",
           "requirements.txt",
@@ -288,7 +308,7 @@ local function setup_lsp()
           path = vim.fs.dirname(path),
         })[1]
 
-        return root and vim.fs.dirname(root) or vim.loop.cwd()
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
       end,
     },
 
@@ -304,6 +324,10 @@ local function setup_lsp()
       root_dir = function(bufnr)
         local path = vim.api.nvim_buf_get_name(bufnr)
 
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
         local root = vim.fs.find({
           ".git",
         }, {
@@ -311,7 +335,7 @@ local function setup_lsp()
           path = vim.fs.dirname(path),
         })[1]
 
-        return root and vim.fs.dirname(root) or vim.loop.cwd()
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
       end,
     },
   }
