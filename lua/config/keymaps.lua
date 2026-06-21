@@ -85,9 +85,7 @@ local function tmux_or_win(direction)
   vim.cmd("wincmd " .. direction)
   if current_win == vim.fn.winnr() and vim.env.TMUX then
     local pane_cmd = { h = "L", j = "D", k = "U", l = "R" }
-    if pane_cmd[direction] then
-      vim.fn.system("tmux select-pane -" .. pane_cmd[direction])
-    end
+    vim.fn.system("tmux select-pane -" .. pane_cmd[direction])
   end
 end
 
