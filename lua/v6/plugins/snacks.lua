@@ -7,7 +7,7 @@ return {
     snacks.setup({
       bigfile = { enabled = true },
       dashboard = { enabled = true },
-      explorer = { enabled = true },
+      explorer = { enabled = false },
       indent = { enabled = true },
       input = { enabled = true },
       lazygit = { enabled = true },
@@ -159,14 +159,7 @@ return {
       end,
       desc = "Grep in directory",
     },
-    -- Explorer
-    {
-      "<leader>ee",
-      function()
-        Snacks.explorer()
-      end,
-      desc = "File explorer",
-    },
+
     -- Lazygit
     {
       "<leader>gg",
