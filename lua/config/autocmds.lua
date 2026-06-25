@@ -103,3 +103,21 @@ end, {
     return { "phpactor", "intelephense", "ts_ls", "pylsp", "bashls" }
   end,
 })
+
+-- Diff mode keymaps (only active in diff)
+autocmd("OptionSet", {
+  group = augroup("DiffKeymaps", { clear = true }),
+  pattern = "diff",
+  callback = function()
+    if vim.opt.diff:get() then
+      local buf = vim.api.nvim_get_current_buf()
+      local opts = { buffer = buf, silent = true }
+      vim.keymap.set("n", "gp", "<cmd>diffput<cr>", vim.tbl_extend("force", opts, { desc = "Diff put" }))
+      vim.keymap.set("n", "gu", "<cmd>diffput<cr>", vim.tbl_extend("force", opts, { desc = "Diff put" }))
+      vim.keymap.set("n", "go", "<cmd>diffget //3<cr>", vim.tbl_extend("force", opts, { desc = "Diff get (theirs)" }))
+      vim.keymap.set("n", "gi", "<cmd>diffget //2<cr>", vim.tbl_extend("force", opts, { desc = "Diff get (ours)" }))
+      vim.keymap.set("n", "<Tab>", "]c", vim.tbl_extend("force", opts, { desc = "Next hunk" }))
+      vim.keymap.set("n", "<S-Tab>", "[c", vim.tbl_extend("force", opts, { desc = "Prev hunk" }))
+    end
+  end,
+})
