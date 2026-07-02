@@ -3,6 +3,7 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "echasnovski/mini.icons",
+    "ravitemer/codecompanion-history.nvim",
   },
   cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
   keys = {
@@ -61,14 +62,10 @@ return {
           window = {
             width = vim.g.ai_chat_width or 60,
           },
+          auto_generate_title = false,
         },
       },
 
-      adapters = {
-        kiro = function()
-          return require("codecompanion.adapters").extend("kiro", {})
-        end,
-      },
       strategies = {
         chat = { adapter = "kiro" },
         inline = { adapter = "kiro" },
@@ -370,6 +367,22 @@ return {
                 return "Refactor this file following project conventions"
               end,
             },
+          },
+        },
+      },
+
+      extensions = {
+        history = {
+          enabled = true,
+          opts = {
+            keymap = "gh",
+            save_chat_keymap = "sc",
+            auto_save = true,
+            expiration_days = 0,
+            picker = "snacks",
+            auto_generate_title = false,
+            continue_last_chat = false,
+            delete_on_clearing_chat = false,
           },
         },
       },
