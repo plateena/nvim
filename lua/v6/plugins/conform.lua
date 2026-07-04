@@ -29,7 +29,7 @@ return {
         json = { "prettierd", "prettier", stop_after_first = true },
         yaml = { "prettierd", "prettier", stop_after_first = true },
         markdown = { "prettierd", "prettier", stop_after_first = true },
-        php = { "prettierd", "prettier", "phpcbf", stop_after_first = true },
+        php = { "phpcbf" },
         ruby = { "rubocop" },
         sh = { "shfmt" },
         bash = { "shfmt" },
