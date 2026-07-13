@@ -6,7 +6,56 @@ return {
     local snacks = require("snacks")
     snacks.setup({
       bigfile = { enabled = true },
-      dashboard = { enabled = true },
+      dashboard = {
+        enabled = true,
+        preset = {
+          header = (function()
+            local title = table.concat({
+              [[███████╗ █████╗ ██╗███╗   ██╗██╗   ██╗███╗   ██╗██████╗ ██╗███╗   ██╗]],
+              [[╚══███╔╝██╔══██╗██║████╗  ██║██║   ██║████╗  ██║██╔══██╗██║████╗  ██║]],
+              [[  ███╔╝ ███████║██║██╔██╗ ██║██║   ██║██╔██╗ ██║██║  ██║██║██╔██╗ ██║]],
+              [[ ███╔╝  ██╔══██║██║██║╚██╗██║██║   ██║██║╚██╗██║██║  ██║██║██║╚██╗██║]],
+              [[███████╗██║  ██║██║██║ ╚████║╚██████╔╝██║ ╚████║██████╔╝██║██║ ╚████║]],
+              [[╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝╚═╝  ╚═══╝]],
+            }, "\n")
+
+            local raw = vim.fn.system("fortune -s | cowsay -f $(cowsay -l | tail -n+2 | tr ' ' '\\n' | shuf -n1)")
+            local lines = {}
+            local max_len = 0
+            for line in raw:gmatch("[^\n]+") do
+              table.insert(lines, line)
+              if #line > max_len then
+                max_len = #line
+              end
+            end
+            for i, line in ipairs(lines) do
+              lines[i] = line .. string.rep(" ", max_len - #line)
+            end
+
+            return title .. "\n\n" .. table.concat(lines, "\n")
+          end)(),
+          keys = {
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
+            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.picker.recent()" },
+            {
+              icon = " ",
+              key = "c",
+              desc = "Config",
+              action = ":lua Snacks.picker.files({cwd = vim.fn.stdpath('config')})",
+            },
+            { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          },
+        },
+        sections = {
+          { section = "header" },
+          { section = "keys", gap = 1, padding = 1 },
+          { section = "recent_files", cwd = true, limit = 8, padding = 1 },
+          { section = "startup" },
+        },
+      },
       explorer = { enabled = false },
       indent = { enabled = true },
       input = { enabled = true },
@@ -198,6 +247,14 @@ return {
         Snacks.picker.projects()
       end,
       desc = "Projects",
+    },
+    -- Dashboard
+    {
+      "<leader>0",
+      function()
+        Snacks.dashboard()
+      end,
+      desc = "Dashboard",
     },
   },
 }
