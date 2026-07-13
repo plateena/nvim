@@ -103,8 +103,15 @@ return {
             auto_submit = false,
             callbacks = {
               on_created = function(chat)
+                local files = vim.deepcopy(core_files)
+                vim.list_extend(files, { "skills/laravel-api.md", "skills/rails.md", "skills/debugging.md", "skills/devops.md" })
+                local content = load_ai_files(files)
+                local project_context = load_project_ai()
+                if project_context ~= "" then
+                  content = content .. "\n\n---\n\n" .. project_context
+                end
                 chat:add_message(
-                  { role = "user", content = load_ai_files(core_files) },
+                  { role = "user", content = content },
                   { visible = false, _meta = { sent = false } }
                 )
               end,
@@ -122,9 +129,14 @@ return {
             callbacks = {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
-                vim.list_extend(files, { "skills/laravel-api.md", "skills/keycloak.md", "workflows/laravel-api.md" })
+                vim.list_extend(files, { "skills/laravel-api.md", "skills/keycloak.md", "skills/postgres.md", "workflows/laravel-api.md" })
+                local content = load_ai_files(files)
+                local project_context = load_project_ai()
+                if project_context ~= "" then
+                  content = content .. "\n\n---\n\n" .. project_context
+                end
                 chat:add_message(
-                  { role = "user", content = load_ai_files(files) },
+                  { role = "user", content = content },
                   { visible = false, _meta = { sent = false } }
                 )
               end,
@@ -142,9 +154,14 @@ return {
             callbacks = {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
-                vim.list_extend(files, { "skills/rails.md", "workflows/legacy-rails.md" })
+                vim.list_extend(files, { "skills/rails.md", "skills/postgres.md", "workflows/legacy-rails.md" })
+                local content = load_ai_files(files)
+                local project_context = load_project_ai()
+                if project_context ~= "" then
+                  content = content .. "\n\n---\n\n" .. project_context
+                end
                 chat:add_message(
-                  { role = "user", content = load_ai_files(files) },
+                  { role = "user", content = content },
                   { visible = false, _meta = { sent = false } }
                 )
               end,
@@ -183,6 +200,87 @@ return {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
                 vim.list_extend(files, { "skills/debugging.md" })
+                chat:add_message(
+                  { role = "user", content = load_ai_files(files) },
+                  { visible = false, _meta = { sent = false } }
+                )
+              end,
+            },
+          },
+          prompts = {
+            { role = "user" },
+          },
+        },
+        ["Akai DevOps"] = {
+          interaction = "chat",
+          description = "Docker, AWS, and deployment with Akai",
+          opts = {
+            auto_submit = false,
+            callbacks = {
+              on_created = function(chat)
+                local files = vim.deepcopy(core_files)
+                vim.list_extend(files, { "skills/devops.md" })
+                chat:add_message(
+                  { role = "user", content = load_ai_files(files) },
+                  { visible = false, _meta = { sent = false } }
+                )
+              end,
+            },
+          },
+          prompts = {
+            { role = "user" },
+          },
+        },
+        ["Akai Docs"] = {
+          interaction = "chat",
+          description = "Technical documentation with Akai",
+          opts = {
+            auto_submit = false,
+            callbacks = {
+              on_created = function(chat)
+                local files = vim.deepcopy(core_files)
+                vim.list_extend(files, { "skills/documentation.md" })
+                chat:add_message(
+                  { role = "user", content = load_ai_files(files) },
+                  { visible = false, _meta = { sent = false } }
+                )
+              end,
+            },
+          },
+          prompts = {
+            { role = "user" },
+          },
+        },
+        ["Akai Refactor"] = {
+          interaction = "chat",
+          description = "Safe refactoring session with Akai",
+          opts = {
+            auto_submit = false,
+            callbacks = {
+              on_created = function(chat)
+                local files = vim.deepcopy(core_files)
+                vim.list_extend(files, { "skills/refactor.md" })
+                local content = load_ai_files(files) .. "\n\n---\n\n" .. load_project_ai()
+                chat:add_message(
+                  { role = "user", content = content },
+                  { visible = false, _meta = { sent = false } }
+                )
+              end,
+            },
+          },
+          prompts = {
+            { role = "user" },
+          },
+        },
+        ["Akai Postgres"] = {
+          interaction = "chat",
+          description = "PostgreSQL queries and optimization with Akai",
+          opts = {
+            auto_submit = false,
+            callbacks = {
+              on_created = function(chat)
+                local files = vim.deepcopy(core_files)
+                vim.list_extend(files, { "skills/postgres.md" })
                 chat:add_message(
                   { role = "user", content = load_ai_files(files) },
                   { visible = false, _meta = { sent = false } }
