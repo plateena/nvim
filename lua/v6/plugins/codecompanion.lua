@@ -13,10 +13,50 @@ return {
     { "<leader>af", "<cmd>CodeCompanion /fix<cr>", mode = "v", desc = "AI Fix code" },
     { "<leader>ae", "<cmd>CodeCompanion /explain<cr>", mode = "v", desc = "AI Explain" },
     { "<leader>at", "<cmd>CodeCompanion /unit_tests<cr>", mode = "v", desc = "AI Generate tests" },
-    { "<leader>ac", function() vim.cmd("normal! ggVG") vim.schedule(function() vim.cmd("'<,'>CodeCompanionChat add") end) end, mode = "n", desc = "AI Add to chat (file)" },
-    { "<leader>af", function() vim.cmd("normal! ggVG") vim.schedule(function() vim.cmd("'<,'>CodeCompanion /fix") end) end, mode = "n", desc = "AI Fix code (file)" },
-    { "<leader>ae", function() vim.cmd("normal! ggVG") vim.schedule(function() vim.cmd("'<,'>CodeCompanion /explain") end) end, mode = "n", desc = "AI Explain (file)" },
-    { "<leader>at", function() vim.cmd("normal! ggVG") vim.schedule(function() vim.cmd("'<,'>CodeCompanion /unit_tests") end) end, mode = "n", desc = "AI Generate tests (file)" },
+    {
+      "<leader>ac",
+      function()
+        vim.cmd("normal! ggVG")
+        vim.schedule(function()
+          vim.cmd("'<,'>CodeCompanionChat add")
+        end)
+      end,
+      mode = "n",
+      desc = "AI Add to chat (file)",
+    },
+    {
+      "<leader>af",
+      function()
+        vim.cmd("normal! ggVG")
+        vim.schedule(function()
+          vim.cmd("'<,'>CodeCompanion /fix")
+        end)
+      end,
+      mode = "n",
+      desc = "AI Fix code (file)",
+    },
+    {
+      "<leader>ae",
+      function()
+        vim.cmd("normal! ggVG")
+        vim.schedule(function()
+          vim.cmd("'<,'>CodeCompanion /explain")
+        end)
+      end,
+      mode = "n",
+      desc = "AI Explain (file)",
+    },
+    {
+      "<leader>at",
+      function()
+        vim.cmd("normal! ggVG")
+        vim.schedule(function()
+          vim.cmd("'<,'>CodeCompanion /unit_tests")
+        end)
+      end,
+      mode = "n",
+      desc = "AI Generate tests (file)",
+    },
   },
 
   config = function()
@@ -39,7 +79,9 @@ return {
 
     local function load_dir_files(dir)
       local expanded = vim.fn.expand(dir)
-      if vim.fn.isdirectory(expanded) ~= 1 then return "" end
+      if vim.fn.isdirectory(expanded) ~= 1 then
+        return ""
+      end
       local files = vim.fn.glob(expanded .. "/*", false, true)
       local parts = {}
       for _, path in ipairs(files) do
@@ -57,12 +99,31 @@ return {
     local core_files = { "persona.md", "taste.md", "rules.md", "context.md" }
 
     require("codecompanion").setup({
+      adapters = {
+        acp = {
+          kiro = "kiro",
+        },
+        ollama_local = function()
+          return require("codecompanion.adapters").extend("ollama", {
+            name = "ollama_local",
+            schema = {
+              model = { default = "qwen2.5-coder:14b" },
+              num_ctx = { default = 16384 },
+            },
+          })
+        end,
+      },
+
       display = {
         chat = {
           window = {
             width = vim.g.ai_chat_width or 60,
           },
           auto_generate_title = false,
+          show_token_count = true,
+          token_count = function(tokens, adapter)
+            return " (" .. tokens .. " tokens)"
+          end,
         },
       },
 
@@ -104,16 +165,16 @@ return {
             callbacks = {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
-                vim.list_extend(files, { "skills/laravel-api.md", "skills/rails.md", "skills/debugging.md", "skills/devops.md" })
+                vim.list_extend(
+                  files,
+                  { "skills/laravel-api.md", "skills/rails.md", "skills/debugging.md", "skills/devops.md" }
+                )
                 local content = load_ai_files(files)
                 local project_context = load_project_ai()
                 if project_context ~= "" then
                   content = content .. "\n\n---\n\n" .. project_context
                 end
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -129,16 +190,16 @@ return {
             callbacks = {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
-                vim.list_extend(files, { "skills/laravel-api.md", "skills/keycloak.md", "skills/postgres.md", "workflows/laravel-api.md" })
+                vim.list_extend(
+                  files,
+                  { "skills/laravel-api.md", "skills/keycloak.md", "skills/postgres.md", "workflows/laravel-api.md" }
+                )
                 local content = load_ai_files(files)
                 local project_context = load_project_ai()
                 if project_context ~= "" then
                   content = content .. "\n\n---\n\n" .. project_context
                 end
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -160,10 +221,7 @@ return {
                 if project_context ~= "" then
                   content = content .. "\n\n---\n\n" .. project_context
                 end
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -261,10 +319,7 @@ return {
                 local files = vim.deepcopy(core_files)
                 vim.list_extend(files, { "skills/refactor.md" })
                 local content = load_ai_files(files) .. "\n\n---\n\n" .. load_project_ai()
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -306,10 +361,7 @@ return {
                 if vim.fn.isdirectory(project_dir) == 1 then
                   content = content .. "\n\n---\n\n" .. load_dir_files(project_dir)
                 end
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -378,7 +430,11 @@ return {
               role = "user",
               content = function(context)
                 if context.is_visual then
-                  return "Review this code:\n\n```" .. context.filetype .. "\n" .. table.concat(context.lines, "\n") .. "\n```"
+                  return "Review this code:\n\n```"
+                    .. context.filetype
+                    .. "\n"
+                    .. table.concat(context.lines, "\n")
+                    .. "\n```"
                 end
               end,
             },
@@ -392,12 +448,9 @@ return {
             callbacks = {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
-                vim.list_extend(files, { "skills/laravel-api.md", "skills/code-review.md" })
+                vim.list_extend(files, { "skills/laravel-api.md", "skills/code-review.md", "skills/pr-workflow.md" })
                 local content = load_ai_files(files) .. "\n\n---\n\n" .. load_project_ai()
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -409,7 +462,7 @@ return {
                 if vim.fn.filereadable(path) == 1 then
                   return table.concat(vim.fn.readfile(path), "\n")
                 end
-                return "Run PR validation against develop-api"
+                return "Run PR validation against origin/develop"
               end,
             },
           },
@@ -422,12 +475,9 @@ return {
             callbacks = {
               on_created = function(chat)
                 local files = vim.deepcopy(core_files)
-                vim.list_extend(files, { "skills/laravel-api.md", "skills/code-review.md" })
+                vim.list_extend(files, { "skills/laravel-api.md", "skills/code-review.md", "skills/pr-workflow.md" })
                 local content = load_ai_files(files) .. "\n\n---\n\n" .. load_project_ai()
-                chat:add_message(
-                  { role = "user", content = content },
-                  { visible = false, _meta = { sent = false } }
-                )
+                chat:add_message({ role = "user", content = content }, { visible = false, _meta = { sent = false } })
               end,
             },
           },
@@ -439,7 +489,7 @@ return {
                 if vim.fn.filereadable(path) == 1 then
                   return table.concat(vim.fn.readfile(path), "\n")
                 end
-                return "Review the diff of this branch against develop-api"
+                return "Review the diff of this branch against origin/develop"
               end,
             },
           },

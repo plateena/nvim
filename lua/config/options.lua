@@ -28,8 +28,8 @@ opt.listchars:append("eol:↴")
 
 opt.autoindent = true
 opt.smartindent = true
-opt.wildmode = "longest:list,full"
-opt.wildoptions = "pum"
+opt.wildmode = "longest:full,full"
+opt.wildoptions = "fuzzy,pum"
 opt.wildignorecase = true
 opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "node_modules/*", ".git/*", "vendor/*" })
 opt.conceallevel = 1
