@@ -158,13 +158,50 @@ Leader: `<Space>`
 
 ### AI (CodeCompanion)
 
+| Key | Mode | Action |
+|-----|------|--------|
+| `<leader>ai` | n, v | Toggle AI chat |
+| `<leader>aa` | n, v | AI actions (prompt library) |
+| `<leader>ac` | v | Add selection to chat |
+| `<leader>ac` | n | Add entire file to chat |
+| `<leader>af` | v | Fix code (selection) |
+| `<leader>af` | n | Fix code (entire file) |
+| `<leader>ae` | v | Explain code (selection) |
+| `<leader>ae` | n | Explain code (entire file) |
+| `<leader>at` | v | Generate tests (selection) |
+| `<leader>at` | n | Generate tests (entire file) |
+
+In chat buffer:
+
 | Key | Action |
 |-----|--------|
-| `<leader>ai` | Toggle AI chat |
-| `<leader>aa` | AI actions |
-| `<leader>af` | Fix code |
-| `<leader>ae` | Explain code |
-| `<leader>at` | Generate tests |
+| `gh` | Open chat history |
+| `sc` | Save current chat |
+
+#### Actions / Prompt Library
+
+Available via `<leader>aa` or `:CodeCompanionActions`. Adapter: Kiro (via ACP).
+
+| Action | Type | Description |
+|--------|------|-------------|
+| Akai | chat | Full Akai persona (all core + skills) |
+| Akai Laravel | chat | Laravel API development |
+| Akai Rails | chat | Legacy Rails work |
+| Akai Neovim | chat | Neovim config help |
+| Akai Debug | chat | Debugging session |
+| Akai DevOps | chat | Docker, AWS, deployment |
+| Akai Docs | chat | Technical documentation |
+| Akai Refactor | chat | Safe refactoring |
+| Akai Postgres | chat | PostgreSQL queries/optimization |
+| Akai Playwright | chat | ATS Playwright automation |
+| Akai Bash | chat | Bash automation scripts |
+| Akai Jira | chat | Generate Jira tickets |
+| Akai Review | chat | Code review (supports visual selection) |
+| PR Check | chat | Validate branch for PR readiness (auto-submit) |
+| PR Review | chat | Code review branch diff (auto-submit) |
+| Project Refactor | inline | Refactor file following project conventions (auto-submit) |
+
+Actions load context from `~/ai/` (persona, rules, skills) and `.ai/` (project-level) automatically.
 
 ### Terminal
 
