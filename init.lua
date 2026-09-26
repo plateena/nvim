@@ -7,6 +7,7 @@ require("config/keymaps")
 require("config/options")
 require("config/macros")
 require("config/autocmds")
+require("config/cheatsheet")
 
 math.randomseed(os.time())
 
