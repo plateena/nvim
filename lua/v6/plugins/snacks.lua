@@ -52,6 +52,14 @@ return {
         sections = {
           { section = "header" },
           { section = "keys", gap = 1, padding = 1 },
+          {
+            title = "Tip",
+            icon = " ",
+            text = {
+              { require("config.tips").formatted(), hl = "special" },
+            },
+            padding = 1,
+          },
           { section = "recent_files", cwd = true, limit = 8, padding = 1 },
           { section = "startup" },
         },
@@ -255,6 +263,16 @@ return {
         Snacks.dashboard()
       end,
       desc = "Dashboard",
+    },
+    -- Tip + keymap search (when you blank on what you have)
+    {
+      "<leader>?",
+      function()
+        local tip = require("config.tips").random()
+        Snacks.notifier.notify(tip.key .. "  " .. tip.desc, "info", { title = "Tip" })
+        Snacks.picker.keymaps()
+      end,
+      desc = "Random tip + search keymaps",
     },
   },
 }

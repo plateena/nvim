@@ -8,6 +8,8 @@ require("config/options")
 require("config/macros")
 require("config/autocmds")
 
+math.randomseed(os.time())
+
 -- define which version of config
 -- require("v5")
 require("v6")
