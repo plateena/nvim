@@ -37,4 +37,25 @@ function M.formatted()
   return string.format("  %s  %s", tip.key, tip.desc)
 end
 
+function M.sample(n)
+  local pool = {}
+  for i, tip in ipairs(M.tips) do
+    pool[i] = tip
+  end
+
+  for i = #pool, 2, -1 do
+    local j = math.random(i)
+    pool[i], pool[j] = pool[j], pool[i]
+  end
+
+  n = math.min(n or 8, #pool)
+  local lines = {}
+  for i = 1, n do
+    local key = string.format("%-12s", pool[i].key)
+    table.insert(lines, { string.format("  %s  %s", key, pool[i].desc), hl = "special" })
+    table.insert(lines, { "\n" })
+  end
+  return lines
+end
+
 return M
