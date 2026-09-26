@@ -489,7 +489,7 @@ return {
                 if vim.fn.filereadable(path) == 1 then
                   return table.concat(vim.fn.readfile(path), "\n")
                 end
-                return "Review the diff of this branch against origin/develop"
+                return "Review this PR's diff against origin/develop as the reviewer (someone else's code). Give feedback, do not modify files."
               end,
             },
           },
