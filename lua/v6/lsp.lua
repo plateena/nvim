@@ -225,32 +225,6 @@ local function setup_lsp()
       end,
     },
 
-    phpactor = {
-      cmd = { "phpactor", "language-server" },
-
-      filetypes = {
-        "php",
-      },
-
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
-
-        if path == "" then
-          return vim.uv.cwd()
-        end
-
-        local root = vim.fs.find({
-          "composer.json",
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
-
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
-    },
-
     intelephense = {
       cmd = { "intelephense", "--stdio" },
 
@@ -291,6 +265,33 @@ local function setup_lsp()
           },
         },
       },
+    },
+
+    ruby_lsp = {
+      cmd = { "ruby-lsp" },
+
+      filetypes = {
+        "ruby",
+        "eruby",
+      },
+
+      root_dir = function(bufnr)
+        local path = vim.api.nvim_buf_get_name(bufnr)
+
+        if path == "" then
+          return vim.uv.cwd()
+        end
+
+        local root = vim.fs.find({
+          "Gemfile",
+          ".git",
+        }, {
+          upward = true,
+          path = vim.fs.dirname(path),
+        })[1]
+
+        return root and vim.fs.dirname(root) or vim.uv.cwd()
+      end,
     },
 
     pylsp = {

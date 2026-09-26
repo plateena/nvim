@@ -12,7 +12,7 @@ return {
       automatic_enable = false,
       ensure_installed = {
         "bashls", "cssls", "docker_compose_language_service", "dockerls",
-        "emmet_ls", "jsonls", "lua_ls", "phpactor", "ruby_lsp",
+        "emmet_ls", "jsonls", "lua_ls", "ruby_lsp",
         "sqlls", "tailwindcss", "ts_ls", "yamlls",
       },
     })
