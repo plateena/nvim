@@ -66,8 +66,16 @@ local function setup_lsp()
     map("i", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature", bufnr)
 
     -- Actions
-    map("n", "<leader>la", vim.lsp.buf.code_action, "LSP: Code Action", bufnr)
-    map("v", "<leader>la", vim.lsp.buf.code_action, "LSP: Code Action", bufnr)
+    local code_action = function()
+      local ok, ap = pcall(require, "actions-preview")
+      if ok then
+        ap.code_actions()
+      else
+        vim.lsp.buf.code_action()
+      end
+    end
+    map("n", "<leader>la", code_action, "LSP: Code Action", bufnr)
+    map("v", "<leader>la", code_action, "LSP: Code Action", bufnr)
     map("n", "<leader>lr", vim.lsp.buf.rename, "LSP: Rename", bufnr)
 
     if client:supports_method("textDocument/formatting") then
