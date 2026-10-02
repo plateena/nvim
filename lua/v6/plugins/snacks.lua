@@ -52,7 +52,15 @@ return {
       input = { enabled = true },
       lazygit = { enabled = true },
       notifier = { enabled = true },
-      picker = { enabled = true },
+      picker = {
+        enabled = true,
+        sources = {
+          projects = {
+            dev = { "~/work/", "~/work/infra/" },
+            patterns = { ".git", "composer.json", "package.json", "Gemfile", "Dockerfile" },
+          },
+        },
+      },
       quickfile = { enabled = true },
       scope = { enabled = true },
       scroll = { enabled = false },
