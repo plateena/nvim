@@ -15,45 +15,25 @@ return {
     { "<leader>at", "<cmd>CodeCompanion /unit_tests<cr>", mode = "v", desc = "AI Generate tests" },
     {
       "<leader>ac",
-      function()
-        vim.cmd("normal! ggVG")
-        vim.schedule(function()
-          vim.cmd("'<,'>CodeCompanionChat add")
-        end)
-      end,
+      "<cmd>%CodeCompanionChat add<cr>",
       mode = "n",
       desc = "AI Add to chat (file)",
     },
     {
       "<leader>af",
-      function()
-        vim.cmd("normal! ggVG")
-        vim.schedule(function()
-          vim.cmd("'<,'>CodeCompanion /fix")
-        end)
-      end,
+      "<cmd>%CodeCompanion /fix<cr>",
       mode = "n",
       desc = "AI Fix code (file)",
     },
     {
       "<leader>ae",
-      function()
-        vim.cmd("normal! ggVG")
-        vim.schedule(function()
-          vim.cmd("'<,'>CodeCompanion /explain")
-        end)
-      end,
+      "<cmd>%CodeCompanion /explain<cr>",
       mode = "n",
       desc = "AI Explain (file)",
     },
     {
       "<leader>at",
-      function()
-        vim.cmd("normal! ggVG")
-        vim.schedule(function()
-          vim.cmd("'<,'>CodeCompanion /unit_tests")
-        end)
-      end,
+      "<cmd>%CodeCompanion /unit_tests<cr>",
       mode = "n",
       desc = "AI Generate tests (file)",
     },
