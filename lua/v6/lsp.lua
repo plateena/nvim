@@ -144,112 +144,46 @@ local function setup_lsp()
     end,
   })
 
+  local function root_fn(markers)
+    return function(bufnr)
+      local path = vim.api.nvim_buf_get_name(bufnr)
+      if path == "" then
+        return vim.uv.cwd()
+      end
+      local root = vim.fs.find(markers, { upward = true, path = vim.fs.dirname(path) })[1]
+      return root and vim.fs.dirname(root) or vim.uv.cwd()
+    end
+  end
+
   local servers = {
     lua_ls = {
       cmd = { "lua-language-server" },
-
       filetypes = { "lua" },
-
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
-
-        if path == "" then
-          return vim.uv.cwd()
-        end
-
-        local root = vim.fs.find({
-          ".luarc.json",
-          ".luarc.jsonc",
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
-
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
-
+      root_dir = root_fn({ ".luarc.json", ".luarc.jsonc", ".git" }),
       settings = {
         Lua = {
-          runtime = {
-            version = "LuaJIT",
-          },
-
-          diagnostics = {
-            globals = { "vim", "Snacks" },
-          },
-
-          hint = {
-            enable = true,
-          },
-
+          runtime = { version = "LuaJIT" },
+          diagnostics = { globals = { "vim", "Snacks" } },
+          hint = { enable = true },
           workspace = {
             library = vim.api.nvim_get_runtime_file("", true),
             checkThirdParty = false,
           },
-
-          telemetry = {
-            enable = false,
-          },
+          telemetry = { enable = false },
         },
       },
     },
 
     tsserver = {
       cmd = { "typescript-language-server", "--stdio" },
-
-      filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-      },
-
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
-
-        if path == "" then
-          return vim.uv.cwd()
-        end
-
-        local root = vim.fs.find({
-          "package.json",
-          "tsconfig.json",
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
-
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
+      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      root_dir = root_fn({ "package.json", "tsconfig.json", ".git" }),
     },
 
     intelephense = {
       cmd = { "intelephense", "--stdio" },
-
-      filetypes = {
-        "php",
-      },
-
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
-
-        if path == "" then
-          return vim.uv.cwd()
-        end
-
-        local root = vim.fs.find({
-          "composer.json",
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
-
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
-
+      filetypes = { "php" },
+      root_dir = root_fn({ "composer.json", ".git" }),
       settings = {
         intelephense = {
           stubs = {
@@ -269,83 +203,62 @@ local function setup_lsp()
 
     ruby_lsp = {
       cmd = { "ruby-lsp" },
-
-      filetypes = {
-        "ruby",
-        "eruby",
-      },
-
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
-
-        if path == "" then
-          return vim.uv.cwd()
-        end
-
-        local root = vim.fs.find({
-          "Gemfile",
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
-
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
-    },
-
-    pylsp = {
-      cmd = { "pylsp" },
-
-      filetypes = {
-        "python",
-      },
-
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
-
-        if path == "" then
-          return vim.uv.cwd()
-        end
-
-        local root = vim.fs.find({
-          "pyproject.toml",
-          "requirements.txt",
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
-
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
+      filetypes = { "ruby", "eruby" },
+      root_dir = root_fn({ "Gemfile", ".git" }),
     },
 
     bashls = {
       cmd = { "bash-language-server", "start" },
+      filetypes = { "sh", "bash", "zsh" },
+      root_dir = root_fn({ ".git" }),
+    },
 
-      filetypes = {
-        "sh",
-        "bash",
-        "zsh",
-      },
+    cssls = {
+      cmd = { "vscode-css-language-server", "--stdio" },
+      filetypes = { "css", "scss", "less" },
+      root_dir = root_fn({ "package.json", ".git" }),
+    },
 
-      root_dir = function(bufnr)
-        local path = vim.api.nvim_buf_get_name(bufnr)
+    jsonls = {
+      cmd = { "vscode-json-language-server", "--stdio" },
+      filetypes = { "json", "jsonc" },
+      root_dir = root_fn({ "package.json", ".git" }),
+    },
 
-        if path == "" then
-          return vim.uv.cwd()
-        end
+    yamlls = {
+      cmd = { "yaml-language-server", "--stdio" },
+      filetypes = { "yaml", "yaml.docker-compose" },
+      root_dir = root_fn({ ".git" }),
+    },
 
-        local root = vim.fs.find({
-          ".git",
-        }, {
-          upward = true,
-          path = vim.fs.dirname(path),
-        })[1]
+    dockerls = {
+      cmd = { "docker-langserver", "--stdio" },
+      filetypes = { "dockerfile" },
+      root_dir = root_fn({ "Dockerfile", ".git" }),
+    },
 
-        return root and vim.fs.dirname(root) or vim.uv.cwd()
-      end,
+    docker_compose_language_service = {
+      cmd = { "docker-compose-langserver", "--stdio" },
+      filetypes = { "yaml.docker-compose" },
+      root_dir = root_fn({ "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml", ".git" }),
+    },
+
+    tailwindcss = {
+      cmd = { "tailwindcss-language-server", "--stdio" },
+      filetypes = { "html", "css", "scss", "javascriptreact", "typescriptreact", "blade", "vue" },
+      root_dir = root_fn({ "tailwind.config.js", "tailwind.config.ts", "package.json", ".git" }),
+    },
+
+    sqlls = {
+      cmd = { "sql-language-server", "up", "--method", "stdio" },
+      filetypes = { "sql" },
+      root_dir = root_fn({ ".git" }),
+    },
+
+    emmet_ls = {
+      cmd = { "emmet-ls", "--stdio" },
+      filetypes = { "html", "css", "scss", "javascriptreact", "typescriptreact", "blade" },
+      root_dir = root_fn({ ".git" }),
     },
   }
 
