@@ -213,6 +213,12 @@ local function setup_lsp()
       root_dir = root_fn({ ".git" }),
     },
 
+    pylsp = {
+      cmd = { "pylsp" },
+      filetypes = { "python" },
+      root_dir = root_fn({ "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" }),
+    },
+
     cssls = {
       cmd = { "vscode-css-language-server", "--stdio" },
       filetypes = { "css", "scss", "less" },
