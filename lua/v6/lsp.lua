@@ -174,7 +174,7 @@ local function setup_lsp()
       },
     },
 
-    tsserver = {
+    ts_ls = {
       cmd = { "typescript-language-server", "--stdio" },
       filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
       root_dir = root_fn({ "package.json", "tsconfig.json", ".git" }),
@@ -349,5 +349,16 @@ end
 
 vim.api.nvim_create_autocmd("FileType", {
   once = true,
-  callback = setup_lsp,
+  callback = function()
+    setup_lsp()
+
+    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(bufnr) then
+        local ft = vim.bo[bufnr].filetype
+        if ft ~= "" then
+          vim.api.nvim_exec_autocmds("FileType", { buffer = bufnr, modeline = false })
+        end
+      end
+    end
+  end,
 })

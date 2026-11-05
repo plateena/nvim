@@ -18,7 +18,7 @@ return {
     })
     require("mason-tool-installer").setup({
       ensure_installed = {
-        "prettier", "prettierd", "stylua", "phpcbf", "rubocop", "shfmt",
+        "prettier", "prettierd", "stylua", "phpcbf", "phpcs", "rubocop", "shfmt",
         "eslint_d", "shellcheck", "ruff", "phpstan",
       },
     })
