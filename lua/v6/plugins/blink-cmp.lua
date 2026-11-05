@@ -18,6 +18,14 @@ return {
       snippets = { preset = "luasnip" },
       sources = {
         default = { "lsp", "snippets", "buffer", "path" },
+        per_filetype = {
+          sql = { "dadbod", "snippets", "buffer" },
+          mysql = { "dadbod", "snippets", "buffer" },
+          plsql = { "dadbod", "snippets", "buffer" },
+        },
+        providers = {
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+        },
       },
       completion = {
         ghost_text = { enabled = false },
