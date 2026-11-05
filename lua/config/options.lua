@@ -5,7 +5,6 @@ local api = vim.api
 -- AI directories
 g.ai_global_dir = "~/ai"
 g.ai_project_dir = ".ai"
-g.ai_sso_url = "https://inscale.awsapps.com/start"
 g.ai_chat_width = 120
 
 -- Wiki
@@ -35,10 +34,11 @@ opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "node_modules/*", ".
 opt.conceallevel = 1
 opt.concealcursor = ""
 
--- Fold method
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- Folding (managed by nvim-ufo)
+opt.foldcolumn = "1"
 opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
 
 opt.scrolloff = 4 -- add line so the cursor will not at the top of screen / line
 
@@ -157,6 +157,9 @@ opt.fillchars = {
   verthoriz = "╋",
   eob = " ",
   fold = " ",
+  foldopen = "",
+  foldclose = "",
+  foldsep = " ",
   diff = "╱",
 }
 opt.splitright = true
