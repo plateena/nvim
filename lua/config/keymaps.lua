@@ -34,6 +34,9 @@ map("x", "K", ":move '<-2<CR>gv-gv", { silent = true })
 -- Don't yank on visual paste
 map("v", "p", '"_dP')
 
+-- Open URL under cursor (or current file) in browser, via the :Browse command
+map("n", "gb", "<cmd>Browse<cr>", { desc = "Open URL/file in browser" })
+
 -- Wrapped line navigation
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })

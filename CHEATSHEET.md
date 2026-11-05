@@ -2,22 +2,24 @@
 
 Generated from live keymaps. Run `:Cheatsheet` to refresh.
 
-_Last generated: 2026-09-26 22:39_
+_Last generated: 2026-11-05 14:40_
 
 ## AI
 
 | Key | Mode | Action |
 |-----|------|--------|
 | `<leader>aa` | Normal | AI Actions |
-| `<leader>ac` | Normal | AI Add to chat (file) |
 | `<leader>ac` | Visual | AI Add to chat |
+| `<leader>ac` | Normal | AI Add to chat (file) |
 | `<leader>ae` | Normal | AI Explain (file) |
 | `<leader>ae` | Visual | AI Explain |
-| `<leader>af` | Normal | AI Fix code (file) |
 | `<leader>af` | Visual | AI Fix code |
+| `<leader>af` | Normal | AI Fix code (file) |
 | `<leader>ai` | Normal | AI Chat toggle |
-| `<leader>at` | Visual | AI Generate tests |
+| `<leader>am` | Normal | AI Select Kiro model |
+| `<leader>ar` | Normal | AI Resume Kiro session (with preview) |
 | `<leader>at` | Normal | AI Generate tests (file) |
+| `<leader>at` | Visual | AI Generate tests |
 
 ## Buffer
 
@@ -138,8 +140,9 @@ _Last generated: 2026-09-26 22:39_
 | `gA` | Normal | Align with preview |
 | `gO` | Normal | vim.lsp.buf.document_symbol() |
 | `ga` | Normal | Align |
-| `gc` | Operator | Comment textobject |
+| `gb` | Normal | Open URL/file in browser |
 | `gc` | Normal | Toggle comment |
+| `gc` | Operator | Comment textobject |
 | `gcc` | Normal | Toggle comment line |
 | `gra` | Normal | vim.lsp.buf.code_action() |
 | `gri` | Normal | vim.lsp.buf.implementation() |
@@ -151,6 +154,11 @@ _Last generated: 2026-09-26 22:39_
 | `in` | Visual | Select child (inner) node |
 | `r` | Operator | Remote flash |
 | `s` | Normal | Flash jump |
+| `zK` | Normal | Peek fold or hover |
+| `zM` | Normal | Close all folds |
+| `zR` | Normal | Open all folds |
+| `zm` | Normal | Close folds with level |
+| `zr` | Normal | Open folds except kinds |
 
 ## Git
 
@@ -181,6 +189,9 @@ _Last generated: 2026-09-26 22:39_
 |-----|------|--------|
 | `<leader>0` | Normal | Dashboard |
 | `<leader>?` | Normal | Random tip + search keymaps |
+| `<leader>Da` | Normal | DB: Add connection |
+| `<leader>Df` | Normal | DB: Find buffer |
+| `<leader>Du` | Normal | DB: Toggle UI |
 | `<leader>P` | Normal | Paste before from clipboard |
 | `<leader>Y` | Normal | Yank line to clipboard |
 | `<leader>d` | Normal | Delete to void |
