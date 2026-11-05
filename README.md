@@ -238,19 +238,19 @@ Actions load context from `~/ai/` (persona, rules, skills) and `.ai/` (project-l
 | wiki.vim | Personal wiki (markdown) |
 | icon-picker.nvim | Emoji/nerd font picker |
 | codecompanion.nvim | AI chat (Kiro via ACP) |
-| amazonq.nvim | Inline AI completions |
 
 ## LSP Servers
 
 | Server | Language |
 |--------|----------|
 | lua_ls | Lua/Neovim |
-| tsserver | TypeScript/JavaScript |
-| phpactor | PHP |
+| ts_ls | TypeScript/JavaScript |
+| intelephense | PHP/Laravel |
+| ruby_lsp | Ruby/Rails |
 | pylsp | Python |
 | bashls | Bash/Zsh |
 
-Additional servers installed via Mason: `cssls`, `dockerls`, `docker_compose_language_service`, `emmet_ls`, `jsonls`, `ruby_lsp`, `sqlls`, `tailwindcss`, `yamlls`.
+Additional servers installed via Mason: `cssls`, `dockerls`, `docker_compose_language_service`, `emmet_ls`, `jsonls`, `sqlls`, `tailwindcss`, `yamlls`.
 
 ## Formatters
 
