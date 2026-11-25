@@ -51,6 +51,28 @@ return {
           },
         },
         lualine_x = {
+          {
+            -- Word / character count (selection counts while in visual mode)
+            function()
+              local function fmt(n)
+                return tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
+              end
+              local wc = vim.fn.wordcount()
+              if wc.visual_words then
+                return string.format("\u{f246} %s \u{f0f6}  %s \u{f031}", fmt(wc.visual_words), fmt(wc.visual_chars))
+              end
+              return string.format("\u{f0f6} %s  \u{f031} %s", fmt(wc.words), fmt(wc.chars))
+            end,
+            color = function()
+              -- Accent while a selection is active, normal text otherwise
+              if vim.fn.wordcount().visual_words then
+                return { fg = "#e0af68", gui = "bold" }
+              end
+            end,
+            cond = function()
+              return vim.bo.buftype == "" and vim.api.nvim_buf_line_count(0) < 50000
+            end,
+          },
           "encoding",
           "fileformat",
           "filetype",

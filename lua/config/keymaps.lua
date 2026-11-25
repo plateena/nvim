@@ -27,6 +27,10 @@ map("n", "<S-Down>", "<cmd>resize -2<cr>")
 map("n", "<S-Left>", "<cmd>vertical resize -2<cr>")
 map("n", "<S-Right>", "<cmd>vertical resize +2<cr>")
 
+-- Zoom current split full-size; press again to restore the split layout
+map("n", "<leader>z", function() require("snacks").zen.zoom() end, { desc = "Toggle zoom window" })
+map("n", "<leader>=", "<C-w>=", { desc = "Equalize split sizes" })
+
 -- Move lines in visual mode
 map("x", "J", ":move '>+1<CR>gv-gv", { silent = true })
 map("x", "K", ":move '<-2<CR>gv-gv", { silent = true })

@@ -63,10 +63,17 @@ autocmd("BufWritePre", {
 -- Open URL under cursor or current file in browser
 vim.api.nvim_create_user_command("Browse", function()
   local url = vim.fn.expand("<cWORD>")
+
+  -- Strip common surrounding punctuation (quotes, parentheses, brackets, trailing commas/periods)
+  url = url:gsub("^['\"%(%[<]+", ""):gsub("['\"%)%]>.,;:]+$", "")
+
+  -- Fall back to the current file path if the word under cursor isn't a URL
   if not url:match("^https?://") then
     url = vim.fn.expand("%:p")
   end
-  vim.fn.system({ "google-chrome", url })
+
+  -- Launch Chrome asynchronously and detach it from Neovim
+  vim.fn.jobstart({ "google-chrome", url }, { detach = true })
 end, { desc = "Open URL/file in Chrome" })
 
 -- LSP stop/start commands with tab completion
@@ -112,7 +119,12 @@ autocmd("OptionSet", {
     if vim.opt.diff:get() then
       local buf = vim.api.nvim_get_current_buf()
       local opts = { buffer = buf, silent = true }
-      vim.keymap.set("n", "gp", "<cmd>diffput //2<cr><cmd>diffput //3<cr>", vim.tbl_extend("force", opts, { desc = "Diff put all" }))
+      vim.keymap.set(
+        "n",
+        "gp",
+        "<cmd>diffput //2<cr><cmd>diffput //3<cr>",
+        vim.tbl_extend("force", opts, { desc = "Diff put all" })
+      )
       vim.keymap.set("n", "go", "<cmd>diffget //3<cr>", vim.tbl_extend("force", opts, { desc = "Diff get (theirs)" }))
       vim.keymap.set("n", "gi", "<cmd>diffget //2<cr>", vim.tbl_extend("force", opts, { desc = "Diff get (ours)" }))
       vim.keymap.set("n", "<Tab>", "]c", vim.tbl_extend("force", opts, { desc = "Next hunk" }))

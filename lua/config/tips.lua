@@ -26,6 +26,8 @@ M.tips = {
   { key = "]m / [m", desc = "Jump next/prev function" },
   { key = "af / if", desc = "Select outer/inner function (textobject)" },
   { key = "<leader>fk", desc = "Search all keymaps (when you forget one)" },
+  { key = "<leader>z", desc = "Zoom current split full-size; press again to restore" },
+  { key = "<leader>=", desc = "Equalize all split sizes" },
 }
 
 function M.random()
