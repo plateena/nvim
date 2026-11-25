@@ -14,6 +14,4 @@ require("config/cheatsheet")
 
 math.randomseed(os.time())
 
--- define which version of config
--- require("v5")
 require("v6")

@@ -1,6 +1,6 @@
 # Neovim Config
 
-Personal Neovim configuration. Versioned setup — active version loaded via `init.lua`.
+Personal Neovim configuration. `init.lua` loads the active setup.
 
 ## Structure
 
@@ -18,21 +18,11 @@ Personal Neovim configuration. Versioned setup — active version loaded via `in
 │   │   ├── lazy.lua         # Plugin manager bootstrap
 │   │   ├── lsp.lua          # Built-in LSP config (Neovim 0.12+)
 │   │   └── plugins/         # Plugin specs (one per file)
-│   ├── v5/                  # Previous version (rollback)
 │   └── myplugin/            # Custom local plugins
 ├── after/
 │   ├── plugin/theme.lua     # Colorscheme + highlight overrides
 │   └── ftplugin/            # Filetype-specific settings
 └── snippets/                # Custom LuaSnip snippets
-```
-
-## Version System
-
-Config versions live in `lua/v5/`, `lua/v6/`, etc. Switch by editing `init.lua`:
-
-```lua
--- require("v5")
-require("v6")
 ```
 
 ## Key Mappings
